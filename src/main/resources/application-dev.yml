@@ -1,0 +1,5 @@
+# knife4j的增强配置
+knife4j:
+  basic:
+    # 开启访问权限控制
+    enable: false

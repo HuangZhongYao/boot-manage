@@ -1,0 +1,7 @@
+# knife4j的增强配置
+knife4j:
+  setting:
+    # 开启生产环境屏蔽
+    production: true
+
+

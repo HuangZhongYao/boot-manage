@@ -1,6 +1,65 @@
+server:
+  port: 8080
+
 spring:
   profiles:
     active: dev
+  servlet:
+    multipart:
+      # 限制最大上传文件大小
+      max-file-size: 200MB
+      # 限制最大请求携带内容大小
+      max-request-size: 100MB
+  application:
+    # 应用名
+    name: boot-manage
+
+# springdoc-openapi 配置
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    tags-sorter: alpha
+    operations-sorter: alpha
+  api-docs:
+    path: /v3/api-docs
+  group-configs:
+    - group: '全部接口'
+      paths-to-match: '/**'
+      packages-to-scan: org.github.zuuuyao
+
+# knife4j的增强配置，不需要增强可以不配
+knife4j:
+  enable: true
+  # 自定义文档
+  documents:
+    - group: 1.2.x
+      name: 其它文档
+      locations: classpath:markdown/*
+  basic:
+    # 开启访问权限控制
+    enable: true
+    # 访问账户
+    username: admin
+    # 访问密码
+    password: admin@123
+  setting:
+    # 自定义主页
+    enable-home-custom: false
+    # 自定义主页md文件位置
+    home-custom-path: classpath:markdown/home.md
+    # 设置语言
+    language: zh_cn
+    # 开启自定义swagger-models
+    enable-swagger-models: true
+    # 自定义swagger-models名称
+    swagger-model-name: swagger-models
+    # 显示默认页脚
+    enable-footer: false
+    # 开启自定义页脚
+    enable-footer-custom: true
+    # 自定义页脚内容
+    footer-custom-content: 自定义footer
+
 #日志
 logging:
   level:
@@ -12,4 +71,3 @@ logging:
   config: classpath:logback-spring.xml
   # 日志文件位置, 默认值当前目录 boot-manage-logs
   path: boot-manage-logs
-
