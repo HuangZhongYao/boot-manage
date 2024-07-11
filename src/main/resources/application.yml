@@ -4,6 +4,9 @@ server:
 spring:
   profiles:
     active: dev
+  mvc:
+    # 静态资源目录
+    static-path-pattern: /static/**
   servlet:
     multipart:
       # 限制最大上传文件大小
@@ -13,6 +16,35 @@ spring:
   application:
     # 应用名
     name: boot-manage
+  datasource:
+    hikari:
+      # 最小空闲数量
+      minimum-idle: 5
+      # 空闲连接存活最大时间
+      idle-timeout: 180000
+      # 连接池最大数量
+      maximum-pool-size: 15
+      # 此属性控制从池返回的连接的默认自动提交行为,默认值：true
+      auto-commit: true
+      # 数据库连接池超时时间
+      connection-timeout: 30000
+      # 连接测试查询
+      connection-test-query: SELECT 1
+
+
+# mybatisPlus
+mybatis-plus:
+  mapper-locations: classpath:/mapper/**/*.xml
+  typeAliasesPackage: org.github.zuuuyao.entity
+  type-enums-package: org.github.zuuuyao.entity.enums
+  global-config:
+    db-config:
+      id-type: AUTO
+    banner: true
+  configuration:
+    #开启驼峰功能
+    map-underscore-to-camel-case: true
+    cache-enabled: true
 
 # springdoc-openapi 配置
 springdoc:

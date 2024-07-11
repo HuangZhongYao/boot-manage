@@ -1,5 +1,19 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/boot_manage?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+    username: develop
+    password: develop
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.zaxxer.hikari.HikariDataSource
+
 # knife4j的增强配置
 knife4j:
   basic:
     # 开启访问权限控制
     enable: false
+
+# mybatisPlus
+mybatis-plus:
+  configuration:
+    #开发环境开启日志
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
