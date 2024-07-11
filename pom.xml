@@ -12,15 +12,15 @@
 
     <groupId>org.github-zuuu-yao</groupId>
     <artifactId>boot-manage</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0-RE</version>
     <name>boot-manage</name>
-    <description>boot-manage</description>
+    <packaging>jar</packaging>
 
+    <!--项目描述-->
+    <description>boot-manage后台管理系统模板</description>
+
+    <!--项目连接-->
     <url>https://gitee.com/smog_huang/boot-manage</url>
-
-    <licenses>
-        <license/>
-    </licenses>
 
     <!--项目开发人员-->
     <developers>
@@ -61,7 +61,7 @@
             <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
 
-        <!--spring Web-->
+        <!--spring mvcWeb-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -78,7 +78,7 @@
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
             <version>4.0.1</version>
-<!--            <scope>provided</scope>-->
+            <scope>provided</scope>
         </dependency>
 
         <!--使用undertow作为web服务器-->
@@ -94,6 +94,7 @@
             <optional>true</optional>
         </dependency>
 
+        <!-- 自动生成代码lombok -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
@@ -110,7 +111,7 @@
 
     <build>
         <!--打包文件名-->
-        <finalName>${artifactId}</finalName>
+        <finalName>${artifactId}-${version}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
@@ -127,5 +128,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>
