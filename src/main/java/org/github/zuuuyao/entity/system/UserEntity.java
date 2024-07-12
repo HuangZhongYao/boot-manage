@@ -1,12 +1,12 @@
 package org.github.zuuuyao.entity.system;
 
-import java.io.Serial;
-import java.time.LocalDateTime;
-
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.*;
 import org.github.zuuuyao.common.base.entity.AbstractBaseEntity;
 import org.github.zuuuyao.entity.enums.GenderEnum;
+
+import java.io.Serial;
+import java.time.LocalDateTime;
 
 /**
  * @Desc 系统用户表

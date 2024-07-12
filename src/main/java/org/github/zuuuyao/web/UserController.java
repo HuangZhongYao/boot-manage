@@ -1,6 +1,5 @@
 package org.github.zuuuyao.web;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.v3.oas.annotations.Operation;
@@ -12,8 +11,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.github.zuuuyao.common.base.dto.input.BaseQueryPageInputDTO;
 import org.github.zuuuyao.common.response.R;
-import org.github.zuuuyao.entity.enums.GenderEnum;
-import org.github.zuuuyao.entity.system.UserEntity;
 import org.github.zuuuyao.repository.UserRepository;
 import org.github.zuuuyao.service.user.IUserService;
 import org.github.zuuuyao.service.user.dto.input.AddUserInputDTO;

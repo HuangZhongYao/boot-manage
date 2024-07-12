@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.annotation.TableField;
 
 import java.io.Serial;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 /**
  * 抽象id和创建时间、更新时间实体类基类
