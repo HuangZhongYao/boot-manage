@@ -39,9 +39,18 @@
         <java.version>17</java.version>
         <knife4j.version>4.5.0</knife4j.version>
         <mybatis-plus.version>3.5.7</mybatis-plus.version>
+        <modelmapper.version>3.2.0</modelmapper.version>
     </properties>
 
     <dependencies>
+
+        <!-- https://mvnrepository.com/artifact/org.modelmapper/modelmapper -->
+        <dependency>
+            <groupId>org.modelmapper</groupId>
+            <artifactId>modelmapper</artifactId>
+            <version>${modelmapper.version}</version>
+        </dependency>
+
 
         <!--mybatis-plus-->
         <dependency>

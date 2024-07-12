@@ -5,5 +5,7 @@ package org.github.zuuuyao.common.function;
  * @Time 2024-07-11 16:30
  * @Author HuangZhongYao
  */
-public interface BigFunction {
+@FunctionalInterface
+public interface Function_1<T,U,E,R> {
+    R apply(T t, U u,E e);
 }
