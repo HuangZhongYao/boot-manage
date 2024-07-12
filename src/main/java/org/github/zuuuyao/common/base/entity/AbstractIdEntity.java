@@ -1,5 +1,8 @@
 package org.github.zuuuyao.common.base.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+
 import java.io.Serial;
 
 /**
@@ -15,8 +18,9 @@ public abstract class AbstractIdEntity implements IEntity{
     private static final long serialVersionUID = -1160371774869499257L;
 
     /**
-     * id
+     * 自增主键id
      */
+    @TableId(value = "id",type = IdType.AUTO)
     private Long id;
 
     public Long getId() {

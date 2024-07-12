@@ -1,6 +1,10 @@
 package org.github.zuuuyao.common.base.entity;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
+
 import java.io.Serial;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -18,26 +22,28 @@ public abstract class AbstractIdAndTimeEntity  extends AbstractIdEntity{
     /**
      * 创建时间
      */
-    private Date createdTime;
+    @TableField(value = "created_time",fill = FieldFill.INSERT)
+    private LocalDateTime createdTime;
 
     /**
      * 更新时间
      */
-    private Date updatedTime;
+    @TableField(value = "updated_time",fill = FieldFill.INSERT_UPDATE)
+    private LocalDateTime updatedTime;
 
-    public Date getCreatedTime() {
+    public LocalDateTime getCreatedTime() {
         return createdTime;
     }
 
-    public void setCreatedTime(Date createdTime) {
+    public void setCreatedTime(LocalDateTime createdTime) {
         this.createdTime = createdTime;
     }
 
-    public Date getUpdatedTime() {
+    public LocalDateTime getUpdatedTime() {
         return updatedTime;
     }
 
-    public void setUpdatedTime(Date updatedTime) {
+    public void setUpdatedTime(LocalDateTime updatedTime) {
         this.updatedTime = updatedTime;
     }
 }
