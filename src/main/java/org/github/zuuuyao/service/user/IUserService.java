@@ -5,7 +5,7 @@ import org.github.zuuuyao.common.base.dto.input.BaseQueryPageInputDTO;
 import org.github.zuuuyao.service.user.dto.input.AddUserInputDTO;
 
 /**
- * @Desc
+ * @Desc 用户管理Service
  * @Time 2024-07-11 16:32
  * @Author HuangZhongYao
  */
