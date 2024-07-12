@@ -9,7 +9,7 @@ import java.io.Serial;
  * @Time 2024-07-12 16:02
  * @Author HuangZhongYao
  */
-public class R<Result> extends AbstractResponse {
+public class ApiResponse<Result> extends AbstractResponse {
 
     @Serial
     private static final long serialVersionUID = 5094140230570937764L;
@@ -20,16 +20,16 @@ public class R<Result> extends AbstractResponse {
     @Schema(description = "响应数据")
     private Result result;
 
-    public R(Integer code, String msg, String path, Boolean success, Result result) {
+    public ApiResponse(Integer code, String msg, String path, Boolean success, Result result) {
         super(code, msg, path, success);
         this.result = result;
     }
 
-    public R(Result result) {
+    public ApiResponse(Result result) {
         this.result = result;
     }
 
-    public R() {
+    public ApiResponse() {
 
     }
 
@@ -40,8 +40,8 @@ public class R<Result> extends AbstractResponse {
      * @param <Result> 结果数据的泛型类型。
      * @return 返回一个包含成功结果的响应对象。
      */
-    public static <Result> R ok(Result result) {
-        return new R<Result>(OK, "ok", "", true, result);
+    public static <Result> ApiResponse ok(Result result) {
+        return new ApiResponse<Result>(OK, "操作成功", "", true, result);
 
     }
 
@@ -53,8 +53,8 @@ public class R<Result> extends AbstractResponse {
      * @param <Result> 结果数据的泛型类型。
      * @return 返回一个包含成功结果的响应对象。
      */
-    public static <Result> R ok(Result result, String msg) {
-        return new R<Result>(OK, msg, "", true, result);
+    public static <Result> ApiResponse ok(Result result, String msg) {
+        return new ApiResponse<Result>(OK, msg, "", true, result);
 
     }
 
@@ -67,8 +67,8 @@ public class R<Result> extends AbstractResponse {
      * @param msg 失败的详细信息，描述了操作失败的原因。
      * @return 返回一个新的R对象，表示操作失败。
      */
-    public static R failed(String msg) {
-        return new R(FAILED, msg, "", false, null);
+    public static ApiResponse failed(String msg) {
+        return new ApiResponse(FAILED, msg, "", false, null);
 
     }
 
@@ -83,8 +83,8 @@ public class R<Result> extends AbstractResponse {
      * @param code  自定义的错误代码，用于更精确地描述失败的原因。
      * @return 返回一个新的R对象，表示操作失败，并携带自定义的错误代码。
      */
-    public static R failed(String msg, Integer code) {
-        return new R(code, msg, "", false, null);
+    public static ApiResponse failed(String msg, Integer code) {
+        return new ApiResponse(code, msg, "", false, null);
 
     }
 
@@ -94,5 +94,16 @@ public class R<Result> extends AbstractResponse {
 
     public void setResult(Result result) {
         this.result = result;
+    }
+
+    @Override
+    public String toString() {
+        return "{" +
+            " 'result' :" + result +
+            ", 'code' :" + code +
+            ", 'msg' : '" + msg + '\'' +
+            ", 'path' : '" + path + '\'' +
+            ", 'success' : " + success +
+            "}";
     }
 }

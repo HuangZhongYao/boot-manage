@@ -4,9 +4,6 @@ server:
 spring:
   profiles:
     active: dev
-  mvc:
-    # 静态资源目录
-#    static-path-pattern: /static/**
   servlet:
     multipart:
       # 限制最大上传文件大小

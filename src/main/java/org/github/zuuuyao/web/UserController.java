@@ -10,7 +10,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.github.zuuuyao.common.base.dto.input.BaseQueryPageInputDTO;
-import org.github.zuuuyao.common.response.R;
 import org.github.zuuuyao.repository.UserRepository;
 import org.github.zuuuyao.service.user.IUserService;
 import org.github.zuuuyao.service.user.dto.input.AddUserInputDTO;
@@ -34,25 +33,25 @@ public class UserController {
     UserRepository userRepository;
     IUserService userService;
 
-    @Operation(summary = "分页查询",description = "分页查询用户接口")
-    @GetMapping(value = "/pageQueryList",produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "分页查询", description = "分页查询用户接口")
+    @GetMapping(value = "/pageQueryList", produces = MediaType.APPLICATION_JSON_VALUE)
     @Parameters({
-            @Parameter(name = "current",description = "页码"),
-            @Parameter(name = "size",description = "每页显示条数"),
+        @Parameter(name = "current", description = "页码"),
+        @Parameter(name = "size", description = "每页显示条数"),
     })
     @ApiOperationSupport(authors = "zuuuYao")
-    public R<Page> pageQueryList(BaseQueryPageInputDTO inputDTO) {
-        return R.ok(userService.pageQueryList(inputDTO));
+    public Page pageQueryList(BaseQueryPageInputDTO inputDTO) {
+        return userService.pageQueryList(inputDTO);
     }
 
 
-    @Operation(summary = "添加用户",description = "添加用户接口")
+    @Operation(summary = "添加用户", description = "添加用户接口")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "OK"),
-            @ApiResponse(responseCode = "401", description = "账号已存在")
+        @ApiResponse(responseCode = "200", description = "OK"),
+        @ApiResponse(responseCode = "401", description = "账号已存在")
     })
-    @PostMapping(value = "/addUser",produces = MediaType.APPLICATION_JSON_VALUE)
-    public Object addUser(@RequestBody @Validated AddUserInputDTO inputDTO) {
-            return userService.addUser(inputDTO);
+    @PostMapping(value = "/addUser", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Boolean addUser(@RequestBody @Validated AddUserInputDTO inputDTO) {
+        return userService.addUser(inputDTO);
     }
 }

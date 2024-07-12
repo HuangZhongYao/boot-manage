@@ -11,7 +11,7 @@ import org.github.zuuuyao.service.user.dto.input.AddUserInputDTO;
  */
 public interface IUserService {
 
-    Object addUser(AddUserInputDTO inputDTO);
+    Boolean addUser(AddUserInputDTO inputDTO);
 
     Page pageQueryList(BaseQueryPageInputDTO inputDTO);
 
