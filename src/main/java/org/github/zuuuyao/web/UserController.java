@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.github.zuuuyao.common.base.dto.input.BaseQueryPageInputDTO;
+import org.github.zuuuyao.common.response.R;
 import org.github.zuuuyao.entity.enums.GenderEnum;
 import org.github.zuuuyao.entity.system.UserEntity;
 import org.github.zuuuyao.repository.UserRepository;
@@ -43,8 +44,8 @@ public class UserController {
             @Parameter(name = "size",description = "每页显示条数"),
     })
     @ApiOperationSupport(authors = "zuuuYao")
-    public Object pageQueryList(BaseQueryPageInputDTO inputDTO) {
-        return userService.pageQueryList(inputDTO);
+    public R<Page> pageQueryList(BaseQueryPageInputDTO inputDTO) {
+        return R.ok(userService.pageQueryList(inputDTO));
     }
 
 

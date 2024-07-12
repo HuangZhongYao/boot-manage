@@ -1,5 +1,6 @@
 package org.github.zuuuyao.service.user;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.github.zuuuyao.common.base.dto.input.BaseQueryPageInputDTO;
 import org.github.zuuuyao.service.user.dto.input.AddUserInputDTO;
 
@@ -12,6 +13,6 @@ public interface IUserService {
 
     Object addUser(AddUserInputDTO inputDTO);
 
-    Object pageQueryList(BaseQueryPageInputDTO inputDTO);
+    Page pageQueryList(BaseQueryPageInputDTO inputDTO);
 
 }
