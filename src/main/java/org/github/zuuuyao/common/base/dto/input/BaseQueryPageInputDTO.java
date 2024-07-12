@@ -32,13 +32,13 @@ public class BaseQueryPageInputDTO extends BaseDTO {
     private static final long MIN_CURRENT = 1L;
 
     @Schema(
-            name = "每页显示条数",
+            description = "每页显示条数",
             required = true, example = "10"
     )
     private long size = MIN_SIZE;
 
     @Schema(
-            name = "当前页码",
+            description = "当前页码",
             required = true, example = "1"
     )
     private long current = MIN_CURRENT;

@@ -1,6 +1,7 @@
 package org.github.zuuuyao.entity.system;
 
 import java.io.Serial;
+import java.time.LocalDateTime;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.*;
@@ -49,4 +50,25 @@ public class UserEntity extends AbstractBaseEntity {
      * 性别
      */
     private GenderEnum gender;
+
+    /**
+     * 手机号
+     */
+    private String phone;
+
+    /**
+     * 头像url
+     */
+    private String avatarUrl;
+
+    /**
+     * 备注
+     */
+    private String remark;
+
+    /**
+     * 最后登录时间
+     */
+    private LocalDateTime lastLoginTime;
+
 }
