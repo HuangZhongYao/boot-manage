@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
 import org.github.zuuuyao.common.validate.impl.IDCardValidatorImpl;
 
 /**
- * 身份证号验证,只能是身份证格式
+ * 身份证号验证支持18位身份证、15位身份证、10位身份证，港澳台地区
  *
  * @Desc: Created by IntelliJ IDEA.
  * @Author: ZhongYao.Huang

@@ -31,7 +31,9 @@ public class WordValidatorImpl implements ConstraintValidator<ValidateWord, Obje
         }
 
         if (o instanceof String) {
-            return PatternPool.WORD.matcher(o.toString()).matches();
+            // 去掉空格 允许出现空格
+            String value = o.toString().replaceAll("\\s", "");
+            return PatternPool.WORD.matcher(value).matches();
         }
         return false;
     }

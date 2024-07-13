@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
 import org.github.zuuuyao.common.validate.impl.DateValidatorImpl;
 
 /**
- * 验证时间格式，只能是日期格式
+ * 验证时间格式，只能是日期格式。需要指定格式
  *
  * @Desc: Created by IntelliJ IDEA.
  * @Author: ZhongYao.Huang

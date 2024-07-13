@@ -11,7 +11,7 @@ import org.github.zuuuyao.common.validate.impl.WordValidatorImpl;
 
 
 /**
- * 验证字母只允许为大小写字母
+ * 验证字母只允许为大小写字母,可以出现空格
  *
  * @Desc: Created by IntelliJ IDEA.
  * @Author: ZhongYao.Huang

@@ -19,6 +19,8 @@ public abstract class AbstractResponse implements Serializable {
     public static final Integer OK = 200;
     public static final Integer FAILED = 500;
 
+    public static final Integer VALIDATION_FAILED = 401;
+
     /**
      * 响应码
      */
