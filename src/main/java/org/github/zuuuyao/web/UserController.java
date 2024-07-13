@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.github.zuuuyao.common.base.dto.input.BaseQueryPageInputDTO;
 import org.github.zuuuyao.repository.UserRepository;
+import org.github.zuuuyao.service.example.dto.ExampleValidateInputDTO;
 import org.github.zuuuyao.service.user.IUserService;
 import org.github.zuuuyao.service.user.dto.input.AddUserInputDTO;
 import org.springframework.http.MediaType;
@@ -54,4 +55,5 @@ public class UserController {
     public Boolean addUser(@RequestBody @Validated AddUserInputDTO inputDTO) {
         return userService.addUser(inputDTO);
     }
+
 }

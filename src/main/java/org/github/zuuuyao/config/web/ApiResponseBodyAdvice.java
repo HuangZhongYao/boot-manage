@@ -17,6 +17,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
 /**
  * Api返回值包装
+ *
  * @Desc Api返回值包装
  * @Time 2024-07-11 16:23
  * @Author HuangZhongYao
@@ -86,11 +87,9 @@ public class ApiResponseBodyAdvice implements ResponseBodyAdvice<Object> {
 
         // 为了不影响其它的Controller,只对我们配置的controller包进行包装
         for (String packageName : HANDLE_CONTROLLER_PACKAGE) {
-            boolean isWrapper = declaringClass.getName().startsWith(packageName);
-            if (isWrapper) {
+            if (declaringClass.getPackageName().equals(packageName)) {
                 return true;
             }
-
         }
 
         return false;
