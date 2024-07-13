@@ -40,9 +40,16 @@
         <knife4j.version>4.5.0</knife4j.version>
         <mybatis-plus.version>3.5.7</mybatis-plus.version>
         <modelmapper.version>3.2.0</modelmapper.version>
+        <hutool.version>5.8.16</hutool.version>
     </properties>
 
     <dependencies>
+
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>${hutool.version}</version>
+        </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.modelmapper/modelmapper -->
         <dependency>
