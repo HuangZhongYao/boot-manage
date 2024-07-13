@@ -45,6 +45,7 @@ public class ExampleController extends BaseController {
     @ApiIgnoreWrapper // 方法添加该注解该接口就会忽略包装，如果添加到controller上整个controller都不进行包装
     @PostMapping("/exampleNotWrapper")
     public String exampleNotWrapper() {
+        // 不通过自定义包装 可以使用 ApiResponse 类自己写传统方式不过完全没必要多此一举
         return "这是没有包装的返回值,就是一个字符串";
     }
 }

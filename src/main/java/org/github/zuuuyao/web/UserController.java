@@ -9,14 +9,18 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
+import org.github.zuuuyao.common.base.dto.input.BaseManyLongIdInputDTO;
 import org.github.zuuuyao.common.base.dto.input.BaseQueryPageInputDTO;
 import org.github.zuuuyao.repository.UserRepository;
-import org.github.zuuuyao.service.example.dto.ExampleValidateInputDTO;
 import org.github.zuuuyao.service.user.IUserService;
 import org.github.zuuuyao.service.user.dto.input.AddUserInputDTO;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * 用户控制器
@@ -54,6 +58,13 @@ public class UserController {
     @PostMapping(value = "/addUser", produces = MediaType.APPLICATION_JSON_VALUE)
     public Boolean addUser(@RequestBody @Validated AddUserInputDTO inputDTO) {
         return userService.addUser(inputDTO);
+    }
+
+    @Operation(summary = "删除用户")
+    @ApiResponse(responseCode = "200", description = "OK")
+    @PostMapping(value = "/delUser", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Boolean delUser(@RequestBody @Validated BaseManyLongIdInputDTO inputDTO) {
+        return userService.delUser(inputDTO);
     }
 
 }

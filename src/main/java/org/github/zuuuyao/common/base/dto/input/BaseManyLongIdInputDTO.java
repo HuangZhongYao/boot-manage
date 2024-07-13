@@ -5,6 +5,7 @@ import org.github.zuuuyao.common.base.dto.BaseDTO;
 
 import java.io.Serial;
 import java.util.ArrayList;
+import org.github.zuuuyao.common.validate.ValidateNotNullAndEmpty;
 
 /**
  * 多个Long类型 id集合 DTO基类
@@ -27,7 +28,8 @@ public class BaseManyLongIdInputDTO extends BaseDTO {
     /**
      * ids
      */
-    @Schema(name = "id集合字段",required = true,example = "[1092327965422,12398293009,1092323556]")
+    @ValidateNotNullAndEmpty(message = "id集合不能为空")
+    @Schema(name = "ids",required = true,example = "[1092327965422,12398293009,1092323556]")
     private ArrayList<Long> ids = new ArrayList<>();
 
     public ArrayList<Long> getIds() {

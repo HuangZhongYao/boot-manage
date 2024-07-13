@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import org.github.zuuuyao.common.base.dto.BaseDTO;
 
 import java.io.Serial;
+import org.github.zuuuyao.common.validate.ValidateNotNullAndEmpty;
 
 /**
  * String 类型 id DTO基类
@@ -26,7 +27,8 @@ public class BaseStringIdInputDTO extends BaseDTO {
     /**
      * id
      */
-    @Schema(name = "id字段",required = true,example = "1092327965422")
+    @ValidateNotNullAndEmpty(message = "id 不能为空")
+    @Schema(name = "id",required = true,example = "1092327965422")
     private String id;
 
     public String getId() {

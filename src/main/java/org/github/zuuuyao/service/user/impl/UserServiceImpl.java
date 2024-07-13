@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import jakarta.annotation.Resource;
+import org.github.zuuuyao.common.base.dto.input.BaseLongIdInputDTO;
+import org.github.zuuuyao.common.base.dto.input.BaseManyLongIdInputDTO;
 import org.github.zuuuyao.common.base.dto.input.BaseQueryPageInputDTO;
 import org.github.zuuuyao.common.exception.UserFriendlyException;
 import org.github.zuuuyao.common.util.ModelMapperUtil;
@@ -29,6 +31,12 @@ public class UserServiceImpl implements IUserService {
     public Page pageQueryList(BaseQueryPageInputDTO inputDTO) {
         return userRepository.selectPage(inputDTO.toMybatisPageObject(),
             new QueryWrapper<UserEntity>());
+    }
+
+    @Override
+    public Boolean delUser(BaseManyLongIdInputDTO inputDTO) {
+        userRepository.deleteByIds(inputDTO.getIds());
+        return true;
     }
 
     @Override

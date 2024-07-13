@@ -2,14 +2,12 @@ package org.github.zuuuyao.common.base.dto.input;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.io.Serial;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.github.zuuuyao.common.base.dto.BaseDTO;
 
-import java.io.Serial;
-
 /**
- *
  * @Desc 分页查询DTO基类
  * @Time 2024-07-11 14:49
  * @Author HuangZhongYao
@@ -31,16 +29,10 @@ public class BaseQueryPageInputDTO extends BaseDTO {
      */
     private static final long MIN_CURRENT = 1L;
 
-    @Schema(
-            description = "每页显示条数",
-            required = true, example = "10"
-    )
+    @Schema(name = "size", description = "每页显示条数", required = true, example = "10")
     private long size = MIN_SIZE;
 
-    @Schema(
-            description = "当前页码",
-            required = true, example = "1"
-    )
+    @Schema(name = "current", description = "当前页码", required = true, example = "1")
     private long current = MIN_CURRENT;
 
     public BaseQueryPageInputDTO() {

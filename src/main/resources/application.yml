@@ -45,7 +45,10 @@ mybatis-plus:
 
 # springdoc-openapi 配置
 springdoc:
+  info:
+    title: boot-manage
   swagger-ui:
+    version: 1.0.0
     path: /swagger-ui.html
     tags-sorter: alpha
     operations-sorter: alpha
@@ -54,14 +57,15 @@ springdoc:
   group-configs:
     - group: '全部接口'
       paths-to-match: '/**'
+      # controller所在包
       packages-to-scan: org.github.zuuuyao
 
 # knife4j的增强配置，不需要增强可以不配
 knife4j:
   enable: true
-  # 自定义文档
+  # 自定义文档 group要和group-configs:group 保持一致
   documents:
-    - group: 1.2.x
+    - group: 全部接口
       name: 其它文档
       locations: classpath:markdown/*
   basic:
@@ -72,22 +76,22 @@ knife4j:
     # 访问密码
     password: admin@123
   setting:
-    # 自定义主页
+    # 是否开启自定义主页
     enable-home-custom: false
-    # 自定义主页md文件位置
+    # 自定义主页md文件位置,将某个.md 设置为主页
     home-custom-path: classpath:markdown/home.md
     # 设置语言
     language: zh_cn
     # 开启自定义swagger-models
     enable-swagger-models: true
     # 自定义swagger-models名称
-    swagger-model-name: swagger-models
+    swagger-model-name: DTO模型(swagger-models)
     # 显示默认页脚
-    enable-footer: false
+    enable-footer: true
     # 开启自定义页脚
     enable-footer-custom: true
     # 自定义页脚内容
-    footer-custom-content: 自定义footer
+    footer-custom-content: Apache License 2.0 | Copyright  Github-zuuuYao
 
 #日志
 logging:

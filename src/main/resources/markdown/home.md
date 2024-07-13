@@ -1,2 +1,1 @@
-# 接口文档
-### a
+# OpenAPI definition
