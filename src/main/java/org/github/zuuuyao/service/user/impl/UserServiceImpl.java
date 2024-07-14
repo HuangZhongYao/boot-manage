@@ -43,7 +43,7 @@ public class UserServiceImpl implements IUserService {
         // 判断账号是否已存在
         if (userRepository.exists(
             Wrappers.<UserEntity>lambdaQuery().eq(UserEntity::getAccount, inputDTO.getAccount()))) {
-            throw new UserFriendlyException("账号是否已存在", 401);
+            throw new UserFriendlyException("账号已存在", 401);
         }
 
         // 将DTO转换为实体对象

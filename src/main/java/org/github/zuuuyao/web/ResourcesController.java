@@ -10,8 +10,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.github.zuuuyao.common.base.dto.input.BaseManyLongIdInputDTO;
 import org.github.zuuuyao.common.base.dto.input.BaseQueryPageInputDTO;
-import org.github.zuuuyao.service.user.IUserService;
-import org.github.zuuuyao.service.user.dto.input.AddUserInputDTO;
+import org.github.zuuuyao.service.resources.IResourcesService;
+import org.github.zuuuyao.service.resources.dto.input.AddResourcesInputDTO;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,21 +21,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * 用户控制器
+ * 资源接口控制器
  *
  * @Desc
  * @Time 2024-07-11 16:32
  * @Author HuangZhongYao
  */
-@Tag(name = "用户接口")
+@Tag(name = "资源接口", description = "菜单资源模块接口")
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/resources")
 @AllArgsConstructor
-public class UserController {
+public class ResourcesController {
 
-    IUserService userService;
+    IResourcesService resourcesService;
 
-    @Operation(summary = "分页查询", description = "分页查询用户接口")
+    @Operation(summary = "分页查询", description = "分页查询资源接口")
     @GetMapping(value = "/pageQueryList", produces = MediaType.APPLICATION_JSON_VALUE)
     @Parameters({
         @Parameter(name = "current", description = "页码"),
@@ -43,23 +43,23 @@ public class UserController {
     })
     @ApiOperationSupport(authors = "zuuuYao")
     public Page pageQueryList(BaseQueryPageInputDTO inputDTO) {
-        return userService.pageQueryList(inputDTO);
+        return resourcesService.pageQueryList(inputDTO);
     }
 
 
-    @Operation(summary = "添加用户", description = "添加用户接口")
+    @Operation(summary = "添加资源", description = "添加资源接口")
     @ApiResponse(responseCode = "200", description = "OK")
-    @ApiResponse(responseCode = "401", description = "账号已存在")
-    @PostMapping(value = "/addUser", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Boolean addUser(@RequestBody @Validated AddUserInputDTO inputDTO) {
-        return userService.addUser(inputDTO);
+    @ApiResponse(responseCode = "401", description = "资源编码已存在")
+    @PostMapping(value = "/addResources", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Boolean addResources(@RequestBody @Validated AddResourcesInputDTO inputDTO) {
+        return resourcesService.addResources(inputDTO);
     }
 
-    @Operation(summary = "删除用户")
+    @Operation(summary = "删除资源")
     @ApiResponse(responseCode = "200", description = "OK")
-    @PostMapping(value = "/delUser", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Boolean delUser(@RequestBody @Validated BaseManyLongIdInputDTO inputDTO) {
-        return userService.delUser(inputDTO);
+    @PostMapping(value = "/delResources", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Boolean delResources(@RequestBody @Validated BaseManyLongIdInputDTO inputDTO) {
+        return resourcesService.delResources(inputDTO);
     }
 
 }

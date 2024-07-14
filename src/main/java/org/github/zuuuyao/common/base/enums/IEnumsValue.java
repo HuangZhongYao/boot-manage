@@ -8,10 +8,10 @@ import com.baomidou.mybatisplus.annotation.IEnum;
  * @Time 2024-07-11 14:58
  * @Author HuangZhongYao
  */
-public interface IEnumValue extends IEnum<Integer> {
+public interface IEnumsValue extends IEnum<Integer> {
 
     /**
-     * 获取枚举value,value对应数据库存储字段
+     * 获取枚举value 需要确保该值在枚举中是唯一的,value对应数据库存储字段
      *
      * @return 枚举唯一value值
      */

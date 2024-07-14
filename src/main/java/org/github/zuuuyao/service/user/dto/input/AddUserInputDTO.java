@@ -3,6 +3,7 @@ package org.github.zuuuyao.service.user.dto.input;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 import org.github.zuuuyao.common.base.dto.BaseDTO;
+import org.github.zuuuyao.common.validate.ValidateNotNullAndEmpty;
 import org.github.zuuuyao.entity.enums.GenderEnum;
 
 import java.io.Serial;
@@ -29,6 +30,7 @@ public class AddUserInputDTO extends BaseDTO {
      * 用户名
      */
     @Schema(description = "用户名",example = "宇宙无敌的高手")
+    @ValidateNotNullAndEmpty(message = "用户名不能为空")
     private String username;
 
     /**

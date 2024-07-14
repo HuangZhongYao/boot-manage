@@ -1,7 +1,7 @@
 package org.github.zuuuyao.entity.enums;
 
 import lombok.Getter;
-import org.github.zuuuyao.common.base.enums.IEnumValue;
+import org.github.zuuuyao.common.base.enums.IEnumsValue;
 
 /**
  * @Desc 性别枚举
@@ -9,7 +9,7 @@ import org.github.zuuuyao.common.base.enums.IEnumValue;
  * @Author HuangZhongYao
  */
 @Getter
-public enum GenderEnum implements IEnumValue {
+public enum GenderEnum implements IEnumsValue {
     /**
      * 未知
      */
