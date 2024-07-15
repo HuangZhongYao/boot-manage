@@ -30,7 +30,7 @@ public class BaseManyStringIdInputDTO extends BaseDTO {
      * ids
      */
     @ValidateNotNullAndEmpty(message = "id集合不能为空")
-    @Schema(name = "ids",required = true,example = "['1092327965422','12398293009','1092323556']")
+    @Schema(name = "ids",requiredMode = Schema.RequiredMode.REQUIRED,example = "['1092327965422','12398293009','1092323556']")
     private ArrayList<String> ids = new ArrayList<>();
 
     public ArrayList<String> getIds() {

@@ -28,7 +28,7 @@ public class BaseStringIdInputDTO extends BaseDTO {
      * id
      */
     @ValidateNotNullAndEmpty(message = "id 不能为空")
-    @Schema(name = "id",required = true,example = "1092327965422")
+    @Schema(name = "id",requiredMode = Schema.RequiredMode.REQUIRED,example = "1092327965422")
     private String id;
 
     public String getId() {
