@@ -3,6 +3,7 @@ package org.github.zuuuyao.web;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import org.github.zuuuyao.common.base.web.BaseController;
 import org.github.zuuuyao.service.auth.IAuthService;
@@ -12,8 +13,6 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 /**
  * @Desc
@@ -41,5 +40,12 @@ public class AuthController extends BaseController {
     @ApiResponse(responseCode = "200", description = "ok")
     public List<ResourcesTreeVo> queryPermissionsTree() {
         return authService.queryPermissionsTree();
+    }
+
+    @Operation(summary = "获取验证码", description = "获取验证码返回SVG图片")
+    @ApiResponse(responseCode = "200", description = "ok")
+    @GetMapping(value = "/captcha", produces = MediaType.TEXT_HTML_VALUE)
+    public String captcha() {
+        return authService.captcha();
     }
 }

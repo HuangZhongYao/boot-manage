@@ -16,4 +16,5 @@ public interface IAuthService {
 
     List<ResourcesTreeVo> queryPermissionsTree();
 
+    String captcha();
 }

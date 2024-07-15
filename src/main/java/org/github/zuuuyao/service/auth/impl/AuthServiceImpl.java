@@ -51,4 +51,9 @@ public class AuthServiceImpl implements IAuthService {
         List<ITreeNode<Long>> tree = TreeUtil.listToTree(treeNodeList);
         return ModelMapperUtil.mapList(tree, ResourcesTreeVo.class);
     }
+
+    @Override
+    public String captcha() {
+        return null;
+    }
 }
