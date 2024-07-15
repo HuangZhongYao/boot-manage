@@ -1,7 +1,11 @@
 package org.github.zuuuyao.service.auth.impl;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import java.util.ArrayList;
 import lombok.AllArgsConstructor;
+import org.github.zuuuyao.common.util.ModelMapperUtil;
+import org.github.zuuuyao.common.util.tree.ITreeNode;
+import org.github.zuuuyao.common.util.tree.TreeUtil;
 import org.github.zuuuyao.entity.system.ResourcesEntity;
 import org.github.zuuuyao.repository.ResourcesRepository;
 import org.github.zuuuyao.repository.RoleRepository;
@@ -29,11 +33,22 @@ public class AuthServiceImpl implements IAuthService {
 
     @Override
     public List<ResourcesVo> queryPermissionsList() {
-        return resourcesRepository.selectList(Wrappers.<ResourcesEntity>lambdaQuery(), ResourcesVo.class);
+        return resourcesRepository.selectList(Wrappers.<ResourcesEntity>lambdaQuery(),
+            ResourcesVo.class);
     }
 
     @Override
     public List<ResourcesTreeVo> queryPermissionsTree() {
-        return List.of();
+        // 资源权限列表
+        List<ResourcesTreeVo> resourcesVos =
+            resourcesRepository.selectList(Wrappers.<ResourcesEntity>lambdaQuery(),
+                ResourcesTreeVo.class);
+
+        // 转换ITreeNode List
+        List<ITreeNode<Long>> treeNodeList = new ArrayList<>(resourcesVos.size());
+        treeNodeList.addAll(resourcesVos);
+
+        List<ITreeNode<Long>> tree = TreeUtil.listToTree(treeNodeList);
+        return ModelMapperUtil.mapList(tree, ResourcesTreeVo.class);
     }
 }
