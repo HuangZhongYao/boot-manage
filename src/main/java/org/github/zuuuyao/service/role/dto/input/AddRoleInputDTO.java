@@ -31,13 +31,13 @@ public class AddRoleInputDTO extends BaseDTO {
     private static final long serialVersionUID = 4216643512169478985L;
 
     @ValidateNotNullAndEmpty(message = "图标不能为空")
-    @Schema(description = "图标")
+    @Schema(description = "图标",requiredMode = Schema.RequiredMode.REQUIRED,example = "i-fe:user")
     private String icon;
 
-    @Schema(description = "角色名称")
+    @Schema(description = "角色名称",requiredMode = Schema.RequiredMode.REQUIRED,example = "超级管理员")
     @ValidateNotNullAndEmpty(message = "角色名称不能为空")
     private String name;
 
-    @Schema(description = "描述")
+    @Schema(description = "描述",example = "拥有系统全部权限")
     private String remark;
 }

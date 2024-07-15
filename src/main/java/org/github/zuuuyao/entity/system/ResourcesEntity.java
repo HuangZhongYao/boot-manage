@@ -65,7 +65,7 @@ public class ResourcesEntity extends AbstractBaseEntity {
     /**
      * 是否显示
      */
-    private Boolean show;
+    private Boolean isShow;
 
     /**
      * 是否启用
@@ -85,7 +85,7 @@ public class ResourcesEntity extends AbstractBaseEntity {
     /**
      * 排序
      */
-    private String order;
+    private String sort;
 
     /**
      * 上级资源id
