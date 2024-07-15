@@ -34,8 +34,8 @@ public class BootManageApplication implements ApplicationRunner {
                     Application '{}' is running! Access URLs:
                     Local: http://localhost:{}
                     External: http://{}:{}
-                    Doc: http://{}:{}/doc.html
-                    Doc: http://{}:{}/swagger-ui/index.html
+                    Doc Knife4j-ui: http://{}:{}/doc.html
+                    Doc Swagger-ui: http://{}:{}/swagger-ui/5.10.3/index.html
                 ----------------------------------------------------------
                 """, env.getProperty("spring.application.name"),
             env.getProperty("server.port"),
