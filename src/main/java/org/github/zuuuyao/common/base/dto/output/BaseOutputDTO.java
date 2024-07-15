@@ -23,7 +23,7 @@ public class BaseOutputDTO extends BaseDTO {
         this.id = id;
     }
 
-    @Schema(name = "id字段",required = true,example = "1092327965422")
+    @Schema(name = "id字段",requiredMode = Schema.RequiredMode.REQUIRED,example = "1092327965422")
     private String id;
 
     public String getId() {
