@@ -39,13 +39,13 @@ public class BaseOutputIdAndTimeAndOperationDTO extends BaseOutputIdAndTimeDTO {
     /**
      * 创建时间
      */
-    @Schema(name = "创建人", example = "144344665")
+    @Schema(description = "创建人",name = "createdBy", example = "144344665")
     private String createdBy;
 
     /**
      * 更新时间
      */
-    @Schema(name = "更新人", example = "153344665")
+    @Schema(description = "更新人",name = "updatedBy", example = "153344665")
     private String updatedBy;
 
     public String getCreatedBy() {

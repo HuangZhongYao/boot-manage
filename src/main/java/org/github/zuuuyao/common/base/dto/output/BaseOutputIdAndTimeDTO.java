@@ -33,13 +33,13 @@ public class BaseOutputIdAndTimeDTO extends BaseOutputDTO {
     /**
      * 创建时间
      */
-    @Schema(name = "创建时间", example = "2024-07-12 10:11:55")
+    @Schema(description = "创建时间",name = "createdTime", example = "2024-07-12 10:11:55")
     private LocalDateTime createdTime;
 
     /**
      * 更新时间
      */
-    @Schema(name = "更新时间", example = "2024-07-12 10:11:55")
+    @Schema(description = "更新时间", name = "updatedTime", example = "2024-07-12 10:11:55")
     private LocalDateTime updatedTime;
 
     public LocalDateTime getCreatedTime() {
