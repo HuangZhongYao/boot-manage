@@ -24,7 +24,7 @@ public class BaseOutputIdAndTimeDTO extends BaseOutputDTO {
         this.updatedTime = updatedTime;
     }
 
-    public BaseOutputIdAndTimeDTO(String id, LocalDateTime createdTime, LocalDateTime updatedTime) {
+    public BaseOutputIdAndTimeDTO(Long id, LocalDateTime createdTime, LocalDateTime updatedTime) {
         super(id);
         this.createdTime = createdTime;
         this.updatedTime = updatedTime;

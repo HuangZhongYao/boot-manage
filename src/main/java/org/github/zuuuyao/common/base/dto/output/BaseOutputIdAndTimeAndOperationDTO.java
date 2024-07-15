@@ -30,7 +30,7 @@ public class BaseOutputIdAndTimeAndOperationDTO extends BaseOutputIdAndTimeDTO {
         this.updatedBy = updatedBy;
     }
 
-    public BaseOutputIdAndTimeAndOperationDTO(String id, LocalDateTime createdTime, LocalDateTime updatedTime, String createdBy, String updatedBy) {
+    public BaseOutputIdAndTimeAndOperationDTO(Long id, LocalDateTime createdTime, LocalDateTime updatedTime, String createdBy, String updatedBy) {
         super(id, createdTime, updatedTime);
         this.createdBy = createdBy;
         this.updatedBy = updatedBy;
