@@ -4,12 +4,12 @@ import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
+import org.apache.ibatis.session.SqlSession;
+import org.github.zuuuyao.common.util.ModelMapperUtil;
+
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
-import org.apache.ibatis.session.SqlSession;
-import org.github.zuuuyao.common.util.ModelMapperUtil;
 
 /**
  * BaseMapper扩展
@@ -19,6 +19,48 @@ import org.github.zuuuyao.common.util.ModelMapperUtil;
  * @Author HuangZhongYao
  */
 public interface BaseMapperExtension<TEntity> extends BaseMapper<TEntity> {
+
+    /**
+     * 查询并转换类型
+     *
+     * @param queryWrapper 查询条件
+     * @param uClass       转换目标类型
+     * @param <U>          目标类型
+     * @return 转换后类型结果
+     */
+    default <U> List<U> selectList(Wrapper<TEntity> queryWrapper, Class<U> uClass) {
+        List<TEntity> records = this.selectList(queryWrapper);
+        return ModelMapperUtil.mapList(records, uClass);
+    }
+
+    /**
+     * 查询并转换类型并且对转换结果处理
+     *
+     * @param queryWrapper 查询条件
+     * @param uClass       转换目标类型
+     * @param consumer     对转换结果处理函数
+     * @param <U>          目标类型
+     * @return 转换后类型结果
+     */
+    default <U> List<U> selectList(Wrapper<TEntity> queryWrapper, Class<U> uClass, Consumer<U> consumer) {
+        List<TEntity> records = this.selectList(queryWrapper);
+        return ModelMapperUtil.mapList(records, uClass, consumer);
+    }
+
+    /**
+     * 查询并转换类型并且对转换结果处理
+     *
+     * @param queryWrapper 查询条件
+     * @param uClass       转换目标类型
+     * @param biConsumer   对转换结果处理函数
+     * @param <U>          目标类型
+     * @return 转换后类型结果
+     */
+    default <U> List<U> selectList(Wrapper<TEntity> queryWrapper, Class<U> uClass, BiConsumer<TEntity, U> biConsumer) {
+        List<TEntity> records = this.selectList(queryWrapper);
+        return ModelMapperUtil.mapList(records, uClass, biConsumer);
+    }
+
 
     /**
      * 分页查询并转换查询结果
@@ -162,6 +204,7 @@ public interface BaseMapperExtension<TEntity> extends BaseMapper<TEntity> {
      * @return SqlSession
      */
     default SqlSession sqlSessionBatch(Class<TEntity> zClass) {
-        return SqlHelper.sqlSessionBatch(zClass);
+        return null;
     }
+
 }

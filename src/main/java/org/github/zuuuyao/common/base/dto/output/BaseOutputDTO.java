@@ -19,18 +19,18 @@ public class BaseOutputDTO extends BaseDTO {
     public BaseOutputDTO() {
     }
 
-    public BaseOutputDTO(String id) {
+    public BaseOutputDTO(Long id) {
         this.id = id;
     }
 
     @Schema(name = "id",description = "id字段",requiredMode = Schema.RequiredMode.REQUIRED,example = "1092327965422")
-    private String id;
+    private Long id;
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 }

@@ -1,6 +1,8 @@
 package org.github.zuuuyao.service.auth.impl;
 
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.AllArgsConstructor;
+import org.github.zuuuyao.entity.system.ResourcesEntity;
 import org.github.zuuuyao.repository.ResourcesRepository;
 import org.github.zuuuyao.repository.RoleRepository;
 import org.github.zuuuyao.repository.UserRepository;
@@ -27,7 +29,7 @@ public class AuthServiceImpl implements IAuthService {
 
     @Override
     public List<ResourcesVo> queryPermissionsList() {
-        return List.of();
+        return resourcesRepository.selectList(Wrappers.<ResourcesEntity>lambdaQuery(), ResourcesVo.class);
     }
 
     @Override

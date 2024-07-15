@@ -90,5 +90,5 @@ public class ResourcesEntity extends AbstractBaseEntity {
     /**
      * 上级资源id
      */
-    private String parentId;
+    private Long parentId;
 }
