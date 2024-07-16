@@ -27,24 +27,24 @@ public class BaseQueryPageInputDTO extends BaseDTO {
     /**
      * 最小查询页数
      */
-    private static final long MIN_CURRENT = 1L;
+    private static final long MIN_PAGE_NO = 1L;
 
-    @Schema(name = "size", description = "每页显示条数", requiredMode = Schema.RequiredMode.REQUIRED, example = "10")
-    private long size = MIN_SIZE;
+    @Schema(name = "pageSize", description = "每页显示条数", requiredMode = Schema.RequiredMode.REQUIRED, example = "10")
+    private long pageSize = MIN_SIZE;
 
-    @Schema(name = "current", description = "当前页码", requiredMode = Schema.RequiredMode.REQUIRED, example = "1")
-    private long current = MIN_CURRENT;
+    @Schema(name = "pageNo", description = "当前页码", requiredMode = Schema.RequiredMode.REQUIRED, example = "1")
+    private long pageNo = MIN_PAGE_NO;
 
     public BaseQueryPageInputDTO() {
     }
 
-    public BaseQueryPageInputDTO(long current, long size) {
-        if (current > MIN_CURRENT) {
-            this.current = current;
+    public BaseQueryPageInputDTO(long current, long pageSize) {
+        if (current > MIN_PAGE_NO) {
+            this.pageNo = current;
         }
 
-        if (size > MIN_SIZE) {
-            this.size = size;
+        if (pageSize > MIN_SIZE) {
+            this.pageSize = pageSize;
         }
 
     }
@@ -55,7 +55,7 @@ public class BaseQueryPageInputDTO extends BaseDTO {
      * @return Page mybatis分页查询对象
      */
     public Page toMybatisPageObject() {
-        return new Page(this.current, this.size);
+        return new Page(this.pageNo, this.pageSize);
     }
 
 }

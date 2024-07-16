@@ -39,8 +39,8 @@ public class RoleController extends BaseController {
     @Operation(summary = "分页查询", description = "分页查询角色接口")
     @GetMapping(value = "/pageQueryList", produces = MediaType.APPLICATION_JSON_VALUE)
     @Parameters({
-        @Parameter(name = "current", description = "页码"),
-        @Parameter(name = "size", description = "每页显示条数"),
+        @Parameter(name = "pageNo", description = "页码"),
+        @Parameter(name = "pageSize", description = "每页显示条数"),
     })
     @ApiOperationSupport(authors = "zuuuYao")
     public Page pageQueryList(BaseQueryPageInputDTO inputDTO) {
