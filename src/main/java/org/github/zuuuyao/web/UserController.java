@@ -10,12 +10,20 @@ import org.github.zuuuyao.common.base.dto.input.BaseManyLongIdInputDTO;
 import org.github.zuuuyao.common.validate.group.Group;
 import org.github.zuuuyao.service.user.IUserService;
 import org.github.zuuuyao.service.user.dto.input.AddUserInputDTO;
+import org.github.zuuuyao.service.user.dto.input.EditUserInputDTO;
 import org.github.zuuuyao.service.user.dto.input.ResetPasswordInputDTO;
+import org.github.zuuuyao.service.user.dto.input.SetRoleInputDTO;
 import org.github.zuuuyao.service.user.dto.input.UserQueryPageInputDTO;
 import org.github.zuuuyao.service.user.dto.output.UserVo;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * 用户控制器
@@ -39,7 +47,6 @@ public class UserController {
         return userService.pageQueryList(inputDTO);
     }
 
-
     @Operation(summary = "添加用户", description = "添加用户接口")
     @ApiResponse(responseCode = "200", description = "OK")
     @ApiResponse(responseCode = "411", description = "账号已存在")
@@ -53,6 +60,20 @@ public class UserController {
     @DeleteMapping(value = "/delUser", produces = MediaType.APPLICATION_JSON_VALUE)
     public Boolean delUser(@RequestBody @Validated BaseManyLongIdInputDTO inputDTO) {
         return userService.delUser(inputDTO);
+    }
+
+    @Operation(summary = "编辑用户", description = "编辑用户接口")
+    @ApiResponse(responseCode = "200", description = "OK")
+    @PatchMapping(value = "/editUser", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Boolean addUser(@RequestBody @Validated EditUserInputDTO inputDTO) {
+        return userService.editUser(inputDTO);
+    }
+
+    @Operation(summary = "分配角色", description = "给用户分配角色")
+    @ApiResponse(responseCode = "200", description = "OK")
+    @PatchMapping(value = "/setRole", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Boolean addUser(@RequestBody @Validated SetRoleInputDTO inputDTO) {
+        return userService.setRole(inputDTO);
     }
 
     @Operation(summary = "重置密码")

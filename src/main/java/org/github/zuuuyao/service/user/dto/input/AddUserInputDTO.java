@@ -53,25 +53,10 @@ public class AddUserInputDTO extends BaseDTO {
     private String password;
 
     /**
-     * 性别
+     * 备注
      */
-    @Schema(description = "性别", example = "MALE")
-    @ValidateNotNullAndEmpty(message = "性别不能为空")
-    private GenderEnum gender;
-
-    /**
-     * 手机号
-     */
-    @Schema(description = "手机号", example = "17785306043")
-    @ValidateNotNullAndEmpty(message = "手机号不能为空")
-    @ValidatePhone
-    private String phone;
-
-    /**
-     * 头像url
-     */
-    @Schema(description = "头像url", example = "https://avatars.githubusercontent.com/u/46741470?v=4&size=256")
-    private String avatarUrl;
+    @Schema(description = "备注")
+    private String remark;
 
     /**
      * 角色id
