@@ -3,7 +3,11 @@ package org.github.zuuuyao.service.role;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.github.zuuuyao.common.base.dto.input.BaseManyLongIdInputDTO;
 import org.github.zuuuyao.common.base.dto.input.BaseQueryPageInputDTO;
+import org.github.zuuuyao.entity.system.RoleEntity;
 import org.github.zuuuyao.service.role.dto.input.AddRoleInputDTO;
+import org.github.zuuuyao.service.role.dto.output.RoleVo;
+
+import java.util.List;
 
 /**
  * @Desc 角色管理 Service
@@ -15,5 +19,7 @@ public interface IRoleService {
 
     Boolean delRole(BaseManyLongIdInputDTO inputDTO);
 
-    Page pageQueryList(BaseQueryPageInputDTO inputDTO);
+    Page<RoleEntity> pageQueryList(BaseQueryPageInputDTO inputDTO);
+
+    List<RoleVo> queryList(Boolean enable);
 }
