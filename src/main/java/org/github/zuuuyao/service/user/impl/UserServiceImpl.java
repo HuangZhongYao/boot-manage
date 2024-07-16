@@ -1,5 +1,6 @@
 package org.github.zuuuyao.service.user.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -12,6 +13,7 @@ import org.github.zuuuyao.entity.system.UserEntity;
 import org.github.zuuuyao.repository.UserRepository;
 import org.github.zuuuyao.service.user.IUserService;
 import org.github.zuuuyao.service.user.dto.input.AddUserInputDTO;
+import org.github.zuuuyao.service.user.dto.input.ResetPasswordInputDTO;
 import org.springframework.stereotype.Service;
 
 /**
@@ -28,7 +30,7 @@ public class UserServiceImpl implements IUserService {
     @Override
     public Page pageQueryList(BaseQueryPageInputDTO inputDTO) {
         return userRepository.selectPage(inputDTO.toMybatisPageObject(),
-            new QueryWrapper<UserEntity>());
+                new QueryWrapper<UserEntity>());
     }
 
     @Override
@@ -42,7 +44,7 @@ public class UserServiceImpl implements IUserService {
 
         // 判断账号是否已存在
         if (userRepository.exists(
-            Wrappers.<UserEntity>lambdaQuery().eq(UserEntity::getAccount, inputDTO.getAccount()))) {
+                Wrappers.<UserEntity>lambdaQuery().eq(UserEntity::getAccount, inputDTO.getAccount()))) {
             throw new UserFriendlyException("账号已存在", 401);
         }
 
@@ -51,6 +53,29 @@ public class UserServiceImpl implements IUserService {
 
         // 插入数据库
         userRepository.insert(userEntity);
+        return true;
+    }
+
+    @Override
+    public Boolean resetPassword(ResetPasswordInputDTO inputDTO) {
+
+        // 修改条件
+        LambdaQueryWrapper<UserEntity> wrapper = Wrappers
+                .<UserEntity>lambdaQuery()
+                .eq(UserEntity::getId, inputDTO.getId())
+                .last(" limit 1 ");
+
+        UserEntity userEntity = UserEntity
+                .builder()
+                .password(inputDTO.getPassword())
+                .build();
+
+        // 执行更新
+        int result = this.userRepository.update(userEntity, wrapper);
+
+        if (result == 0) {
+            throw new UserFriendlyException("修改密码失败");
+        }
         return true;
     }
 }

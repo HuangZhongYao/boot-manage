@@ -13,13 +13,10 @@ import org.github.zuuuyao.common.base.dto.input.BaseQueryPageInputDTO;
 import org.github.zuuuyao.common.validate.group.Group;
 import org.github.zuuuyao.service.user.IUserService;
 import org.github.zuuuyao.service.user.dto.input.AddUserInputDTO;
+import org.github.zuuuyao.service.user.dto.input.ResetPasswordInputDTO;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * 用户控制器
@@ -39,8 +36,8 @@ public class UserController {
     @Operation(summary = "分页查询", description = "分页查询用户接口")
     @GetMapping(value = "/pageQueryList", produces = MediaType.APPLICATION_JSON_VALUE)
     @Parameters({
-        @Parameter(name = "pageNo", description = "页码"),
-        @Parameter(name = "pageSize", description = "每页显示条数"),
+            @Parameter(name = "pageNo", description = "页码"),
+            @Parameter(name = "pageSize", description = "每页显示条数"),
     })
     @ApiOperationSupport(authors = "zuuuYao")
     public Page pageQueryList(BaseQueryPageInputDTO inputDTO) {
@@ -58,9 +55,16 @@ public class UserController {
 
     @Operation(summary = "删除用户")
     @ApiResponse(responseCode = "200", description = "OK")
-    @PostMapping(value = "/delUser", produces = MediaType.APPLICATION_JSON_VALUE)
+    @DeleteMapping(value = "/delUser", produces = MediaType.APPLICATION_JSON_VALUE)
     public Boolean delUser(@RequestBody @Validated BaseManyLongIdInputDTO inputDTO) {
         return userService.delUser(inputDTO);
+    }
+
+    @Operation(summary = "重置密码")
+    @ApiResponse(responseCode = "200", description = "OK")
+    @PatchMapping(value = "/resetPassword", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Boolean resetPassword(@RequestBody @Validated ResetPasswordInputDTO inputDTO) {
+        return userService.resetPassword(inputDTO);
     }
 
 }
