@@ -71,4 +71,9 @@ public class UserEntity extends AbstractBaseEntity {
      */
     private LocalDateTime lastLoginTime;
 
+    /**
+     * 启用状态
+     */
+    private Boolean enable;
+
 }

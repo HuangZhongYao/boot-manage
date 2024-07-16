@@ -2,9 +2,10 @@ package org.github.zuuuyao.service.user;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.github.zuuuyao.common.base.dto.input.BaseManyLongIdInputDTO;
-import org.github.zuuuyao.common.base.dto.input.BaseQueryPageInputDTO;
 import org.github.zuuuyao.service.user.dto.input.AddUserInputDTO;
 import org.github.zuuuyao.service.user.dto.input.ResetPasswordInputDTO;
+import org.github.zuuuyao.service.user.dto.input.UserQueryPageInputDTO;
+import org.github.zuuuyao.service.user.dto.output.UserVo;
 
 /**
  * @Desc 用户管理Service
@@ -15,7 +16,7 @@ public interface IUserService {
 
     Boolean addUser(AddUserInputDTO inputDTO);
 
-    Page pageQueryList(BaseQueryPageInputDTO inputDTO);
+    Page<UserVo> pageQueryList(UserQueryPageInputDTO inputDTO);
 
     Boolean delUser(BaseManyLongIdInputDTO inputDTO);
 

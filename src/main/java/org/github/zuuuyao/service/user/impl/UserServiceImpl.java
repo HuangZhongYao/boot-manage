@@ -1,12 +1,11 @@
 package org.github.zuuuyao.service.user.impl;
 
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import jakarta.annotation.Resource;
 import org.github.zuuuyao.common.base.dto.input.BaseManyLongIdInputDTO;
-import org.github.zuuuyao.common.base.dto.input.BaseQueryPageInputDTO;
 import org.github.zuuuyao.common.exception.UserFriendlyException;
 import org.github.zuuuyao.common.util.ModelMapperUtil;
 import org.github.zuuuyao.entity.system.UserEntity;
@@ -14,6 +13,8 @@ import org.github.zuuuyao.repository.UserRepository;
 import org.github.zuuuyao.service.user.IUserService;
 import org.github.zuuuyao.service.user.dto.input.AddUserInputDTO;
 import org.github.zuuuyao.service.user.dto.input.ResetPasswordInputDTO;
+import org.github.zuuuyao.service.user.dto.input.UserQueryPageInputDTO;
+import org.github.zuuuyao.service.user.dto.output.UserVo;
 import org.springframework.stereotype.Service;
 
 /**
@@ -28,9 +29,16 @@ public class UserServiceImpl implements IUserService {
     UserRepository userRepository;
 
     @Override
-    public Page pageQueryList(BaseQueryPageInputDTO inputDTO) {
-        return userRepository.selectPage(inputDTO.toMybatisPageObject(),
-                new QueryWrapper<UserEntity>());
+    public Page<UserVo> pageQueryList(UserQueryPageInputDTO inputDTO) {
+
+        // 构建查询条件
+        LambdaQueryWrapper<UserEntity> queryWrapper = Wrappers.<UserEntity>lambdaQuery()
+                .like(StrUtil.isNotBlank(inputDTO.getUsername()), UserEntity::getAccount, inputDTO.getAccount())
+                .like(StrUtil.isNotBlank(inputDTO.getAccount()), UserEntity::getUsername, inputDTO.getUsername())
+                .eq(null != inputDTO.getGender(), UserEntity::getGender, inputDTO.getGender())
+                .eq(null != inputDTO.getEnable(), UserEntity::getEnable, inputDTO.getEnable());
+
+        return userRepository.selectPage(inputDTO.toMybatisPageObject(), queryWrapper, UserVo.class);
     }
 
     @Override
@@ -45,7 +53,7 @@ public class UserServiceImpl implements IUserService {
         // 判断账号是否已存在
         if (userRepository.exists(
                 Wrappers.<UserEntity>lambdaQuery().eq(UserEntity::getAccount, inputDTO.getAccount()))) {
-            throw new UserFriendlyException("账号已存在", 401);
+            throw new UserFriendlyException("账号已存在", 411);
         }
 
         // 将DTO转换为实体对象

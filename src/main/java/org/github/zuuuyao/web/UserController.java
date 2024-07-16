@@ -3,17 +3,16 @@ package org.github.zuuuyao.web;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.github.zuuuyao.common.base.dto.input.BaseManyLongIdInputDTO;
-import org.github.zuuuyao.common.base.dto.input.BaseQueryPageInputDTO;
 import org.github.zuuuyao.common.validate.group.Group;
 import org.github.zuuuyao.service.user.IUserService;
 import org.github.zuuuyao.service.user.dto.input.AddUserInputDTO;
 import org.github.zuuuyao.service.user.dto.input.ResetPasswordInputDTO;
+import org.github.zuuuyao.service.user.dto.input.UserQueryPageInputDTO;
+import org.github.zuuuyao.service.user.dto.output.UserVo;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -35,19 +34,15 @@ public class UserController {
 
     @Operation(summary = "分页查询", description = "分页查询用户接口")
     @GetMapping(value = "/pageQueryList", produces = MediaType.APPLICATION_JSON_VALUE)
-    @Parameters({
-            @Parameter(name = "pageNo", description = "页码"),
-            @Parameter(name = "pageSize", description = "每页显示条数"),
-    })
     @ApiOperationSupport(authors = "zuuuYao")
-    public Page pageQueryList(BaseQueryPageInputDTO inputDTO) {
+    public Page<UserVo> pageQueryList(UserQueryPageInputDTO inputDTO) {
         return userService.pageQueryList(inputDTO);
     }
 
 
     @Operation(summary = "添加用户", description = "添加用户接口")
     @ApiResponse(responseCode = "200", description = "OK")
-    @ApiResponse(responseCode = "401", description = "账号已存在")
+    @ApiResponse(responseCode = "411", description = "账号已存在")
     @PostMapping(value = "/addUser", produces = MediaType.APPLICATION_JSON_VALUE)
     public Boolean addUser(@RequestBody @Validated(Group.Insert.class) AddUserInputDTO inputDTO) {
         return userService.addUser(inputDTO);
