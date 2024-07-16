@@ -117,7 +117,7 @@ public class ApiResponseBodyAdvice implements ResponseBodyAdvice<Object> {
         apiResponse.setCode(200);
         apiResponse.setPath(request.getURI().getPath());
         apiResponse.setSuccess(Boolean.TRUE);
-        apiResponse.setMsg("操作成功");
+        apiResponse.setMessage("操作成功");
         apiResponse.setResult(body);
 
         // 如果返回值是字符串

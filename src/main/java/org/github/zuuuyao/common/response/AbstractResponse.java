@@ -19,7 +19,7 @@ public abstract class AbstractResponse implements Serializable {
     public static final Integer OK = 200;
     public static final Integer FAILED = 500;
 
-    public static final Integer VALIDATION_FAILED = 401;
+    public static final Integer VALIDATION_FAILED = 410;
 
     /**
      * 响应码
@@ -31,7 +31,7 @@ public abstract class AbstractResponse implements Serializable {
      * 响应信息
      */
     @Schema(description = "响应信息",example = "ok")
-    String msg;
+    String message;
 
     /**
      * 请求接口
@@ -50,7 +50,7 @@ public abstract class AbstractResponse implements Serializable {
 
     public AbstractResponse(Integer code, String msg, String path, Boolean success) {
         this.code = code;
-        this.msg = msg;
+        this.message = msg;
         this.path = path;
         this.success = success;
     }
@@ -63,12 +63,12 @@ public abstract class AbstractResponse implements Serializable {
         this.code = code;
     }
 
-    public String getMsg() {
-        return msg;
+    public String getMessage() {
+        return message;
     }
 
-    public void setMsg(String msg) {
-        this.msg = msg;
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     public String getPath() {

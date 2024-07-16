@@ -52,7 +52,7 @@ public class GlobalErrorController {
         // 构建返回信息
         ErrorResponse errorResponse = this.buildErrorResponse(exception, request);
         errorResponse.setCode(exception.getCode());
-        errorResponse.setMsg(exception.getMessage());
+        errorResponse.setMessage(exception.getMessage());
 
         StackTraceElement[] stackTrace = exception.getStackTrace();
         StackTraceElement stackTraceElement = stackTrace[0];
@@ -87,7 +87,7 @@ public class GlobalErrorController {
             .map(DefaultMessageSourceResolvable::getDefaultMessage)
             .collect(Collectors.joining(";"));
 
-        errorResponse.setMsg(errorMsg);
+        errorResponse.setMessage(errorMsg);
         errorResponse.setCode(ErrorResponse.VALIDATION_FAILED);
 
         return errorResponse;
@@ -112,7 +112,7 @@ public class GlobalErrorController {
             exception.getMethod(),
             Arrays.toString(exception.getSupportedMethods()));
 
-        errorResponse.setMsg(msg);
+        errorResponse.setMessage(msg);
         errorResponse.setCode(ErrorResponse.FAILED);
 
         // 打印日志
@@ -124,7 +124,7 @@ public class GlobalErrorController {
 
     private ErrorResponse buildErrorResponse(Exception e, HttpServletRequest request) {
         ErrorResponse errorResponse = new ErrorResponse();
-        errorResponse.setMsg(e.getMessage());
+        errorResponse.setMessage(e.getMessage());
         errorResponse.setPath(request.getRequestURI());
         return errorResponse;
     }

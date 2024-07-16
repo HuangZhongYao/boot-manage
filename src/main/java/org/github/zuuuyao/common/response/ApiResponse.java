@@ -101,7 +101,7 @@ public class ApiResponse<Result> extends AbstractResponse {
         return "{" +
             " 'result' :" + result +
             ", 'code' :" + code +
-            ", 'msg' : '" + msg + '\'' +
+            ", 'message' : '" + message + '\'' +
             ", 'path' : '" + path + '\'' +
             ", 'success' : " + success +
             "}";

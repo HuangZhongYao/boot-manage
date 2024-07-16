@@ -20,13 +20,13 @@ public class ErrorResponse extends AbstractResponse {
     }
 
     @Override
-    public void setMsg(String msg) {
-        super.setMsg(msg);
+    public void setMessage(String message) {
+        super.setMessage(message);
     }
 
     @Override
-    public String getMsg() {
-        return super.getMsg() != null ? super.getMsg() : "操作失败";
+    public String getMessage() {
+        return super.getMessage() != null ? super.getMessage() : "操作失败";
     }
 
     @Override
@@ -42,7 +42,7 @@ public class ErrorResponse extends AbstractResponse {
     public String toString() {
         return "{" +
             "  'code' :" + code +
-            ", 'msg' : '" + msg + '\'' +
+            ", 'message' : '" + message + '\'' +
             ", 'path' : '" + path + '\'' +
             ", 'success' : " + success +
             "}";
