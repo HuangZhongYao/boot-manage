@@ -14,6 +14,8 @@ import org.github.zuuuyao.common.base.web.BaseController;
 import org.github.zuuuyao.entity.system.RoleEntity;
 import org.github.zuuuyao.service.role.IRoleService;
 import org.github.zuuuyao.service.role.dto.input.AddRoleInputDTO;
+import org.github.zuuuyao.service.role.dto.input.EditRoleInputDTO;
+import org.github.zuuuyao.service.role.dto.input.RolePageQueryInputDTO;
 import org.github.zuuuyao.service.role.dto.output.RoleVo;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
@@ -37,12 +39,8 @@ public class RoleController extends BaseController {
 
     @Operation(summary = "分页查询", description = "分页查询角色接口")
     @GetMapping(value = "/pageQueryList", produces = MediaType.APPLICATION_JSON_VALUE)
-    @Parameters({
-            @Parameter(name = "pageNo", description = "页码"),
-            @Parameter(name = "pageSize", description = "每页显示条数"),
-    })
     @ApiOperationSupport(authors = "zuuuYao")
-    public Page<RoleEntity> pageQueryList(BaseQueryPageInputDTO inputDTO) {
+    public Page<RoleVo> pageQueryList(RolePageQueryInputDTO inputDTO) {
         return roleService.pageQueryList(inputDTO);
     }
 
@@ -58,15 +56,21 @@ public class RoleController extends BaseController {
 
     @Operation(summary = "添加角色")
     @ApiResponse(responseCode = "200", description = "ok")
-    @ApiResponse(responseCode = "401", description = "该角色已存在")
     @PostMapping("/addRole")
-    public boolean addRole(@RequestBody @Validated AddRoleInputDTO inputDTO) {
+    public Boolean addRole(@RequestBody @Validated AddRoleInputDTO inputDTO) {
         return roleService.addRole(inputDTO);
+    }
+
+    @Operation(summary = "编辑角色")
+    @ApiResponse(responseCode = "200", description = "ok")
+    @PatchMapping("/editRole")
+    public Boolean editRole(@RequestBody @Validated EditRoleInputDTO inputDTO) {
+        return roleService.editRole(inputDTO);
     }
 
     @Operation(summary = "删除角色")
     @ApiResponse(responseCode = "200", description = "OK")
-    @PostMapping(value = "/delRole", produces = MediaType.APPLICATION_JSON_VALUE)
+    @DeleteMapping(value = "/delRole", produces = MediaType.APPLICATION_JSON_VALUE)
     public Boolean delRole(@RequestBody @Validated BaseManyLongIdInputDTO inputDTO) {
         return roleService.delRole(inputDTO);
     }

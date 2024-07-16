@@ -1,20 +1,21 @@
 package org.github.zuuuyao.service.role.impl;
 
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import org.github.zuuuyao.common.base.dto.input.BaseManyLongIdInputDTO;
-import org.github.zuuuyao.common.base.dto.input.BaseQueryPageInputDTO;
 import org.github.zuuuyao.common.exception.UserFriendlyException;
 import org.github.zuuuyao.common.util.ModelMapperUtil;
 import org.github.zuuuyao.entity.system.RoleEntity;
 import org.github.zuuuyao.repository.RoleRepository;
 import org.github.zuuuyao.service.role.IRoleService;
 import org.github.zuuuyao.service.role.dto.input.AddRoleInputDTO;
+import org.github.zuuuyao.service.role.dto.input.EditRoleInputDTO;
+import org.github.zuuuyao.service.role.dto.input.RolePageQueryInputDTO;
 import org.github.zuuuyao.service.role.dto.output.RoleVo;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 /**
  * @Desc: Created by IntelliJ IDEA.
@@ -35,21 +36,50 @@ public class RoleServiceImpl implements IRoleService {
     }
 
     @Override
-    public Page<RoleEntity> pageQueryList(BaseQueryPageInputDTO inputDTO) {
-        return roleRepository.selectPage(inputDTO.toMybatisPageObject(), Wrappers.<RoleEntity>lambdaQuery());
+    public Page<RoleVo> pageQueryList(RolePageQueryInputDTO inputDTO) {
+        return roleRepository.selectPage(inputDTO.toMybatisPageObject(),
+            Wrappers.<RoleEntity>lambdaQuery()
+                .like(StrUtil.isNotBlank(inputDTO.getName()), RoleEntity::getName,
+                    inputDTO.getName())
+                .eq(null != inputDTO.getEnable(), RoleEntity::getEnable, inputDTO.getEnable()),
+            RoleVo.class);
     }
 
     @Override
     public List<RoleVo> queryList(Boolean enable) {
-        return roleRepository.selectList(Wrappers.<RoleEntity>lambdaQuery().eq(RoleEntity::getEnable, enable), RoleVo.class);
+        return roleRepository.selectList(
+            Wrappers.<RoleEntity>lambdaQuery().eq(RoleEntity::getEnable, enable), RoleVo.class);
     }
 
     @Override
-    public boolean addRole(AddRoleInputDTO inputDTO) {
+    public Boolean editRole(EditRoleInputDTO inputDTO) {
+        // 判断该角色id是否有效
+        if (!roleRepository.exists(
+            Wrappers.<RoleEntity>lambdaQuery().eq(RoleEntity::getId, inputDTO.getId()))) {
+            throw new UserFriendlyException("该角色不存在");
+        }
+
+        // 更新的数据
+        RoleEntity updateEntity = ModelMapperUtil.map(inputDTO, RoleEntity.class);
+
+        // 执行更新
+        roleRepository.updateById(updateEntity);
+
+        return true;
+    }
+
+    @Override
+    public Boolean addRole(AddRoleInputDTO inputDTO) {
         // 判断角色名是否重复
         if (roleRepository.exists(
-                Wrappers.<RoleEntity>lambdaQuery().eq(RoleEntity::getName, inputDTO.getName()))) {
-            throw new UserFriendlyException("该角色已存在", 401);
+            Wrappers.<RoleEntity>lambdaQuery().eq(RoleEntity::getName, inputDTO.getName()))) {
+            throw new UserFriendlyException("该角色已存在");
+        }
+
+        // 判断角色编码是否重复
+        if (roleRepository.exists(
+            Wrappers.<RoleEntity>lambdaQuery().eq(RoleEntity::getCode, inputDTO.getCode()))) {
+            throw new UserFriendlyException("该角色编码已存在");
         }
 
         // 将DTO转换为实体对象

@@ -5,6 +5,8 @@ import org.github.zuuuyao.common.base.dto.input.BaseManyLongIdInputDTO;
 import org.github.zuuuyao.common.base.dto.input.BaseQueryPageInputDTO;
 import org.github.zuuuyao.entity.system.RoleEntity;
 import org.github.zuuuyao.service.role.dto.input.AddRoleInputDTO;
+import org.github.zuuuyao.service.role.dto.input.EditRoleInputDTO;
+import org.github.zuuuyao.service.role.dto.input.RolePageQueryInputDTO;
 import org.github.zuuuyao.service.role.dto.output.RoleVo;
 
 import java.util.List;
@@ -15,11 +17,13 @@ import java.util.List;
  * @Author HuangZhongYao
  */
 public interface IRoleService {
-    boolean addRole(AddRoleInputDTO inputDTO);
+    Boolean addRole(AddRoleInputDTO inputDTO);
 
     Boolean delRole(BaseManyLongIdInputDTO inputDTO);
 
-    Page<RoleEntity> pageQueryList(BaseQueryPageInputDTO inputDTO);
+    Page<RoleVo> pageQueryList(RolePageQueryInputDTO inputDTO);
 
     List<RoleVo> queryList(Boolean enable);
+
+    Boolean editRole(EditRoleInputDTO inputDTO);
 }
