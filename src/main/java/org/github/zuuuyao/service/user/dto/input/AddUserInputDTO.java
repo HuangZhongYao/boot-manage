@@ -3,12 +3,15 @@ package org.github.zuuuyao.service.user.dto.input;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 import org.github.zuuuyao.common.base.dto.BaseDTO;
+import org.github.zuuuyao.common.base.dto.input.BaseManyLongIdInputDTO;
 import org.github.zuuuyao.common.validate.ValidateNotNullAndEmpty;
 import org.github.zuuuyao.common.validate.ValidatePhone;
 import org.github.zuuuyao.common.validate.ValidateURL;
+import org.github.zuuuyao.common.validate.group.Group;
 import org.github.zuuuyao.entity.enums.GenderEnum;
 
 import java.io.Serial;
+import java.util.ArrayList;
 
 /**
  * @Desc
@@ -32,15 +35,22 @@ public class AddUserInputDTO extends BaseDTO {
      * 用户名
      */
     @Schema(description = "用户名", example = "宇宙无敌的高手",requiredMode = Schema.RequiredMode.REQUIRED)
-    @ValidateNotNullAndEmpty(message = "用户名不能为空")
+    @ValidateNotNullAndEmpty(message = "用户名不能为空",groups = {Group.Insert.class,Group.Edit.class})
     private String username;
 
     /**
      * 账号
      */
-    @Schema(description = "账号", example = "huangzy")
-    @ValidateNotNullAndEmpty(message = "账号不能为空")
+    @Schema(description = "账号", example = "huangzy",requiredMode = Schema.RequiredMode.REQUIRED)
+    @ValidateNotNullAndEmpty(message = "账号不能为空",groups = Group.Insert.class)
     private String account;
+
+    /**
+     * 登录密码
+     */
+    @Schema(description = "密码", example = "123456",requiredMode = Schema.RequiredMode.REQUIRED)
+    @ValidateNotNullAndEmpty(message = "用户名不能为空",groups = {Group.Insert.class,Group.Edit.class})
+    private String password;
 
     /**
      * 性别
@@ -62,4 +72,11 @@ public class AddUserInputDTO extends BaseDTO {
      */
     @Schema(description = "头像url", example = "https://avatars.githubusercontent.com/u/46741470?v=4&size=256")
     private String avatarUrl;
+
+    /**
+     * 角色id
+     */
+    @Schema(description = "角色id",example = "[1]")
+    @ValidateNotNullAndEmpty(message = "角色不能为空",groups = {Group.Insert.class,Group.Edit.class})
+    private ArrayList<Long> roleIds;
 }
