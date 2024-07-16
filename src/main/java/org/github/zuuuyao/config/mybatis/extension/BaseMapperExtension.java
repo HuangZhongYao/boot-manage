@@ -2,7 +2,6 @@ package org.github.zuuuyao.config.mybatis.extension;
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.session.SqlSession;
 import org.github.zuuuyao.common.util.ModelMapperUtil;
@@ -88,14 +87,14 @@ public interface BaseMapperExtension<TEntity> extends BaseMapper<TEntity> {
      * @param queryWrapper 查询条件
      * @param uClass       将查询结果转换为指定DTO类型
      * @param <U>          指定的DTO类型
-     * @return IPage
+     * @return Page
      */
-    default <U> IPage<U> selectPage(long pageIndex, long pageSize, Wrapper<TEntity> queryWrapper,
+    default <U> Page<U> selectPage(long pageIndex, long pageSize, Wrapper<TEntity> queryWrapper,
                                     Class<U> uClass) {
         // 分页条件
         Page page = new Page(pageIndex, pageSize);
         // 执行分页查询
-        IPage<U> pageResult = this.selectPage(page, queryWrapper);
+        Page<U> pageResult = this.selectPage(page, queryWrapper);
         // 设置数据
         pageResult.setRecords(ModelMapperUtil.mapList(pageResult.getRecords(), uClass));
         return pageResult;
@@ -108,12 +107,12 @@ public interface BaseMapperExtension<TEntity> extends BaseMapper<TEntity> {
      * @param queryWrapper 查询条件
      * @param uClass       将查询结果转换为指定DTO类型
      * @param <U>          指定的DTO类型
-     * @return IPage
+     * @return Page
      */
-    default <U> IPage<U> selectPage(Page page, Wrapper<TEntity> queryWrapper,
+    default <U> Page<U> selectPage(Page page, Wrapper<TEntity> queryWrapper,
                                     Class<U> uClass) {
         // 执行分页查询
-        IPage<U> pageResult = this.selectPage(page, queryWrapper);
+        Page<U> pageResult = this.selectPage(page, queryWrapper);
         // 设置数据
         pageResult.setRecords(ModelMapperUtil.mapList(pageResult.getRecords(), uClass));
         return pageResult;
@@ -128,15 +127,15 @@ public interface BaseMapperExtension<TEntity> extends BaseMapper<TEntity> {
      * @param uClass       将查询结果转换为指定DTO类型
      * @param consumer     对转换后的数据处理逻辑
      * @param <U>          指定的DTO类型
-     * @return IPage
+     * @return Page
      */
-    default <U> IPage<U> selectPage(long pageIndex, long pageSize, Wrapper<TEntity> queryWrapper,
+    default <U> Page<U> selectPage(long pageIndex, long pageSize, Wrapper<TEntity> queryWrapper,
                                     Class<U> uClass, Consumer<U> consumer) {
 
         // 分页条件
         Page page = new Page(pageIndex, pageSize);
         // 执行分页查询
-        IPage<U> pageResult = this.selectPage(page, queryWrapper);
+        Page<U> pageResult = this.selectPage(page, queryWrapper);
         // 转换类型并处理
         List<U> uResult = ModelMapperUtil.mapList(pageResult.getRecords(), uClass, consumer);
         // 设置数据
@@ -152,13 +151,13 @@ public interface BaseMapperExtension<TEntity> extends BaseMapper<TEntity> {
      * @param uClass       将查询结果转换为指定DTO类型
      * @param consumer     对转换后的数据处理逻辑
      * @param <U>          指定的DTO类型
-     * @return IPage
+     * @return Page
      */
-    default <U> IPage<U> selectPage(Page page, Wrapper<TEntity> queryWrapper,
+    default <U> Page<U> selectPage(Page page, Wrapper<TEntity> queryWrapper,
                                     Class<U> uClass, Consumer<U> consumer) {
 
         // 执行分页查询
-        IPage<U> pageResult = this.selectPage(page, queryWrapper);
+        Page<U> pageResult = this.selectPage(page, queryWrapper);
         // 转换类型并处理
         List<U> uResult = ModelMapperUtil.mapList(pageResult.getRecords(), uClass, consumer);
         // 设置数据
@@ -176,15 +175,15 @@ public interface BaseMapperExtension<TEntity> extends BaseMapper<TEntity> {
      * @param uClass       将查询结果转换为指定DTO类型
      * @param biconsumer   对原数据和转换后的数据处理逻辑
      * @param <U>          指定的DTO类型
-     * @return IPage
+     * @return Page
      */
-    default <U> IPage<U> selectPage(long pageIndex, long pageSize, Wrapper<TEntity> queryWrapper,
+    default <U> Page<U> selectPage(long pageIndex, long pageSize, Wrapper<TEntity> queryWrapper,
                                     Class<U> uClass, BiConsumer<TEntity, U> biconsumer) {
 
         // 分页条件
         Page page = new Page(pageIndex, pageSize);
         // 执行分页查询
-        IPage pageResult = this.selectPage(page, queryWrapper);
+        Page pageResult = this.selectPage(page, queryWrapper);
         // 转换类型并处理
         List<U> uResult = ModelMapperUtil.mapList(pageResult.getRecords(), uClass, biconsumer);
         // 设置数据
@@ -200,13 +199,13 @@ public interface BaseMapperExtension<TEntity> extends BaseMapper<TEntity> {
      * @param uClass       将查询结果转换为指定DTO类型
      * @param biconsumer   对原数据和转换后的数据处理逻辑
      * @param <U>          指定的DTO类型
-     * @return IPage
+     * @return Page
      */
-    default <U> IPage<U> selectPage(Page page, Wrapper<TEntity> queryWrapper,
+    default <U> Page<U> selectPage(Page page, Wrapper<TEntity> queryWrapper,
                                     Class<U> uClass, BiConsumer<TEntity, U> biconsumer) {
 
         // 执行分页查询
-        IPage pageResult = this.selectPage(page, queryWrapper);
+        Page pageResult = this.selectPage(page, queryWrapper);
         // 转换类型并处理
         List<U> uResult = ModelMapperUtil.mapList(pageResult.getRecords(), uClass, biconsumer);
         // 设置数据
