@@ -1,5 +1,8 @@
 package org.github.zuuuyao.service.auth;
 
+import org.github.zuuuyao.service.auth.dto.AuthenticationUserDetailOutputDTO;
+import org.github.zuuuyao.service.auth.dto.LoginInputDTO;
+import org.github.zuuuyao.service.auth.dto.LoginOutputDTO;
 import org.github.zuuuyao.service.auth.model.ResourcesTreeVo;
 import org.github.zuuuyao.service.auth.model.ResourcesVo;
 
@@ -17,4 +20,9 @@ public interface IAuthService {
     List<ResourcesTreeVo> queryPermissionsTree();
 
     String captcha();
+
+    LoginOutputDTO login(LoginInputDTO inputDTO);
+
+    AuthenticationUserDetailOutputDTO authenticationUserDetail();
+
 }

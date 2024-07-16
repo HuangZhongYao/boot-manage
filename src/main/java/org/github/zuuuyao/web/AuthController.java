@@ -7,10 +7,16 @@ import java.util.List;
 import lombok.AllArgsConstructor;
 import org.github.zuuuyao.common.base.web.BaseController;
 import org.github.zuuuyao.service.auth.IAuthService;
+import org.github.zuuuyao.service.auth.dto.AuthenticationUserDetailOutputDTO;
+import org.github.zuuuyao.service.auth.dto.LoginInputDTO;
+import org.github.zuuuyao.service.auth.dto.LoginOutputDTO;
 import org.github.zuuuyao.service.auth.model.ResourcesTreeVo;
 import org.github.zuuuyao.service.auth.model.ResourcesVo;
 import org.springframework.http.MediaType;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -47,5 +53,21 @@ public class AuthController extends BaseController {
     @GetMapping(value = "/captcha", produces = MediaType.TEXT_HTML_VALUE)
     public String captcha() {
         return authService.captcha();
+    }
+
+    @Operation(summary = "登录接口", description = "登录接口")
+    @ApiResponse(responseCode = "200", description = "ok")
+    @ApiResponse(responseCode = "410", description = "账号或密码错误")
+    @ApiResponse(responseCode = "420", description = "验证码错误")
+    @PostMapping(value = "/login", produces = MediaType.APPLICATION_JSON_VALUE)
+    public LoginOutputDTO login(@Validated @RequestBody LoginInputDTO inputDTO) {
+        return authService.login(inputDTO);
+    }
+
+    @Operation(summary = "获取用户详情", description = "获取用户详情")
+    @ApiResponse(responseCode = "200", description = "ok")
+    @GetMapping(value = "/authenticationUserDetail", produces = MediaType.APPLICATION_JSON_VALUE)
+    public AuthenticationUserDetailOutputDTO authenticationUserDetail() {
+        return authService.authenticationUserDetail();
     }
 }

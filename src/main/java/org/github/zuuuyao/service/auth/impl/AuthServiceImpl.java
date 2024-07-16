@@ -7,12 +7,17 @@ import org.github.zuuuyao.common.util.ModelMapperUtil;
 import org.github.zuuuyao.common.util.tree.ITreeNode;
 import org.github.zuuuyao.common.util.tree.TreeUtil;
 import org.github.zuuuyao.entity.system.ResourcesEntity;
+import org.github.zuuuyao.entity.system.UserEntity;
 import org.github.zuuuyao.repository.ResourcesRepository;
 import org.github.zuuuyao.repository.RoleRepository;
 import org.github.zuuuyao.repository.UserRepository;
 import org.github.zuuuyao.service.auth.IAuthService;
+import org.github.zuuuyao.service.auth.dto.AuthenticationUserDetailOutputDTO;
+import org.github.zuuuyao.service.auth.dto.LoginInputDTO;
+import org.github.zuuuyao.service.auth.dto.LoginOutputDTO;
 import org.github.zuuuyao.service.auth.model.ResourcesTreeVo;
 import org.github.zuuuyao.service.auth.model.ResourcesVo;
+import org.github.zuuuyao.service.role.dto.output.RoleVo;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,7 +32,7 @@ import java.util.List;
 public class AuthServiceImpl implements IAuthService {
 
     ResourcesRepository resourcesRepository;
-    UserRepository repository;
+    UserRepository userRepository;
     RoleRepository roleRepository;
 
 
@@ -55,5 +60,27 @@ public class AuthServiceImpl implements IAuthService {
     @Override
     public String captcha() {
         return null;
+    }
+
+    @Override
+    public LoginOutputDTO login(LoginInputDTO inputDTO) {
+        return LoginOutputDTO.builder().accessToken("3434").build();
+    }
+
+    @Override
+    public AuthenticationUserDetailOutputDTO authenticationUserDetail() {
+
+        // 查询当前用户
+        AuthenticationUserDetailOutputDTO
+            output = userRepository.selectOne(null, AuthenticationUserDetailOutputDTO.class);
+        // 查询角色
+        List<RoleVo> roles = roleRepository.selectList(null, RoleVo.class);
+        // 组装角色
+        output.setRoles(roles);
+        // 查询权限
+        List<ResourcesVo> permissions = resourcesRepository.selectList(null, ResourcesVo.class);
+        // 组装权限
+        output.setPermissions(permissions);
+        return output;
     }
 }

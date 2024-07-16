@@ -20,6 +20,22 @@ import java.util.function.Consumer;
  */
 public interface BaseMapperExtension<TEntity> extends BaseMapper<TEntity> {
 
+    default <U> U selectOne(Wrapper<TEntity> queryWrapper, Class<U> uClass) {
+        TEntity entity = this.selectOne(queryWrapper);
+        return ModelMapperUtil.map(entity, uClass);
+    }
+
+    default <U> U selectOne(Wrapper<TEntity> queryWrapper, Class<U> uClass, Consumer<U> consumer) {
+        TEntity entity = this.selectOne(queryWrapper);
+        return ModelMapperUtil.map(entity, uClass, consumer);
+    }
+
+    default <U> U selectOne(Wrapper<TEntity> queryWrapper, Class<U> uClass,
+                            BiConsumer<TEntity, U> biConsumer) {
+        TEntity entity = this.selectOne(queryWrapper);
+        return ModelMapperUtil.map(entity, uClass, biConsumer);
+    }
+
     /**
      * 查询并转换类型
      *
@@ -42,7 +58,8 @@ public interface BaseMapperExtension<TEntity> extends BaseMapper<TEntity> {
      * @param <U>          目标类型
      * @return 转换后类型结果
      */
-    default <U> List<U> selectList(Wrapper<TEntity> queryWrapper, Class<U> uClass, Consumer<U> consumer) {
+    default <U> List<U> selectList(Wrapper<TEntity> queryWrapper, Class<U> uClass,
+                                   Consumer<U> consumer) {
         List<TEntity> records = this.selectList(queryWrapper);
         return ModelMapperUtil.mapList(records, uClass, consumer);
     }
@@ -56,7 +73,8 @@ public interface BaseMapperExtension<TEntity> extends BaseMapper<TEntity> {
      * @param <U>          目标类型
      * @return 转换后类型结果
      */
-    default <U> List<U> selectList(Wrapper<TEntity> queryWrapper, Class<U> uClass, BiConsumer<TEntity, U> biConsumer) {
+    default <U> List<U> selectList(Wrapper<TEntity> queryWrapper, Class<U> uClass,
+                                   BiConsumer<TEntity, U> biConsumer) {
         List<TEntity> records = this.selectList(queryWrapper);
         return ModelMapperUtil.mapList(records, uClass, biConsumer);
     }
