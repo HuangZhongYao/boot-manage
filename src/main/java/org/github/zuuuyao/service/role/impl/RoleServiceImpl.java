@@ -67,6 +67,12 @@ public class RoleServiceImpl implements IRoleService {
 
         // 更新权限
         if (inputDTO.getPermissionIds() != null) {
+
+            // 先清空角色权限
+            roleResourcesRepository.delete(Wrappers
+                    .<RoleResourcesEntity>lambdaQuery()
+                    .eq(RoleResourcesEntity::getRoleId, inputDTO.getId()));
+
             // 使用流创建UserRoleEntity对象
             List<RoleResourcesEntity> roleResourcesEntities = inputDTO.getPermissionIds()
                     .stream()
@@ -112,6 +118,7 @@ public class RoleServiceImpl implements IRoleService {
 
         // 如果勾选了权限就插入权限数据
         if (inputDTO.getPermissionIds() != null) {
+
             // 使用流创建UserRoleEntity对象
             List<RoleResourcesEntity> roleResourcesEntities = inputDTO.getPermissionIds()
                     .stream()

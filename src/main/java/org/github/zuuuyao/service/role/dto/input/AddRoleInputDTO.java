@@ -2,6 +2,7 @@ package org.github.zuuuyao.service.role.dto.input;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.io.Serial;
+import java.util.ArrayList;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
@@ -51,5 +52,5 @@ public class AddRoleInputDTO extends BaseDTO {
     private String remark;
 
     @Schema(description = "权限id集合")
-    private List<Long> permissionIds;
+    private List<Long> permissionIds = new ArrayList<>();
 }

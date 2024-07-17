@@ -5,6 +5,7 @@ import lombok.*;
 import org.github.zuuuyao.common.base.dto.input.BaseLongIdInputDTO;
 
 import java.io.Serial;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -35,5 +36,5 @@ public class EditRoleInputDTO extends BaseLongIdInputDTO {
     private String remark;
 
     @Schema(description = "权限id集合")
-    private List<Long> permissionIds;
+    private List<Long> permissionIds = new ArrayList<>();
 }
