@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.github.zuuuyao.repository.RoleRepository">
+
+    <select id="pageQueryList" resultType="org.github.zuuuyao.service.role.dto.output.RolePageQueryListItemVo">
+        SELECT
+        role.*,
+        GROUP_CONCAT(resources.id SEPARATOR ',') AS resourcesIds
+        FROM
+        sys_role role
+        JOIN
+        sys_role_resources role_resources ON role.id = role_resources.role_id
+        JOIN
+        sys_resources resources ON role_resources.resources_id = resources.id
+
+        <where>
+
+            <if test=" param.enable != null and param.enable == true">
+                AND role.enable > 0
+            </if>
+
+            <if test=" param.enable != null and param.enable == false">
+                AND role.enable &lt; 1
+            </if>
+
+            <if test=" param.name != null and param.name != '' ">
+                AND role.name LIKE  concat('%', #{param.name}, '%')
+            </if>
+        </where>
+
+        GROUP BY
+        role.id
+    </select>
+</mapper>

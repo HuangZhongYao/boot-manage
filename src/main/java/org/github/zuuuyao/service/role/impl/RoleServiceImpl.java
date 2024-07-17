@@ -15,11 +15,13 @@ import org.github.zuuuyao.service.role.IRoleService;
 import org.github.zuuuyao.service.role.dto.input.AddRoleInputDTO;
 import org.github.zuuuyao.service.role.dto.input.EditRoleInputDTO;
 import org.github.zuuuyao.service.role.dto.input.RolePageQueryInputDTO;
+import org.github.zuuuyao.service.role.dto.output.RolePageQueryListItemVo;
 import org.github.zuuuyao.service.role.dto.output.RoleVo;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 /**
  * @Desc: Created by IntelliJ IDEA.
@@ -41,13 +43,24 @@ public class RoleServiceImpl implements IRoleService {
     }
 
     @Override
-    public Page<RoleVo> pageQueryList(RolePageQueryInputDTO inputDTO) {
-        return roleRepository.selectPage(inputDTO.toMybatisPageObject(),
-                Wrappers.<RoleEntity>lambdaQuery()
-                        .like(StrUtil.isNotBlank(inputDTO.getName()), RoleEntity::getName,
-                                inputDTO.getName())
-                        .eq(null != inputDTO.getEnable(), RoleEntity::getEnable, inputDTO.getEnable()),
-                RoleVo.class);
+    public Page<RolePageQueryListItemVo> pageQueryList(RolePageQueryInputDTO inputDTO) {
+
+        // 执行查询
+        Page<RolePageQueryListItemVo> result = this.roleRepository.pageQueryList(inputDTO.toMybatisPageObject(), inputDTO);
+
+        // 设置权限id集合
+        result.getRecords().forEach(record -> {
+            // 权限id字符串用逗号拼接的
+            String resourcesIds = record.getResourcesIds();
+            if (StrUtil.isNotBlank(resourcesIds)) {
+                // 将字符串ids转为long集合
+                List<Long> permissionIds = Stream.of(resourcesIds.split(",")).map(Long::valueOf).toList();
+                // 赋值
+                record.getPermissionIds().addAll(permissionIds);
+            }
+        });
+
+        return result;
     }
 
     @Override

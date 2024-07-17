@@ -16,6 +16,7 @@ import org.github.zuuuyao.service.role.IRoleService;
 import org.github.zuuuyao.service.role.dto.input.AddRoleInputDTO;
 import org.github.zuuuyao.service.role.dto.input.EditRoleInputDTO;
 import org.github.zuuuyao.service.role.dto.input.RolePageQueryInputDTO;
+import org.github.zuuuyao.service.role.dto.output.RolePageQueryListItemVo;
 import org.github.zuuuyao.service.role.dto.output.RoleVo;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
@@ -40,7 +41,7 @@ public class RoleController extends BaseController {
     @Operation(summary = "分页查询", description = "分页查询角色接口")
     @GetMapping(value = "/pageQueryList", produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperationSupport(authors = "zuuuYao")
-    public Page<RoleVo> pageQueryList(RolePageQueryInputDTO inputDTO) {
+    public Page<RolePageQueryListItemVo> pageQueryList(RolePageQueryInputDTO inputDTO) {
         return roleService.pageQueryList(inputDTO);
     }
 
