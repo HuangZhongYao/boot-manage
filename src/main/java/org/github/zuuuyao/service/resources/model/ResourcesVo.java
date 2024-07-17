@@ -1,15 +1,13 @@
-package org.github.zuuuyao.service.auth.model;
+package org.github.zuuuyao.service.resources.model;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.github.zuuuyao.common.base.dto.output.BaseOutputIdAndTimeDTO;
-import org.github.zuuuyao.common.util.tree.ITreeNode;
 import org.github.zuuuyao.entity.enums.ResourcesTypeEnum;
 
 import java.io.Serial;
-import java.util.List;
 
 /**
  * @Desc
@@ -19,11 +17,9 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
-public class ResourcesTreeVo extends BaseOutputIdAndTimeDTO implements ITreeNode<Long> {
-
-
+public class ResourcesVo extends BaseOutputIdAndTimeDTO {
     @Serial
-    private static final long serialVersionUID = -587179557810410708L;
+    private static final long serialVersionUID = 343592145962257371L;
 
     /**
      * 编码
@@ -110,12 +106,6 @@ public class ResourcesTreeVo extends BaseOutputIdAndTimeDTO implements ITreeNode
     @Schema(description = "上级资源id")
     private Long parentId;
 
-    /**
-     * 下级资源集合
-     */
-    @Schema(description = "下级资源集合")
-    List<ITreeNode<Long>> children;
-
     public Boolean getShow() {
         return isShow;
     }
@@ -123,5 +113,4 @@ public class ResourcesTreeVo extends BaseOutputIdAndTimeDTO implements ITreeNode
     public String getOrder() {
         return sort;
     }
-
 }

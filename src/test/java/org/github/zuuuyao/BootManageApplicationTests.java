@@ -13,7 +13,7 @@ import org.github.zuuuyao.common.util.tree.ITreeNode;
 import org.github.zuuuyao.common.util.tree.TreeUtil;
 import org.github.zuuuyao.entity.system.ResourcesEntity;
 import org.github.zuuuyao.repository.ResourcesRepository;
-import org.github.zuuuyao.service.auth.model.ResourcesTreeVo;
+import org.github.zuuuyao.service.resources.model.ResourcesTreeVo;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 

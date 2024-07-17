@@ -7,7 +7,6 @@ import org.github.zuuuyao.common.util.ModelMapperUtil;
 import org.github.zuuuyao.common.util.tree.ITreeNode;
 import org.github.zuuuyao.common.util.tree.TreeUtil;
 import org.github.zuuuyao.entity.system.ResourcesEntity;
-import org.github.zuuuyao.entity.system.UserEntity;
 import org.github.zuuuyao.repository.ResourcesRepository;
 import org.github.zuuuyao.repository.RoleRepository;
 import org.github.zuuuyao.repository.UserRepository;
@@ -15,8 +14,8 @@ import org.github.zuuuyao.service.auth.IAuthService;
 import org.github.zuuuyao.service.auth.dto.AuthenticationUserDetailOutputDTO;
 import org.github.zuuuyao.service.auth.dto.LoginInputDTO;
 import org.github.zuuuyao.service.auth.dto.LoginOutputDTO;
-import org.github.zuuuyao.service.auth.model.ResourcesTreeVo;
-import org.github.zuuuyao.service.auth.model.ResourcesVo;
+import org.github.zuuuyao.service.resources.model.ResourcesTreeVo;
+import org.github.zuuuyao.service.resources.model.ResourcesVo;
 import org.github.zuuuyao.service.role.dto.output.RoleVo;
 import org.springframework.stereotype.Service;
 

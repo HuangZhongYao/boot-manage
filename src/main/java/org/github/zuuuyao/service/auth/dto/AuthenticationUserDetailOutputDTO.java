@@ -13,8 +13,7 @@ import lombok.Setter;
 import lombok.ToString;
 import org.github.zuuuyao.common.base.dto.output.BaseOutputIdAndTimeDTO;
 import org.github.zuuuyao.entity.enums.GenderEnum;
-import org.github.zuuuyao.entity.system.RoleEntity;
-import org.github.zuuuyao.service.auth.model.ResourcesVo;
+import org.github.zuuuyao.service.resources.model.ResourcesVo;
 import org.github.zuuuyao.service.role.dto.output.RoleVo;
 
 /**
