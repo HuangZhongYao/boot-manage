@@ -11,6 +11,7 @@ import org.github.zuuuyao.common.base.dto.input.BaseQueryPageInputDTO;
 import org.github.zuuuyao.service.resources.IResourcesService;
 import org.github.zuuuyao.service.resources.dto.input.AddResourcesInputDTO;
 import org.github.zuuuyao.service.resources.model.ResourcesTreeVo;
+import org.github.zuuuyao.service.resources.model.ResourcesVo;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -32,11 +33,11 @@ public class ResourcesController {
 
     IResourcesService resourcesService;
 
-    @Operation(summary = "分页查询", description = "分页查询资源接口")
-    @GetMapping(value = "/pageQueryList", produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "查询资源下按钮", description = "查询资源下的按钮")
+    @GetMapping(value = "/button/{parentId}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperationSupport(authors = "zuuuYao")
-    public Page pageQueryList(BaseQueryPageInputDTO inputDTO) {
-        return resourcesService.pageQueryList(inputDTO);
+    public List<ResourcesVo> button(@PathVariable(name = "parentId",required = true)Long parentId) {
+        return resourcesService.button(parentId);
     }
 
     @GetMapping(value = "/resourcesTree", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -48,7 +49,6 @@ public class ResourcesController {
 
     @Operation(summary = "添加资源", description = "添加资源接口")
     @ApiResponse(responseCode = "200", description = "OK")
-    @ApiResponse(responseCode = "401", description = "资源编码已存在")
     @PostMapping(value = "/addResources", produces = MediaType.APPLICATION_JSON_VALUE)
     public Boolean addResources(@RequestBody @Validated AddResourcesInputDTO inputDTO) {
         return resourcesService.addResources(inputDTO);
@@ -56,7 +56,7 @@ public class ResourcesController {
 
     @Operation(summary = "删除资源")
     @ApiResponse(responseCode = "200", description = "OK")
-    @PostMapping(value = "/delResources", produces = MediaType.APPLICATION_JSON_VALUE)
+    @DeleteMapping(value = "/delResources", produces = MediaType.APPLICATION_JSON_VALUE)
     public Boolean delResources(@RequestBody @Validated BaseManyLongIdInputDTO inputDTO) {
         return resourcesService.delResources(inputDTO);
     }

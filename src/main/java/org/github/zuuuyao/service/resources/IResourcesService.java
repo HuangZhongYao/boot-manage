@@ -5,6 +5,7 @@ import org.github.zuuuyao.common.base.dto.input.BaseManyLongIdInputDTO;
 import org.github.zuuuyao.common.base.dto.input.BaseQueryPageInputDTO;
 import org.github.zuuuyao.service.resources.dto.input.AddResourcesInputDTO;
 import org.github.zuuuyao.service.resources.model.ResourcesTreeVo;
+import org.github.zuuuyao.service.resources.model.ResourcesVo;
 
 import java.util.List;
 
@@ -20,8 +21,12 @@ public interface IResourcesService {
 
     Boolean addResources(AddResourcesInputDTO inputDTO);
 
-    Page pageQueryList(BaseQueryPageInputDTO inputDTO);
-
     List<ResourcesTreeVo> resourcesTree();
 
+    /**
+     * 查询资源下的按钮
+     * @param parentId 资源id
+     * @return 下级按钮集合
+     */
+    List<ResourcesVo> button(Long parentId);
 }

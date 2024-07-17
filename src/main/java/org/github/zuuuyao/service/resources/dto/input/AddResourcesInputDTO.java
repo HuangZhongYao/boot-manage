@@ -71,10 +71,16 @@ public class AddResourcesInputDTO extends BaseDTO {
     private String icon;
 
     /**
+     * 布局方式
+     */
+    @Schema(description = "布局方式")
+    private String layout;
+
+    /**
      * 是否显示
      */
     @Schema(description = "菜单图标",example = "true")
-    private Boolean isShow;
+    private Boolean show;
 
     /**
      * 是否启用
@@ -100,12 +106,11 @@ public class AddResourcesInputDTO extends BaseDTO {
      * 排序
      */
     @Schema(description = "排序值越低越靠前",example = "1")
-    private String sort;
+    private String order;
 
     /**
      * 上级资源id
      */
-    @ValidateNotNullAndEmpty(message = "所属菜单Id")
     @Schema(description = "所属菜单Id",requiredMode = Schema.RequiredMode.REQUIRED,example = "1")
     private String parentId;
 }

@@ -63,6 +63,11 @@ public class ResourcesEntity extends AbstractBaseEntity {
     private String icon;
 
     /**
+     * 布局方式
+     */
+    private String layout;
+
+    /**
      * 是否显示
      */
     private Boolean isShow;

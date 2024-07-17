@@ -58,6 +58,12 @@ public class ResourcesVo extends BaseOutputIdAndTimeDTO {
     private String icon;
 
     /**
+     * 布局方式
+     */
+    @Schema(description = "布局方式")
+    private String layout;
+
+    /**
      * 是否显示
      */
     @Schema(description = "是否显示")

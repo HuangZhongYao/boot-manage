@@ -1,14 +1,14 @@
 package org.github.zuuuyao.service.resources.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.AllArgsConstructor;
 import org.github.zuuuyao.common.base.dto.input.BaseManyLongIdInputDTO;
-import org.github.zuuuyao.common.base.dto.input.BaseQueryPageInputDTO;
 import org.github.zuuuyao.common.exception.UserFriendlyException;
 import org.github.zuuuyao.common.util.ModelMapperUtil;
 import org.github.zuuuyao.common.util.tree.ITreeNode;
 import org.github.zuuuyao.common.util.tree.TreeUtil;
+import org.github.zuuuyao.entity.enums.ResourcesTypeEnum;
 import org.github.zuuuyao.entity.system.ResourcesEntity;
 import org.github.zuuuyao.entity.system.RoleResourcesEntity;
 import org.github.zuuuyao.repository.ResourcesRepository;
@@ -16,6 +16,7 @@ import org.github.zuuuyao.repository.RoleResourcesRepository;
 import org.github.zuuuyao.service.resources.IResourcesService;
 import org.github.zuuuyao.service.resources.dto.input.AddResourcesInputDTO;
 import org.github.zuuuyao.service.resources.model.ResourcesTreeVo;
+import org.github.zuuuyao.service.resources.model.ResourcesVo;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -51,11 +52,14 @@ public class ResourcesServiceImpl implements IResourcesService {
 
         // 判断资源编码是否重复
         if (resourcesRepository.exists(Wrappers.<ResourcesEntity>lambdaQuery().eq(ResourcesEntity::getCode, inputDTO.getCode()))) {
-            throw new UserFriendlyException("资源编码已存在,换一个吧", 401);
+            throw new UserFriendlyException("资源编码已存在,换一个吧");
         }
 
         // DTO转换实体
-        ResourcesEntity resourcesEntity = ModelMapperUtil.map(inputDTO, ResourcesEntity.class);
+        ResourcesEntity resourcesEntity = ModelMapperUtil.map(inputDTO, ResourcesEntity.class,(source,target)->{
+            target.setSort(source.getOrder());
+            target.setIsShow(source.getShow());
+        });
 
         // 插入数据库
         resourcesRepository.insert(resourcesEntity);
@@ -64,8 +68,14 @@ public class ResourcesServiceImpl implements IResourcesService {
     }
 
     @Override
-    public Page pageQueryList(BaseQueryPageInputDTO inputDTO) {
-        return this.resourcesRepository.selectPage(inputDTO.toMybatisPageObject(), Wrappers.<ResourcesEntity>lambdaQuery());
+    public List<ResourcesVo> button(Long parentId) {
+        // 查询条件
+        LambdaQueryWrapper<ResourcesEntity> queryWrapper = Wrappers.<ResourcesEntity>lambdaQuery()
+                .eq(ResourcesEntity::getParentId, parentId)
+                .eq(ResourcesEntity::getType, ResourcesTypeEnum.BUTTON)
+                .orderByAsc(ResourcesEntity::getSort);
+        // 执行查询转换类型
+        return this.resourcesRepository.selectList(queryWrapper, ResourcesVo.class);
     }
 
     @Override
