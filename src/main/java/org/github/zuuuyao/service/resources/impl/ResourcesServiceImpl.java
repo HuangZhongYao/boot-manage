@@ -7,11 +7,17 @@ import org.github.zuuuyao.common.base.dto.input.BaseManyLongIdInputDTO;
 import org.github.zuuuyao.common.base.dto.input.BaseQueryPageInputDTO;
 import org.github.zuuuyao.common.exception.UserFriendlyException;
 import org.github.zuuuyao.common.util.ModelMapperUtil;
+import org.github.zuuuyao.common.util.tree.ITreeNode;
+import org.github.zuuuyao.common.util.tree.TreeUtil;
 import org.github.zuuuyao.entity.system.ResourcesEntity;
 import org.github.zuuuyao.repository.ResourcesRepository;
 import org.github.zuuuyao.service.resources.IResourcesService;
 import org.github.zuuuyao.service.resources.dto.input.AddResourcesInputDTO;
+import org.github.zuuuyao.service.resources.model.ResourcesTreeVo;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @Desc: Created by IntelliJ IDEA.
@@ -36,8 +42,8 @@ public class ResourcesServiceImpl implements IResourcesService {
 
         // 判断资源编码是否重复
         if (resourcesRepository.exists(
-            Wrappers.<ResourcesEntity>lambdaQuery()
-                .eq(ResourcesEntity::getCode, inputDTO.getCode()))) {
+                Wrappers.<ResourcesEntity>lambdaQuery()
+                        .eq(ResourcesEntity::getCode, inputDTO.getCode()))) {
             throw new UserFriendlyException("资源编码已存在,换一个吧", 401);
         }
 
@@ -53,6 +59,19 @@ public class ResourcesServiceImpl implements IResourcesService {
     @Override
     public Page pageQueryList(BaseQueryPageInputDTO inputDTO) {
         return this.resourcesRepository.selectPage(inputDTO.toMybatisPageObject(),
-            Wrappers.<ResourcesEntity>lambdaQuery());
+                Wrappers.<ResourcesEntity>lambdaQuery());
+    }
+
+    @Override
+    public List<ResourcesTreeVo> resourcesTree() {
+        // 查询全部资源列表
+        List<ResourcesTreeVo> resourcesVos = resourcesRepository.selectList(null, ResourcesTreeVo.class);
+        // 转换ITreeNode List
+        List<ITreeNode<Long>> treeNodeList = new ArrayList<>(resourcesVos.size());
+        treeNodeList.addAll(resourcesVos);
+        // 转换树结构
+        List<ITreeNode<Long>> tree = TreeUtil.listToTree(treeNodeList);
+        // 转换ResourcesTreeVo List
+        return ModelMapperUtil.mapList(tree, ResourcesTreeVo.class);
     }
 }

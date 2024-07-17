@@ -4,6 +4,9 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.github.zuuuyao.common.base.dto.input.BaseManyLongIdInputDTO;
 import org.github.zuuuyao.common.base.dto.input.BaseQueryPageInputDTO;
 import org.github.zuuuyao.service.resources.dto.input.AddResourcesInputDTO;
+import org.github.zuuuyao.service.resources.model.ResourcesTreeVo;
+
+import java.util.List;
 
 /**
  * @Desc 用户管理Service
@@ -18,5 +21,7 @@ public interface IResourcesService {
     Boolean addResources(AddResourcesInputDTO inputDTO);
 
     Page pageQueryList(BaseQueryPageInputDTO inputDTO);
+
+    List<ResourcesTreeVo> resourcesTree();
 
 }

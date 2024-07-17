@@ -1,16 +1,11 @@
 package org.github.zuuuyao.service.role.dto.input;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.io.Serial;
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
-import org.github.zuuuyao.common.base.dto.BaseDTO;
+import lombok.*;
 import org.github.zuuuyao.common.base.dto.input.BaseLongIdInputDTO;
+
+import java.io.Serial;
+import java.util.List;
 
 /**
  * @Desc: Created by IntelliJ IDEA.
@@ -30,9 +25,15 @@ public class EditRoleInputDTO extends BaseLongIdInputDTO {
     @Serial
     private static final long serialVersionUID = 4929873507751718934L;
 
-    /**
-     * 启用状态
-     */
     @Schema(description = "启用状态 true|false")
     private Boolean enable;
+
+    @Schema(description = "图标", example = "i-fe:user")
+    private String icon;
+
+    @Schema(description = "描述", example = "拥有系统全部权限")
+    private String remark;
+
+    @Schema(description = "权限id集合")
+    private List<Long> permissionIds;
 }
