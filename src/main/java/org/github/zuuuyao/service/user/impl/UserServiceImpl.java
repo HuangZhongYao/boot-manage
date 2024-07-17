@@ -10,6 +10,7 @@ import java.util.List;
 import org.github.zuuuyao.common.base.dto.input.BaseManyLongIdInputDTO;
 import org.github.zuuuyao.common.exception.UserFriendlyException;
 import org.github.zuuuyao.common.util.ModelMapperUtil;
+import org.github.zuuuyao.entity.system.RoleResourcesEntity;
 import org.github.zuuuyao.entity.system.UserEntity;
 import org.github.zuuuyao.entity.system.UserRoleEntity;
 import org.github.zuuuyao.repository.UserRepository;
@@ -55,6 +56,13 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public Boolean delUser(BaseManyLongIdInputDTO inputDTO) {
+
+        // 删除用户角色中间表数据
+        userRoleRepository.delete(Wrappers
+                .<UserRoleEntity>lambdaQuery()
+                .in(UserRoleEntity::getUserId, inputDTO.getIds()));
+
+        // 删除用户
         userRepository.deleteByIds(inputDTO.getIds());
         return true;
     }

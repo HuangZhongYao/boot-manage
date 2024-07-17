@@ -9,8 +9,10 @@ import org.github.zuuuyao.common.exception.UserFriendlyException;
 import org.github.zuuuyao.common.util.ModelMapperUtil;
 import org.github.zuuuyao.entity.system.RoleEntity;
 import org.github.zuuuyao.entity.system.RoleResourcesEntity;
+import org.github.zuuuyao.entity.system.UserRoleEntity;
 import org.github.zuuuyao.repository.RoleRepository;
 import org.github.zuuuyao.repository.RoleResourcesRepository;
+import org.github.zuuuyao.repository.UserRoleRepository;
 import org.github.zuuuyao.service.role.IRoleService;
 import org.github.zuuuyao.service.role.dto.input.AddRoleInputDTO;
 import org.github.zuuuyao.service.role.dto.input.EditRoleInputDTO;
@@ -35,10 +37,23 @@ public class RoleServiceImpl implements IRoleService {
 
     RoleRepository roleRepository;
     RoleResourcesRepository roleResourcesRepository;
+    UserRoleRepository userRoleRepository;
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public Boolean delRole(BaseManyLongIdInputDTO inputDTO) {
+
+        // 清除角色与权限中间表数据
+        roleResourcesRepository.delete(Wrappers
+                .<RoleResourcesEntity>lambdaQuery()
+                .in(RoleResourcesEntity::getRoleId, inputDTO.getIds()));
+        // 清除角色与用户中间表数据
+        userRoleRepository.delete(Wrappers
+                .<UserRoleEntity>lambdaQuery()
+                .in(UserRoleEntity::getRoleId, inputDTO.getIds()));
+        // 删除角色
         roleRepository.deleteByIds(inputDTO.getIds());
+
         return true;
     }
 
