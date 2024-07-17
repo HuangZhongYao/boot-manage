@@ -9,9 +9,9 @@
         GROUP_CONCAT(resources.id SEPARATOR ',') AS resourcesIds
         FROM
         sys_role role
-        JOIN
+        LEFT JOIN
         sys_role_resources role_resources ON role.id = role_resources.role_id
-        JOIN
+        LEFT JOIN
         sys_resources resources ON role_resources.resources_id = resources.id
 
         <where>
