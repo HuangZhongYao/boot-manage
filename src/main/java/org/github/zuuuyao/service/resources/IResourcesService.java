@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.github.zuuuyao.common.base.dto.input.BaseManyLongIdInputDTO;
 import org.github.zuuuyao.common.base.dto.input.BaseQueryPageInputDTO;
 import org.github.zuuuyao.service.resources.dto.input.AddResourcesInputDTO;
+import org.github.zuuuyao.service.resources.dto.input.EditResourcesInputDTO;
 import org.github.zuuuyao.service.resources.model.ResourcesTreeVo;
 import org.github.zuuuyao.service.resources.model.ResourcesVo;
 
@@ -29,4 +30,6 @@ public interface IResourcesService {
      * @return 下级按钮集合
      */
     List<ResourcesVo> button(Long parentId);
+
+    Boolean editResources(EditResourcesInputDTO inputDTO);
 }

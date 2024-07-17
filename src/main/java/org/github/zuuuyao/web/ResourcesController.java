@@ -1,15 +1,14 @@
 package org.github.zuuuyao.web;
 
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.github.zuuuyao.common.base.dto.input.BaseManyLongIdInputDTO;
-import org.github.zuuuyao.common.base.dto.input.BaseQueryPageInputDTO;
 import org.github.zuuuyao.service.resources.IResourcesService;
 import org.github.zuuuyao.service.resources.dto.input.AddResourcesInputDTO;
+import org.github.zuuuyao.service.resources.dto.input.EditResourcesInputDTO;
 import org.github.zuuuyao.service.resources.model.ResourcesTreeVo;
 import org.github.zuuuyao.service.resources.model.ResourcesVo;
 import org.springframework.http.MediaType;
@@ -36,7 +35,7 @@ public class ResourcesController {
     @Operation(summary = "查询资源下按钮", description = "查询资源下的按钮")
     @GetMapping(value = "/button/{parentId}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperationSupport(authors = "zuuuYao")
-    public List<ResourcesVo> button(@PathVariable(name = "parentId",required = true)Long parentId) {
+    public List<ResourcesVo> button(@PathVariable(name = "parentId", required = true) Long parentId) {
         return resourcesService.button(parentId);
     }
 
@@ -52,6 +51,13 @@ public class ResourcesController {
     @PostMapping(value = "/addResources", produces = MediaType.APPLICATION_JSON_VALUE)
     public Boolean addResources(@RequestBody @Validated AddResourcesInputDTO inputDTO) {
         return resourcesService.addResources(inputDTO);
+    }
+
+    @Operation(summary = "编辑资源", description = "编辑资源接口")
+    @ApiResponse(responseCode = "200", description = "OK")
+    @PatchMapping(value = "/editResources", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Boolean editResources(@RequestBody @Validated EditResourcesInputDTO inputDTO) {
+        return resourcesService.editResources(inputDTO);
     }
 
     @Operation(summary = "删除资源")

@@ -2,9 +2,8 @@ package org.github.zuuuyao.service.resources.dto.input;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
-import org.github.zuuuyao.common.base.dto.BaseDTO;
+import org.github.zuuuyao.common.base.dto.input.BaseLongIdInputDTO;
 import org.github.zuuuyao.common.validate.ValidateNotNullAndEmpty;
-import org.github.zuuuyao.entity.enums.ResourcesTypeEnum;
 
 import java.io.Serial;
 
@@ -12,7 +11,7 @@ import java.io.Serial;
  * @Desc: Created by IntelliJ IDEA.
  * @Author: ZhongYao.Huang
  * @Copyright: ZuuuuYao By Github
- * @Time: 2024-07-14 2:37
+ * @Time: 2024-07-17 2:37
  */
 @Setter
 @Getter
@@ -21,7 +20,7 @@ import java.io.Serial;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-public class AddResourcesInputDTO extends BaseDTO {
+public class EditResourcesInputDTO extends BaseLongIdInputDTO {
 
     @Serial
     private static final long serialVersionUID = 4380271138282804417L;
@@ -88,13 +87,6 @@ public class AddResourcesInputDTO extends BaseDTO {
      */
     @Schema(description = "keepAlive是否组件之间切换时缓存它们的状态", example = "true")
     private Boolean keepAlive;
-
-    /**
-     * 资源类型
-     */
-    @ValidateNotNullAndEmpty(message = "资源类型不能为空")
-    @Schema(description = "资源类型", requiredMode = Schema.RequiredMode.REQUIRED, example = "MENU")
-    private ResourcesTypeEnum type;
 
     /**
      * 排序

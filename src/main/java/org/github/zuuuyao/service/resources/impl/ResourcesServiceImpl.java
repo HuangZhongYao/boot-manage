@@ -15,6 +15,7 @@ import org.github.zuuuyao.repository.ResourcesRepository;
 import org.github.zuuuyao.repository.RoleResourcesRepository;
 import org.github.zuuuyao.service.resources.IResourcesService;
 import org.github.zuuuyao.service.resources.dto.input.AddResourcesInputDTO;
+import org.github.zuuuyao.service.resources.dto.input.EditResourcesInputDTO;
 import org.github.zuuuyao.service.resources.model.ResourcesTreeVo;
 import org.github.zuuuyao.service.resources.model.ResourcesVo;
 import org.springframework.stereotype.Service;
@@ -56,13 +57,42 @@ public class ResourcesServiceImpl implements IResourcesService {
         }
 
         // DTO转换实体
-        ResourcesEntity resourcesEntity = ModelMapperUtil.map(inputDTO, ResourcesEntity.class,(source,target)->{
+        ResourcesEntity resourcesEntity = ModelMapperUtil.map(inputDTO, ResourcesEntity.class, (source, target) -> {
             target.setSort(source.getOrder());
             target.setIsShow(source.getShow());
         });
 
         // 插入数据库
         resourcesRepository.insert(resourcesEntity);
+
+        return true;
+    }
+
+    @Override
+    public Boolean editResources(EditResourcesInputDTO inputDTO) {
+
+        // 数据库中的数据
+        ResourcesEntity resourcesEntity = resourcesRepository.selectById(inputDTO.getId());
+
+        // 修改了资源编码需要判断是否重复
+        if (!resourcesEntity.getCode().equals(inputDTO.getCode())) {
+            // 判断资源编码是否重复
+            if (resourcesRepository.exists(Wrappers.<ResourcesEntity>lambdaQuery()
+                    .ne(ResourcesEntity::getCode, resourcesEntity.getCode())
+                    .eq(ResourcesEntity::getCode, inputDTO.getCode()))) {
+
+                throw new UserFriendlyException("资源编码已存在,换一个吧!");
+            }
+        }
+
+        // DTO转换实体
+        ResourcesEntity updateEntity = ModelMapperUtil.map(inputDTO, ResourcesEntity.class, (source, target) -> {
+            target.setSort(source.getOrder());
+            target.setIsShow(source.getShow());
+        });
+
+        // 执行更新
+        this.resourcesRepository.updateById(updateEntity);
 
         return true;
     }
