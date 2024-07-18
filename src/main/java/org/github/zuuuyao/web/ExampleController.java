@@ -10,10 +10,7 @@ import org.github.zuuuyao.service.example.IExampleService;
 import org.github.zuuuyao.service.example.dto.ExampleValidateInputDTO;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * 演示controller,演示Validate注解使用。接口编写方式、mybatis-plus查询
@@ -37,7 +34,14 @@ public class ExampleController extends BaseController {
     @ApiOperationSupport(authors = {"zuuuYao", ""})//添加接口作者选择性添加
     @PostMapping(value = "/exampleValidate", produces = MediaType.APPLICATION_JSON_VALUE)
     public String exampleValidateAnnotations(
-        @RequestBody @Validated ExampleValidateInputDTO inputDTO) {
+            @RequestBody @Validated ExampleValidateInputDTO inputDTO) {
+        return "参数全部验证通过";
+    }
+
+    @Operation(summary = "演示RequestParam注解参数验证", description = "测试validate注解的使用")//接口描述
+    @ApiOperationSupport(authors = {"zuuuYao", ""})//添加接口作者选择性添加
+    @PostMapping(value = "/exampleRequestParam", produces = MediaType.APPLICATION_JSON_VALUE)
+    public String exampleRequestParam(@RequestParam(name = "name") String name, @RequestParam(name = "code") String code) {
         return "参数全部验证通过";
     }
 
