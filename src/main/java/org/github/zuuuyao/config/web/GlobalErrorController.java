@@ -95,7 +95,7 @@ public class GlobalErrorController {
     public ErrorResponse handelMissingServletRequestParameterException(HttpServletRequest request, HttpServletResponse response, MissingServletRequestParameterException exception) {
         ErrorResponse errorResponse = this.buildErrorResponse(exception, request);
         errorResponse.setCode(ErrorResponse.VALIDATION_FAILED);
-        errorResponse.setMessage(String.format("%s , 不能为空!",exception.getParameterName()));
+        errorResponse.setMessage(String.format("%s 不能为空!",exception.getParameterName()));
         return errorResponse;
     }
 
