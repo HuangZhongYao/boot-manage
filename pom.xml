@@ -41,17 +41,26 @@
         <mybatis-plus.version>3.5.7</mybatis-plus.version>
         <modelmapper.version>3.2.0</modelmapper.version>
         <hutool.version>5.8.16</hutool.version>
+        <sa-token.version>1.38.0</sa-token.version>
     </properties>
 
     <dependencies>
 
+        <!-- Sa-Token 权限认证，一款国产开源安全框架。比起SpringSecurity轻量API更简单减少学习成本。在线文档：https://sa-token.cc -->
+        <dependency>
+            <groupId>cn.dev33</groupId>
+            <artifactId>sa-token-spring-boot3-starter</artifactId>
+            <version>${sa-token.version}</version>
+        </dependency>
+
+        <!-- hutool 非常优秀的工具类,本人用了很多年。工具类非常丰富极大减少重复造轮子。在线文档：https://hutool.cn/ -->
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-all</artifactId>
             <version>${hutool.version}</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.modelmapper/modelmapper -->
+        <!-- 对象转换工具 实体->  <-VO -->
         <dependency>
             <groupId>org.modelmapper</groupId>
             <artifactId>modelmapper</artifactId>
