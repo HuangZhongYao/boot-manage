@@ -49,11 +49,12 @@ springdoc:
     title: boot-manage
   swagger-ui:
     version: 1.0.0
-    path: /swagger-ui.html
+    path: /swagger-ui
     tags-sorter: alpha
     operations-sorter: alpha
   api-docs:
     path: /v3/api-docs
+    enabled: true
   group-configs:
     - group: '全部接口'
       paths-to-match: '/**'
@@ -85,13 +86,13 @@ knife4j:
     # 开启自定义swagger-models
     enable-swagger-models: true
     # 自定义swagger-models名称
-    swagger-model-name: DTO模型(swagger-models)
+    swagger-model-name: DTO请求参数模型(swagger-models)
     # 显示默认页脚
     enable-footer: true
     # 开启自定义页脚
     enable-footer-custom: true
     # 自定义页脚内容
-    footer-custom-content: Apache License 2.0 | Copyright  Github-zuuuYao
+    footer-custom-content: Apache License 2.0 | Copyright  2024-[Github-zuuuYao-boot-manage](https://github.com/HuangZhongYao/boot-manage)
 
 #日志
 logging:
