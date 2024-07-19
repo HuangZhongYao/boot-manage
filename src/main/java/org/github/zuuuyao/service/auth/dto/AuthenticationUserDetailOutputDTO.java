@@ -2,6 +2,7 @@ package org.github.zuuuyao.service.auth.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.io.Serial;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -64,6 +65,12 @@ public class AuthenticationUserDetailOutputDTO extends BaseOutputIdAndTimeDTO {
      */
     @Schema(description = "头像url")
     private String avatarUrl;
+
+    /**
+     * 最后登录时间
+     */
+    @Schema(description = "最后登录时间")
+    private LocalDateTime lastLoginTime;
 
     /**
      * 角色列表

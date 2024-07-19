@@ -9,11 +9,7 @@ import lombok.AllArgsConstructor;
 import org.github.zuuuyao.common.base.dto.input.BaseManyLongIdInputDTO;
 import org.github.zuuuyao.common.validate.group.Group;
 import org.github.zuuuyao.service.user.IUserService;
-import org.github.zuuuyao.service.user.dto.input.AddUserInputDTO;
-import org.github.zuuuyao.service.user.dto.input.EditUserInputDTO;
-import org.github.zuuuyao.service.user.dto.input.ResetPasswordInputDTO;
-import org.github.zuuuyao.service.user.dto.input.SetRoleInputDTO;
-import org.github.zuuuyao.service.user.dto.input.UserQueryPageInputDTO;
+import org.github.zuuuyao.service.user.dto.input.*;
 import org.github.zuuuyao.service.user.dto.output.UserVo;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
@@ -76,11 +72,18 @@ public class UserController {
         return userService.setRole(inputDTO);
     }
 
-    @Operation(summary = "重置密码")
+    @Operation(summary = "重置密码",description = "管理员操作的")
     @ApiResponse(responseCode = "200", description = "OK")
     @PatchMapping(value = "/resetPassword", produces = MediaType.APPLICATION_JSON_VALUE)
     public Boolean resetPassword(@RequestBody @Validated ResetPasswordInputDTO inputDTO) {
         return userService.resetPassword(inputDTO);
+    }
+
+    @Operation(summary = "修改密码",description = "用户自己操作的")
+    @ApiResponse(responseCode = "200", description = "OK")
+    @PatchMapping(value = "/changePassword", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Boolean changePassword(@RequestBody @Validated ChangePasswordInputDTO inputDTO) {
+        return userService.changePassword(inputDTO);
     }
 
 }
