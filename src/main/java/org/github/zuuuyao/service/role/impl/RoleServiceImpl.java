@@ -1,9 +1,11 @@
 package org.github.zuuuyao.service.role.impl;
 
+import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Stream;
 import lombok.AllArgsConstructor;
@@ -22,6 +24,7 @@ import org.github.zuuuyao.service.role.IRoleService;
 import org.github.zuuuyao.service.role.dto.input.AddRoleInputDTO;
 import org.github.zuuuyao.service.role.dto.input.EditRoleInputDTO;
 import org.github.zuuuyao.service.role.dto.input.RolePageQueryInputDTO;
+import org.github.zuuuyao.service.role.dto.input.SetRoleUserInputDTO;
 import org.github.zuuuyao.service.role.dto.model.RoleUserModel;
 import org.github.zuuuyao.service.role.dto.output.RolePageQueryListItemVo;
 import org.github.zuuuyao.service.role.dto.output.RoleVo;
@@ -151,6 +154,36 @@ public class RoleServiceImpl implements IRoleService {
         return true;
     }
 
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Boolean setRoleUser(SetRoleUserInputDTO inputDTO) {
+        RoleEntity roleEntity = this.roleRepository.selectById(inputDTO.getRoleId());
+
+        if (null == roleEntity) {
+            throw new UserFriendlyException("改角色不存在");
+        }
+
+        if (CollectionUtil.isEmpty(inputDTO.getUserIds())) {
+            return true;
+        }
+
+        // 已经存在用户
+        List<Long> alreadyExists =
+            userRoleRepository.selectList(Wrappers.<UserRoleEntity>lambdaQuery()
+                    .eq(UserRoleEntity::getRoleId, inputDTO.getRoleId()))
+                .stream()
+                .map(UserRoleEntity::getUserId)
+                .toList();
+
+        // 新增用户
+        Collection<Long> addUser = CollectionUtil.subtract(alreadyExists, inputDTO.getUserIds());
+
+        // 移除用户
+        Collection<Long> removeUser = CollectionUtil.subtract(inputDTO.getUserIds(), alreadyExists);
+
+        return true;
+    }
 
     @Transactional(rollbackFor = Exception.class)
     @Override

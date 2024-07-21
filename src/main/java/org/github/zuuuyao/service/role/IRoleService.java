@@ -6,6 +6,7 @@ import org.github.zuuuyao.common.base.dto.input.BaseManyLongIdInputDTO;
 import org.github.zuuuyao.service.role.dto.input.AddRoleInputDTO;
 import org.github.zuuuyao.service.role.dto.input.EditRoleInputDTO;
 import org.github.zuuuyao.service.role.dto.input.RolePageQueryInputDTO;
+import org.github.zuuuyao.service.role.dto.input.SetRoleUserInputDTO;
 import org.github.zuuuyao.service.role.dto.model.RoleUserModel;
 import org.github.zuuuyao.service.role.dto.output.RolePageQueryListItemVo;
 import org.github.zuuuyao.service.role.dto.output.RoleVo;
@@ -27,4 +28,11 @@ public interface IRoleService {
     Boolean editRole(EditRoleInputDTO inputDTO);
 
     List<RoleUserModel> queryRoleUserList(Long id);
+
+    /**
+     * 批量给角色设置用户
+     * @param inputDTO SetRoleUserInputDTO
+     * @return 成功true
+     */
+    Boolean setRoleUser(SetRoleUserInputDTO inputDTO);
 }

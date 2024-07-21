@@ -15,6 +15,7 @@ import org.github.zuuuyao.service.role.IRoleService;
 import org.github.zuuuyao.service.role.dto.input.AddRoleInputDTO;
 import org.github.zuuuyao.service.role.dto.input.EditRoleInputDTO;
 import org.github.zuuuyao.service.role.dto.input.RolePageQueryInputDTO;
+import org.github.zuuuyao.service.role.dto.input.SetRoleUserInputDTO;
 import org.github.zuuuyao.service.role.dto.model.RoleUserModel;
 import org.github.zuuuyao.service.role.dto.output.RolePageQueryListItemVo;
 import org.github.zuuuyao.service.role.dto.output.RoleVo;
@@ -69,6 +70,13 @@ public class RoleController extends BaseController {
     @ApiOperationSupport(authors = "zuuuYao")
     public List<RoleUserModel> queryRoleUserList(@RequestParam(name = "id") Long id) {
         return roleService.queryRoleUserList(id);
+    }
+
+    @Operation(summary = "角色设置用户", description = "批量给角色设置用户")
+    @ApiResponse(responseCode = "200", description = "ok")
+    @PostMapping("/setRoleUser")
+    public Boolean setRoleUser(@RequestBody @Validated SetRoleUserInputDTO inputDTO) {
+        return roleService.setRoleUser(inputDTO);
     }
 
     @Operation(summary = "添加角色")
