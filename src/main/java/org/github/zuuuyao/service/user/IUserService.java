@@ -1,7 +1,9 @@
 package org.github.zuuuyao.service.user;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import java.util.List;
 import org.github.zuuuyao.common.base.dto.input.BaseManyLongIdInputDTO;
+import org.github.zuuuyao.service.role.dto.output.RoleVo;
 import org.github.zuuuyao.service.user.dto.input.*;
 import org.github.zuuuyao.service.user.dto.output.UserVo;
 
@@ -26,4 +28,7 @@ public interface IUserService {
 
     Boolean changePassword(ChangePasswordInputDTO inputDTO);
 
+    List<UserVo> queryAllUserList();
+
+    List<RoleVo> queryUserRoleList(Long id);
 }

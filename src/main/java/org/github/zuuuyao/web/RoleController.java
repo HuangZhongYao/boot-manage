@@ -7,22 +7,28 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import org.github.zuuuyao.common.base.dto.input.BaseManyLongIdInputDTO;
-import org.github.zuuuyao.common.base.dto.input.BaseQueryPageInputDTO;
 import org.github.zuuuyao.common.base.web.BaseController;
-import org.github.zuuuyao.entity.system.RoleEntity;
 import org.github.zuuuyao.service.role.IRoleService;
 import org.github.zuuuyao.service.role.dto.input.AddRoleInputDTO;
 import org.github.zuuuyao.service.role.dto.input.EditRoleInputDTO;
 import org.github.zuuuyao.service.role.dto.input.RolePageQueryInputDTO;
+import org.github.zuuuyao.service.role.dto.model.RoleUserModel;
 import org.github.zuuuyao.service.role.dto.output.RolePageQueryListItemVo;
 import org.github.zuuuyao.service.role.dto.output.RoleVo;
+import org.github.zuuuyao.service.user.dto.output.UserVo;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @Desc: Created by IntelliJ IDEA.
@@ -45,14 +51,24 @@ public class RoleController extends BaseController {
         return roleService.pageQueryList(inputDTO);
     }
 
-    @Operation(summary = "列表查询", description = "根据角色启用状态查询")
+    @Operation(summary = "根据状态查询角色", description = "根据角色启用状态查询")
     @GetMapping(value = "/queryList", produces = MediaType.APPLICATION_JSON_VALUE)
     @Parameters({
-            @Parameter(name = "enable", description = "默认值true,true查询启用,false=查询禁用"),
+        @Parameter(name = "enable", description = "true|false|不传递,true查询启用,false=查询禁用,不传入=查询全部"),
     })
     @ApiOperationSupport(authors = "zuuuYao")
-    public List<RoleVo> queryList(@RequestParam(name = "enable", defaultValue = "true") Boolean enable) {
+    public List<RoleVo> queryList(Boolean enable) {
         return roleService.queryList(enable);
+    }
+
+    @Operation(summary = "查询角色下的用户", description = "查询指定角色下有哪些用户")
+    @GetMapping(value = "/queryRoleUserList", produces = MediaType.APPLICATION_JSON_VALUE)
+    @Parameters({
+        @Parameter(name = "id", description = "角色id"),
+    })
+    @ApiOperationSupport(authors = "zuuuYao")
+    public List<RoleUserModel> queryRoleUserList(@RequestParam(name = "id") Long id) {
+        return roleService.queryRoleUserList(id);
     }
 
     @Operation(summary = "添加角色")

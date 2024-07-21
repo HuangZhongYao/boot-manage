@@ -5,12 +5,14 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import jakarta.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import org.github.zuuuyao.common.base.dto.input.BaseManyLongIdInputDTO;
 import org.github.zuuuyao.common.exception.UserFriendlyException;
 import org.github.zuuuyao.common.util.ModelMapperUtil;
+import org.github.zuuuyao.entity.system.RoleEntity;
 import org.github.zuuuyao.entity.system.UserEntity;
 import org.github.zuuuyao.entity.system.UserRoleEntity;
 import org.github.zuuuyao.repository.RoleRepository;
@@ -73,6 +75,31 @@ public class UserServiceImpl implements IUserService {
         });
 
         return page;
+    }
+
+    @Override
+    public List<UserVo> queryAllUserList() {
+        return this.userRepository.selectList(null, UserVo.class);
+    }
+
+    @Override
+    public List<RoleVo> queryUserRoleList(Long id) {
+        // 查询用户的角色id
+        List<Long> roleIds = userRoleRepository.selectList(Wrappers.<UserRoleEntity>lambdaQuery()
+                .select(UserRoleEntity::getRoleId)
+                .eq(UserRoleEntity::getUserId, id))
+            .stream()
+            .map(UserRoleEntity::getRoleId)
+            .toList();
+
+        if (roleIds.isEmpty()) {
+            return new ArrayList<>();
+        }
+
+        // 查询角色信息
+        return roleRepository.selectList(
+            Wrappers.<RoleEntity>lambdaQuery().in(RoleEntity::getId, roleIds),
+            RoleVo.class);
     }
 
     @Override
