@@ -25,11 +25,32 @@
             </if>
 
             <if test=" param.name != null and param.name != '' ">
-                AND role.name LIKE  concat('%', #{param.name}, '%')
+                AND role.name LIKE concat('%', #{param.name}, '%')
             </if>
         </where>
 
         GROUP BY
         role.id
+    </select>
+
+    <select id="queryUserRolesByUserId" resultType="org.github.zuuuyao.service.role.dto.output.RoleVo">
+        SELECT role.*
+        FROM sys_role role
+        WHERE role.id IN (SELECT role_id
+                          FROM sys_user_role user_role
+                          WHERE user_role.user_id = #{userId})
+    </select>
+
+    <select id="queryUserRolesByUserIds" resultType="org.github.zuuuyao.service.user.model.UserRoleModel">
+        SELECT
+        role.*,
+        user_role.user_id
+        FROM
+        sys_role role INNER JOIN sys_user_role user_role ON role.id = user_role.role_id
+        WHERE
+        user_role.user_id IN
+        <foreach item="item" index="index" collection="userIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
     </select>
 </mapper>

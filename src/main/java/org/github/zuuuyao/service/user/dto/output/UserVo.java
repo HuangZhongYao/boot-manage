@@ -1,13 +1,15 @@
 package org.github.zuuuyao.service.user.dto.output;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.io.Serial;
+import java.time.LocalDateTime;
+import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 import org.github.zuuuyao.common.base.dto.output.BaseOutputIdAndTimeAndOperationDTO;
 import org.github.zuuuyao.entity.enums.GenderEnum;
-
-import java.io.Serial;
-import java.time.LocalDateTime;
+import org.github.zuuuyao.service.role.dto.output.RoleVo;
+import org.github.zuuuyao.service.user.model.UserRoleModel;
 
 /**
  * @Desc
@@ -68,4 +70,10 @@ public class UserVo extends BaseOutputIdAndTimeAndOperationDTO {
      */
     @Schema(description = "启用状态")
     private Boolean enable;
+
+    /**
+     * 用户角色列表
+     */
+    @Schema(description = "用户角色列表")
+    private List<UserRoleModel> roles;
 }
