@@ -67,6 +67,12 @@ public class AuthenticationUserDetailOutputDTO extends BaseOutputIdAndTimeDTO {
     private String avatarUrl;
 
     /**
+     * 备注信息
+     */
+    @Schema(description = "头像url")
+    private String remark;
+
+    /**
      * 最后登录时间
      */
     @Schema(description = "最后登录时间")
