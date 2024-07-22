@@ -49,7 +49,7 @@ public class UserEntity extends AbstractBaseEntity {
     /**
      * 性别
      */
-    private GenderEnum gender;
+    private GenderEnum gender = GenderEnum.UNKNOWN;
 
     /**
      * 手机号
