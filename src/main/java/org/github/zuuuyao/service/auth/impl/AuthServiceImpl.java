@@ -1,5 +1,7 @@
 package org.github.zuuuyao.service.auth.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import java.util.ArrayList;
 import lombok.AllArgsConstructor;
@@ -7,6 +9,7 @@ import org.github.zuuuyao.common.util.ModelMapperUtil;
 import org.github.zuuuyao.common.util.tree.ITreeNode;
 import org.github.zuuuyao.common.util.tree.TreeUtil;
 import org.github.zuuuyao.entity.system.ResourcesEntity;
+import org.github.zuuuyao.entity.system.UserEntity;
 import org.github.zuuuyao.repository.ResourcesRepository;
 import org.github.zuuuyao.repository.RoleRepository;
 import org.github.zuuuyao.repository.UserRepository;
@@ -71,7 +74,7 @@ public class AuthServiceImpl implements IAuthService {
 
         // 查询当前用户
         AuthenticationUserDetailOutputDTO
-            output = userRepository.selectOne(null, AuthenticationUserDetailOutputDTO.class);
+            output = userRepository.selectOne(new QueryWrapper<UserEntity>().eq("id",1), AuthenticationUserDetailOutputDTO.class);
         // 查询角色
         List<RoleVo> roles = roleRepository.selectList(null, RoleVo.class);
         // 组装角色

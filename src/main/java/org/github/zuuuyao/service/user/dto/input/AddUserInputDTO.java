@@ -32,6 +32,12 @@ public class AddUserInputDTO extends BaseDTO {
     private static final long serialVersionUID = -5329610125578371097L;
 
     /**
+     * 头像地址
+     */
+    @Schema(description = "头像", example = "https://sfsd.com/fins/tx.png",requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private String avatarUrl = "/defaultAvatar.png";
+
+    /**
      * 用户名
      */
     @Schema(description = "用户名", example = "宇宙无敌的高手",requiredMode = Schema.RequiredMode.REQUIRED)

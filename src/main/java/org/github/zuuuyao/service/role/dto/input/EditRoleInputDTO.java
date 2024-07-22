@@ -26,6 +26,9 @@ public class EditRoleInputDTO extends BaseLongIdInputDTO {
     @Serial
     private static final long serialVersionUID = 4929873507751718934L;
 
+    @Schema(description = "角色名")
+    private String name;
+
     @Schema(description = "启用状态 true|false")
     private Boolean enable;
 
