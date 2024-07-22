@@ -194,9 +194,11 @@ public class RoleServiceImpl implements IRoleService {
         // 移除用户id
         Collection<Long> removeUser = CollectionUtil.subtract(alreadyExists, inputDTO.getUserIds());
         // 执行移除
-        userRoleRepository.delete(Wrappers.<UserRoleEntity>lambdaQuery()
-                .eq(UserRoleEntity::getRoleId, inputDTO.getRoleId())
-                .in(UserRoleEntity::getUserId, removeUser));
+        if (!removeUser.isEmpty()) {
+            userRoleRepository.delete(Wrappers.<UserRoleEntity>lambdaQuery()
+                    .eq(UserRoleEntity::getRoleId, inputDTO.getRoleId())
+                    .in(UserRoleEntity::getUserId, removeUser));
+        }
 
         return true;
     }
