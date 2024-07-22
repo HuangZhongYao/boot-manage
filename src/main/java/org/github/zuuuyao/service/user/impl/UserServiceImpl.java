@@ -1,14 +1,11 @@
 package org.github.zuuuyao.service.user.impl;
 
+import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import jakarta.annotation.Resource;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 import org.github.zuuuyao.common.base.dto.input.BaseManyLongIdInputDTO;
 import org.github.zuuuyao.common.exception.UserFriendlyException;
 import org.github.zuuuyao.common.util.ModelMapperUtil;
@@ -20,16 +17,16 @@ import org.github.zuuuyao.repository.UserRepository;
 import org.github.zuuuyao.repository.UserRoleRepository;
 import org.github.zuuuyao.service.role.dto.output.RoleVo;
 import org.github.zuuuyao.service.user.IUserService;
-import org.github.zuuuyao.service.user.dto.input.AddUserInputDTO;
-import org.github.zuuuyao.service.user.dto.input.ChangePasswordInputDTO;
-import org.github.zuuuyao.service.user.dto.input.EditUserInputDTO;
-import org.github.zuuuyao.service.user.dto.input.ResetPasswordInputDTO;
-import org.github.zuuuyao.service.user.dto.input.SetRoleInputDTO;
-import org.github.zuuuyao.service.user.dto.input.UserQueryPageInputDTO;
+import org.github.zuuuyao.service.user.dto.input.*;
 import org.github.zuuuyao.service.user.dto.output.UserVo;
 import org.github.zuuuyao.service.user.model.UserRoleModel;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @Desc
@@ -51,23 +48,23 @@ public class UserServiceImpl implements IUserService {
 
         // 构建查询条件
         LambdaQueryWrapper<UserEntity> queryWrapper = Wrappers.<UserEntity>lambdaQuery()
-            .like(StrUtil.isNotBlank(inputDTO.getUsername()), UserEntity::getAccount,
-                inputDTO.getAccount())
-            .like(StrUtil.isNotBlank(inputDTO.getAccount()), UserEntity::getAccount,
-                inputDTO.getUsername())
-            .eq(null != inputDTO.getGender(), UserEntity::getGender, inputDTO.getGender())
-            .eq(null != inputDTO.getEnable(), UserEntity::getEnable, inputDTO.getEnable());
+                .like(StrUtil.isNotBlank(inputDTO.getUsername()), UserEntity::getAccount,
+                        inputDTO.getAccount())
+                .like(StrUtil.isNotBlank(inputDTO.getAccount()), UserEntity::getAccount,
+                        inputDTO.getUsername())
+                .eq(null != inputDTO.getGender(), UserEntity::getGender, inputDTO.getGender())
+                .eq(null != inputDTO.getEnable(), UserEntity::getEnable, inputDTO.getEnable());
 
         // 执行查询用户
         Page<UserVo> page =
-            userRepository.selectPage(inputDTO.toMybatisPageObject(), queryWrapper, UserVo.class);
+                userRepository.selectPage(inputDTO.toMybatisPageObject(), queryWrapper, UserVo.class);
 
         // 查询全部用的角色并根据用户id分组
         Map<Long, List<UserRoleModel>> userRoleByUserIdGrouping =
-            roleRepository.queryUserRolesByUserIds(
-                    page.getRecords().stream().map(UserVo::getId).toList())
-                .stream()
-                .collect(Collectors.groupingBy(UserRoleModel::getUserId));
+                roleRepository.queryUserRolesByUserIds(
+                                page.getRecords().stream().map(UserVo::getId).toList())
+                        .stream()
+                        .collect(Collectors.groupingBy(UserRoleModel::getUserId));
 
         // 设置用户角色
         page.getRecords().forEach(userVo -> {
@@ -86,11 +83,11 @@ public class UserServiceImpl implements IUserService {
     public List<RoleVo> queryUserRoleList(Long id) {
         // 查询用户的角色id
         List<Long> roleIds = userRoleRepository.selectList(Wrappers.<UserRoleEntity>lambdaQuery()
-                .select(UserRoleEntity::getRoleId)
-                .eq(UserRoleEntity::getUserId, id))
-            .stream()
-            .map(UserRoleEntity::getRoleId)
-            .toList();
+                        .select(UserRoleEntity::getRoleId)
+                        .eq(UserRoleEntity::getUserId, id))
+                .stream()
+                .map(UserRoleEntity::getRoleId)
+                .toList();
 
         if (roleIds.isEmpty()) {
             return new ArrayList<>();
@@ -98,8 +95,8 @@ public class UserServiceImpl implements IUserService {
 
         // 查询角色信息
         return roleRepository.selectList(
-            Wrappers.<RoleEntity>lambdaQuery().in(RoleEntity::getId, roleIds),
-            RoleVo.class);
+                Wrappers.<RoleEntity>lambdaQuery().in(RoleEntity::getId, roleIds),
+                RoleVo.class);
     }
 
     @Override
@@ -107,28 +104,43 @@ public class UserServiceImpl implements IUserService {
 
         // 删除用户角色中间表数据
         userRoleRepository.delete(Wrappers
-            .<UserRoleEntity>lambdaQuery()
-            .in(UserRoleEntity::getUserId, inputDTO.getIds()));
+                .<UserRoleEntity>lambdaQuery()
+                .in(UserRoleEntity::getUserId, inputDTO.getIds()));
 
         // 删除用户
         userRepository.deleteByIds(inputDTO.getIds());
         return true;
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public Boolean addUser(AddUserInputDTO inputDTO) {
 
         // 判断账号是否已存在
         if (userRepository.exists(
-            Wrappers.<UserEntity>lambdaQuery().eq(UserEntity::getAccount, inputDTO.getAccount()))) {
+                Wrappers.<UserEntity>lambdaQuery().eq(UserEntity::getAccount, inputDTO.getAccount()))) {
             throw new UserFriendlyException("账号已存在", 411);
         }
 
         // 将DTO转换为实体对象
         UserEntity userEntity = ModelMapperUtil.map(inputDTO, UserEntity.class);
-
         // 插入数据库
         userRepository.insert(userEntity);
+
+        // 设置角色
+        if (CollectionUtil.isNotEmpty(inputDTO.getRoleIds())) {
+            List<UserRoleEntity> userRoleEntityList = inputDTO.getRoleIds()
+                    .stream()
+                    .map(roleId -> UserRoleEntity
+                            .builder()
+                            .roleId(roleId)
+                            .userId(userEntity.getId())
+                            .build())
+                    .toList();
+
+            this.userRoleRepository.insert(userRoleEntityList, userRoleEntityList.size());
+        }
+
         return true;
     }
 
@@ -137,14 +149,14 @@ public class UserServiceImpl implements IUserService {
 
         // 修改条件
         LambdaQueryWrapper<UserEntity> wrapper = Wrappers
-            .<UserEntity>lambdaQuery()
-            .eq(UserEntity::getId, inputDTO.getId())
-            .last(" limit 1 ");
+                .<UserEntity>lambdaQuery()
+                .eq(UserEntity::getId, inputDTO.getId())
+                .last(" limit 1 ");
 
         UserEntity userEntity = UserEntity
-            .builder()
-            .password(inputDTO.getPassword())
-            .build();
+                .builder()
+                .password(inputDTO.getPassword())
+                .build();
 
         // 执行更新
         int result = this.userRepository.update(userEntity, wrapper);
@@ -181,17 +193,17 @@ public class UserServiceImpl implements IUserService {
 
         // 先清空角色
         userRoleRepository.delete(Wrappers
-            .<UserRoleEntity>lambdaQuery()
-            .eq(UserRoleEntity::getUserId, inputDTO.getUserId()));
+                .<UserRoleEntity>lambdaQuery()
+                .eq(UserRoleEntity::getUserId, inputDTO.getUserId()));
 
         // 使用流创建UserRoleEntity对象
         List<UserRoleEntity> userRoleEntities = inputDTO.getRoleIds()
-            .stream()
-            .map(roleId -> UserRoleEntity.builder()
-                .roleId(roleId)
-                .userId(inputDTO.getUserId())
-                .build())
-            .toList();
+                .stream()
+                .map(roleId -> UserRoleEntity.builder()
+                        .roleId(roleId)
+                        .userId(inputDTO.getUserId())
+                        .build())
+                .toList();
 
         // 批量插入
         userRoleRepository.insert(userRoleEntities, userRoleEntities.size());
@@ -203,7 +215,7 @@ public class UserServiceImpl implements IUserService {
     public Boolean editUser(EditUserInputDTO inputDTO) {
         // 判断该用户id是否有效
         if (!userRepository.exists(
-            Wrappers.<UserEntity>lambdaQuery().eq(UserEntity::getId, inputDTO.getId()))) {
+                Wrappers.<UserEntity>lambdaQuery().eq(UserEntity::getId, inputDTO.getId()))) {
             throw new UserFriendlyException("该用户不存在");
         }
 
