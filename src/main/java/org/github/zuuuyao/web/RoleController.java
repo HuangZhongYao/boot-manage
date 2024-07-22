@@ -74,21 +74,21 @@ public class RoleController extends BaseController {
 
     @Operation(summary = "角色设置用户", description = "批量给角色设置用户")
     @ApiResponse(responseCode = "200", description = "ok")
-    @PostMapping("/setRoleUser")
+    @PostMapping(value = "/setRoleUser", produces = MediaType.APPLICATION_JSON_VALUE)
     public Boolean setRoleUser(@RequestBody @Validated SetRoleUserInputDTO inputDTO) {
         return roleService.setRoleUser(inputDTO);
     }
 
     @Operation(summary = "添加角色")
     @ApiResponse(responseCode = "200", description = "ok")
-    @PostMapping("/addRole")
+    @PostMapping(value = "/addRole",produces = MediaType.APPLICATION_JSON_VALUE)
     public Boolean addRole(@RequestBody @Validated AddRoleInputDTO inputDTO) {
         return roleService.addRole(inputDTO);
     }
 
     @Operation(summary = "编辑角色")
     @ApiResponse(responseCode = "200", description = "ok")
-    @PatchMapping("/editRole")
+    @PatchMapping(value = "/editRole",produces = MediaType.APPLICATION_JSON_VALUE)
     public Boolean editRole(@RequestBody @Validated EditRoleInputDTO inputDTO) {
         return roleService.editRole(inputDTO);
     }
