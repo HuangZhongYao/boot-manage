@@ -81,7 +81,8 @@ public class AuthServiceImpl implements IAuthService {
 
         // sa-token 登录
         StpUtil.login(loginUser.getId(), SaLoginConfig
-                .setDevice(userAgentInfo.getOs() + " " + userAgentInfo.getBrowser())
+                .setDevice("PC")
+                .setExtra("device",userAgentInfo.getOs() + " " + userAgentInfo.getBrowser())
                 .setExtra("id", loginUser.getId())
                 .setExtra("username", loginUser.getUsername())
                 .setExtra("account", loginUser.getAccount())
