@@ -4,6 +4,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
+
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import org.github.zuuuyao.common.base.web.BaseController;
 import org.github.zuuuyao.service.auth.IAuthService;
@@ -59,8 +61,8 @@ public class AuthController extends BaseController {
     @ApiResponse(responseCode = "410", description = "账号或密码错误")
     @ApiResponse(responseCode = "420", description = "验证码错误")
     @PostMapping(value = "/login", produces = MediaType.APPLICATION_JSON_VALUE)
-    public LoginOutputDTO login(@Validated @RequestBody LoginInputDTO inputDTO) {
-        return authService.login(inputDTO);
+    public LoginOutputDTO login(@Validated @RequestBody LoginInputDTO inputDTO, HttpServletRequest request) {
+        return authService.login(inputDTO,request);
     }
 
     @Operation(summary = "获取用户详情", description = "获取用户详情")

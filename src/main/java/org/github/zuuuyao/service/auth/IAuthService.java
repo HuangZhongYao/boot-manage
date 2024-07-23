@@ -1,5 +1,6 @@
 package org.github.zuuuyao.service.auth;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.github.zuuuyao.service.auth.dto.AuthenticationUserDetailOutputDTO;
 import org.github.zuuuyao.service.auth.dto.LoginInputDTO;
 import org.github.zuuuyao.service.auth.dto.LoginOutputDTO;
@@ -21,7 +22,7 @@ public interface IAuthService {
 
     String captcha();
 
-    LoginOutputDTO login(LoginInputDTO inputDTO);
+    LoginOutputDTO login(LoginInputDTO inputDTO, HttpServletRequest request);
 
     AuthenticationUserDetailOutputDTO authenticationUserDetail();
 

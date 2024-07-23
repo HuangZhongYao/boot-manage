@@ -30,6 +30,9 @@ public class LoginOutputDTO extends BaseDTO {
     @Serial
     private static final long serialVersionUID = 6906705936429510608L;
 
+    @Schema(description = "用户id")
+    private Long id;
+
     /**
      * 访问Token
      */
