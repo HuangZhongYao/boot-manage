@@ -36,25 +36,25 @@ public class ApiResponse<Result> extends AbstractResponse {
     /**
      * 创建一个表示操作成功的响应对象。
      *
-     * @param result 操作成功的结果数据。
+     * @param result   操作成功的结果数据。
      * @param <Result> 结果数据的泛型类型。
      * @return 返回一个包含成功结果的响应对象。
      */
     public static <Result> ApiResponse ok(Result result) {
-        return new ApiResponse<Result>(OK, "操作成功", "", true, result);
+        return new ApiResponse<Result>(ResponseCode.OK.getCode(), "操作成功", "", true, result);
 
     }
 
     /**
      * 创建一个表示操作成功的响应对象。
      *
-     * @param result 操作成功的结果数据。
-     * @param msg 响应信息
+     * @param result   操作成功的结果数据。
+     * @param msg      响应信息
      * @param <Result> 结果数据的泛型类型。
      * @return 返回一个包含成功结果的响应对象。
      */
     public static <Result> ApiResponse ok(Result result, String msg) {
-        return new ApiResponse<Result>(OK, msg, "", true, result);
+        return new ApiResponse<Result>(ResponseCode.OK.getCode(), msg, "", true, result);
 
     }
 
@@ -68,7 +68,7 @@ public class ApiResponse<Result> extends AbstractResponse {
      * @return 返回一个新的R对象，表示操作失败。
      */
     public static ApiResponse failed(String msg) {
-        return new ApiResponse(FAILED, msg, "", false, null);
+        return new ApiResponse(ResponseCode.FAILED.getCode(), msg, "", false, null);
 
     }
 
@@ -79,8 +79,8 @@ public class ApiResponse<Result> extends AbstractResponse {
      * 这个方法扩展了创建失败R对象的功能，允许用户指定一个特定的错误代码来更准确地描述失败的原因。
      * 这对于需要根据错误代码进行不同处理逻辑的场景非常有用。
      *
-     * @param msg   失败的详细信息，描述了操作失败的原因。
-     * @param code  自定义的错误代码，用于更精确地描述失败的原因。
+     * @param msg  失败的详细信息，描述了操作失败的原因。
+     * @param code 自定义的错误代码，用于更精确地描述失败的原因。
      * @return 返回一个新的R对象，表示操作失败，并携带自定义的错误代码。
      */
     public static ApiResponse failed(String msg, Integer code) {

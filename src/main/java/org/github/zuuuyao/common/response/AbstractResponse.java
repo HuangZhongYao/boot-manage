@@ -16,11 +16,6 @@ public abstract class AbstractResponse implements Serializable {
     @Serial
     private static final long serialVersionUID = 8628555509588883784L;
 
-    public static final Integer OK = 200;
-    public static final Integer FAILED = 500;
-
-    public static final Integer VALIDATION_FAILED = 410;
-
     /**
      * 响应码
      */

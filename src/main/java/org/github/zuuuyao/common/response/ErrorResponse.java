@@ -16,7 +16,7 @@ public class ErrorResponse extends AbstractResponse {
     }
 
     public ErrorResponse(String msg, String path, Boolean success) {
-        super(FAILED, msg, path, success);
+        super(ResponseCode.FAILED.getCode(), msg, path, success);
     }
 
     @Override

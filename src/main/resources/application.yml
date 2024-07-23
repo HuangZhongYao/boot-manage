@@ -3,7 +3,7 @@ server:
 
 spring:
   profiles:
-    active: dev
+    active: local
   servlet:
     multipart:
       # 限制最大上传文件大小
@@ -30,6 +30,12 @@ spring:
 
 # saToken 相关配置
 sa-token:
+  # token请求头名称
+  token-name: Authorization
+  # token前缀
+  token-prefix: "Bearer"
+  # 是否尝试从 cookie 里读取 Token，此值为 false 后，StpUtil.login(id) 登录时也不会再往前端注入Cookie
+  is-read-cookie: false
   # 自定义jwt秘钥
   jwt-secret-key: "zuuuYao-1NiJ9.eyJsb2dpbklkI"
   # token 有效期（单位：秒） 默认30天，-1 代表永久有效
@@ -115,6 +121,7 @@ logging:
     com.baomidou.mybatisplus.samples.pagination: info
     org.springframework.web: info
     java.sql: info
+    org.github.zuuuyao: debug
   # 日志配置文件
   config: classpath:logback-spring.xml
   # 日志文件位置, 默认值当前目录 boot-manage-logs

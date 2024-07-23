@@ -1,13 +1,12 @@
 package org.github.zuuuyao.config.web;
 
-//import javax.servlet.http.HttpServletRequest;
-//import javax.servlet.http.HttpServletResponse;
-
+import cn.dev33.satoken.exception.NotLoginException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.github.zuuuyao.common.exception.UserFriendlyException;
 import org.github.zuuuyao.common.response.ErrorResponse;
+import org.github.zuuuyao.common.response.ResponseCode;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.ObjectError;
@@ -22,7 +21,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-
 
 /**
  * 全局异常处理
@@ -47,7 +45,9 @@ public class GlobalErrorController {
     @ExceptionHandler(value = UserFriendlyException.class)
     @ResponseBody
     @ResponseStatus(HttpStatus.OK)
-    public ErrorResponse userFriendlyExceptionHandler(UserFriendlyException exception, HttpServletRequest request, HttpServletResponse response) {
+    public ErrorResponse userFriendlyExceptionHandler(UserFriendlyException exception,
+                                                      HttpServletRequest request,
+                                                      HttpServletResponse response) {
 
         // 构建返回信息
         ErrorResponse errorResponse = this.buildErrorResponse(exception, request);
@@ -58,7 +58,43 @@ public class GlobalErrorController {
         StackTraceElement stackTraceElement = stackTrace[0];
 
         // 打印日志
-        log.error("用户友好异常提示信息: {}. 在 {}.{}()方法中第 {} 行. ", exception.getMessage(), stackTraceElement.getClassName(), stackTraceElement.getMethodName(), stackTraceElement.getLineNumber());
+        log.error("用户友好异常提示信息: {}. 在 {}.{}()方法中第 {} 行. ", exception.getMessage(),
+            stackTraceElement.getClassName(), stackTraceElement.getMethodName(),
+            stackTraceElement.getLineNumber());
+        return errorResponse;
+    }
+
+    /**
+     * 处理未登录异常
+     *
+     * @param exception 异常对象
+     * @param request   请求
+     * @param response  响应
+     * @return 响应信息
+     */
+    @ExceptionHandler(value = NotLoginException.class)
+    @ResponseBody
+    @ResponseStatus(HttpStatus.OK)
+    public ErrorResponse userNotLoginException(NotLoginException exception,
+                                               HttpServletRequest request,
+                                               HttpServletResponse response) {
+        // 判断场景值，定制化异常信息 java17语法
+        String message = "";
+        message = switch (exception.getType()) {
+            case NotLoginException.NOT_TOKEN -> "未能读取到有效 token";
+            case NotLoginException.TOKEN_TIMEOUT, NotLoginException.INVALID_TOKEN -> "登录已过期";
+            case NotLoginException.BE_REPLACED -> "已被顶下线";
+            case NotLoginException.KICK_OUT -> "已被踢下线";
+            case NotLoginException.TOKEN_FREEZE -> "token 已被冻结";
+            case NotLoginException.NO_PREFIX -> "未按照指定前缀提交 token";
+            default -> "当前会话未登录";
+        };
+
+        // 构建返回信息
+        ErrorResponse errorResponse = this.buildErrorResponse(exception, request);
+        errorResponse.setCode(ResponseCode.NOT_LOGIN.getCode());
+        errorResponse.setMessage(message);
+
         return errorResponse;
     }
 
@@ -72,30 +108,36 @@ public class GlobalErrorController {
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.OK)
-    public ErrorResponse handelMethodArgumentNotValidException(HttpServletRequest request, HttpServletResponse response, MethodArgumentNotValidException exception) {
+    public ErrorResponse handelMethodArgumentNotValidException(HttpServletRequest request,
+                                                               HttpServletResponse response,
+                                                               MethodArgumentNotValidException exception) {
 
         // 构建错误信息
         ErrorResponse errorResponse = this.buildErrorResponse(exception, request);
         // 获取未验证通过抛出的全部异常
         List<ObjectError> allErrors = exception.getBindingResult().getAllErrors();
         // 获取全部异常的message用 ';' 拼接为字符串
-        String errorMsg = allErrors.stream().map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.joining(";"));
+        String errorMsg = allErrors.stream().map(DefaultMessageSourceResolvable::getDefaultMessage)
+            .collect(Collectors.joining(";"));
         errorResponse.setMessage(errorMsg);
-        errorResponse.setCode(ErrorResponse.VALIDATION_FAILED);
+        errorResponse.setCode(ResponseCode.FAILED.getCode());
 
         return errorResponse;
     }
 
     /**
      * 处理 @RequestParam 参数验证不通过
+     *
      * @return 异常信息
      */
     @ExceptionHandler(MissingServletRequestParameterException.class)
     @ResponseStatus(HttpStatus.OK)
-    public ErrorResponse handelMissingServletRequestParameterException(HttpServletRequest request, HttpServletResponse response, MissingServletRequestParameterException exception) {
+    public ErrorResponse handelMissingServletRequestParameterException(HttpServletRequest request,
+                                                                       HttpServletResponse response,
+                                                                       MissingServletRequestParameterException exception) {
         ErrorResponse errorResponse = this.buildErrorResponse(exception, request);
-        errorResponse.setCode(ErrorResponse.VALIDATION_FAILED);
-        errorResponse.setMessage(String.format("%s 不能为空!",exception.getParameterName()));
+        errorResponse.setCode(ResponseCode.VALIDATION_FAILED.getCode());
+        errorResponse.setMessage(String.format("%s 不能为空!", exception.getParameterName()));
         return errorResponse;
     }
 
@@ -109,13 +151,16 @@ public class GlobalErrorController {
      */
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse handleHttpRequestMethodNotSupported(HttpServletRequest request, HttpServletResponse response, HttpRequestMethodNotSupportedException exception) {
+    public ErrorResponse handleHttpRequestMethodNotSupported(HttpServletRequest request,
+                                                             HttpServletResponse response,
+                                                             HttpRequestMethodNotSupportedException exception) {
 
-        String msg = String.format("%s 该接口不支持 %s,请使用 %s ", request.getRequestURI(), exception.getMethod(), Arrays.toString(exception.getSupportedMethods()));
+        String msg = String.format("%s 该接口不支持 %s,请使用 %s ", request.getRequestURI(),
+            exception.getMethod(), Arrays.toString(exception.getSupportedMethods()));
 
         ErrorResponse errorResponse = this.buildErrorResponse(exception, request);
         errorResponse.setMessage(msg);
-        errorResponse.setCode(ErrorResponse.FAILED);
+        errorResponse.setCode(ResponseCode.FAILED.getCode());
         // 打印日志
         log.error("{} ", msg);
         return errorResponse;
