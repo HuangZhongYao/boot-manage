@@ -31,7 +31,6 @@ public class LoginInputDTO extends BaseDTO {
     @Serial
     private static final long serialVersionUID = 6250000014475264360L;
 
-    @ValidateNotNullAndEmpty(message = "验证码不能为空")
     @Schema(description = "验证码")
     private String captcha;
 
@@ -39,7 +38,7 @@ public class LoginInputDTO extends BaseDTO {
     @Schema(description = "密码")
     private String password;
 
-    @ValidateNotNullAndEmpty(message = "用户名不能为空")
-    @Schema(description = "用户名")
-    private String username;
+    @ValidateNotNullAndEmpty(message = "登录账号不能为空")
+    @Schema(description = "账号")
+    private String account;
 }

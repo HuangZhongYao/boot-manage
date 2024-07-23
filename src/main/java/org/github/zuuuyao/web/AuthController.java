@@ -40,9 +40,8 @@ public class AuthController extends BaseController {
         return authService.queryPermissionsList();
     }
 
-
     @GetMapping(value = "/queryPermissionsTree", produces = MediaType.APPLICATION_JSON_VALUE)
-    @Operation(summary = "查询用户权限树", description = "查询用户权限,已树形结构返回")
+    @Operation(summary = "查询用户权限树", description = "查询用户权限,以树形结构返回")
     @ApiResponse(responseCode = "200", description = "ok")
     public List<ResourcesTreeVo> queryPermissionsTree() {
         return authService.queryPermissionsTree();

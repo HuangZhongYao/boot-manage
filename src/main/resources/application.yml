@@ -28,6 +28,10 @@ spring:
       # 连接测试查询
       connection-test-query: SELECT 1
 
+# saToken 相关配置
+sa-token:
+  # 自定义jwt秘钥
+  jwt-secret-key: "zuuuYao-1NiJ9.eyJsb2dpbklkI"
 
 # mybatisPlus
 mybatis-plus:

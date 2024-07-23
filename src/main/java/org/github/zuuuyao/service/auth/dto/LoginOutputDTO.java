@@ -39,30 +39,30 @@ public class LoginOutputDTO extends BaseDTO {
     /**
      * 用户名
      */
-    @Schema(description = "访问Token令牌")
+    @Schema(description = "用户名")
     private String username;
 
     /**
      * 账号
      */
-    @Schema(description = "访问Token令牌")
+    @Schema(description = "账号")
     private String account;
 
     /**
      * 性别
      */
-    @Schema(description = "访问Token令牌")
+    @Schema(description = "性别")
     private GenderEnum gender;
 
     /**
      * 手机号
      */
-    @Schema(description = "访问Token令牌")
+    @Schema(description = "手机号")
     private String phone;
 
     /**
      * 头像url
      */
-    @Schema(description = "访问Token令牌")
+    @Schema(description = "头像url")
     private String avatarUrl;
 }

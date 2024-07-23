@@ -1,5 +1,7 @@
 package org.github.zuuuyao.service.auth.impl;
 
+import cn.dev33.satoken.stp.SaTokenInfo;
+import cn.dev33.satoken.stp.StpUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -66,6 +68,13 @@ public class AuthServiceImpl implements IAuthService {
 
     @Override
     public LoginOutputDTO login(LoginInputDTO inputDTO) {
+
+        UserEntity loginUser = userRepository.selectOne(Wrappers.<UserEntity>lambdaQuery().eq(UserEntity::getAccount, inputDTO.getAccount()));
+
+        // sa-token 登录
+        StpUtil.login(loginUser.getId());
+        SaTokenInfo tokenInfo = StpUtil.getTokenInfo();
+
         return LoginOutputDTO.builder().accessToken("3434").build();
     }
 
