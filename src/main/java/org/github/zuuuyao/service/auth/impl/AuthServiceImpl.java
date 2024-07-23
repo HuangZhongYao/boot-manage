@@ -115,6 +115,11 @@ public class AuthServiceImpl implements IAuthService {
     }
 
     @Override
+    public void logout() {
+        StpUtil.logout(StpUtil.getLoginId(), "PC");
+    }
+
+    @Override
     public AuthenticationUserDetailOutputDTO authenticationUserDetail() {
 
         // 查询当前用户

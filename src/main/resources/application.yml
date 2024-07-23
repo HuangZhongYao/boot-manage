@@ -30,14 +30,14 @@ spring:
 
 # saToken 相关配置
 sa-token:
+  # 生成token 自定义jwt秘钥
+  jwt-secret-key: "zuuuYao-1NiJ9.eyJsb2dpbklkI"
   # token请求头名称
   token-name: Authorization
   # token前缀
   token-prefix: "Bearer"
   # 是否尝试从 cookie 里读取 Token，此值为 false 后，StpUtil.login(id) 登录时也不会再往前端注入Cookie
   is-read-cookie: false
-  # 自定义jwt秘钥
-  jwt-secret-key: "zuuuYao-1NiJ9.eyJsb2dpbklkI"
   # token 有效期（单位：秒） 默认30天，-1 代表永久有效
   timeout: 604800
   # token 最低活跃频率（单位：秒），如果 token 超过此时间没有访问系统就会被冻结，默认-1 代表不限制，永不冻结
@@ -48,6 +48,8 @@ sa-token:
   is-share: true
   # 是否输出操作日志
   is-log: true
+  # 日志等级（trace、debug、info、warn、error、fatal）
+  log-level: info
 
 # mybatisPlus
 mybatis-plus:

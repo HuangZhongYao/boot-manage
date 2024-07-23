@@ -61,8 +61,16 @@ public class AuthController extends BaseController {
     @ApiResponse(responseCode = "420", description = "账号或密码错误")
     @ApiResponse(responseCode = "430", description = "验证码错误")
     @PostMapping(value = "/login", produces = MediaType.APPLICATION_JSON_VALUE)
-    public LoginOutputDTO login(@Validated @RequestBody LoginInputDTO inputDTO, HttpServletRequest request) {
-        return authService.login(inputDTO,request);
+    public LoginOutputDTO login(@Validated @RequestBody LoginInputDTO inputDTO,
+                                HttpServletRequest request) {
+        return authService.login(inputDTO, request);
+    }
+
+    @Operation(summary = "注销登录", description = "注销登录接口")
+    @ApiResponse(responseCode = "200", description = "ok")
+    @PostMapping(value = "/logout", produces = MediaType.APPLICATION_JSON_VALUE)
+    public void logout() {
+        authService.logout();
     }
 
     @Operation(summary = "获取用户详情", description = "获取用户详情")

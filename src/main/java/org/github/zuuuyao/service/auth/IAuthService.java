@@ -24,6 +24,8 @@ public interface IAuthService {
 
     LoginOutputDTO login(LoginInputDTO inputDTO, HttpServletRequest request);
 
+    void logout();
+
     AuthenticationUserDetailOutputDTO authenticationUserDetail();
 
 }

@@ -40,6 +40,7 @@ public class SaTokenConfigure implements WebMvcConfigurer {
             .addPathPatterns("/**")
             // 放行请求
             .excludePathPatterns(
+                "/error",
                 "/auth/login",
                 "/auth/logout",
                 "/auth/captcha",

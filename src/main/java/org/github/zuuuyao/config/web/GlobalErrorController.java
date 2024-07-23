@@ -1,6 +1,7 @@
 package org.github.zuuuyao.config.web;
 
 import cn.dev33.satoken.exception.NotLoginException;
+import cn.dev33.satoken.exception.NotPermissionException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -65,6 +66,28 @@ public class GlobalErrorController {
     }
 
     /**
+     * 处理无权限
+     * @param exception 异常信息
+     * @param request 请求
+     * @param response 响应
+     * @return 接口返回值
+     */
+    @ExceptionHandler(value = NotPermissionException.class)
+    @ResponseBody
+    @ResponseStatus(HttpStatus.OK)
+    public ErrorResponse handelNotPermissionException(NotPermissionException exception,
+                                               HttpServletRequest request,
+                                               HttpServletResponse response) {
+
+        // 构建返回信息
+        ErrorResponse errorResponse = this.buildErrorResponse(exception, request);
+        errorResponse.setCode(ResponseCode.NO_PERMISSION.getCode());
+        errorResponse.setMessage(ResponseCode.NO_PERMISSION.getMessage());
+
+        return errorResponse;
+    }
+
+    /**
      * 处理未登录异常
      *
      * @param exception 异常对象
@@ -75,7 +98,7 @@ public class GlobalErrorController {
     @ExceptionHandler(value = NotLoginException.class)
     @ResponseBody
     @ResponseStatus(HttpStatus.OK)
-    public ErrorResponse userNotLoginException(NotLoginException exception,
+    public ErrorResponse handelNotLoginException(NotLoginException exception,
                                                HttpServletRequest request,
                                                HttpServletResponse response) {
         // 判断场景值，定制化异常信息 java17语法
