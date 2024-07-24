@@ -1,5 +1,6 @@
 package org.github.zuuuyao.config.mybatis.handel;
 
+import cn.dev33.satoken.stp.StpUtil;
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.reflection.MetaObject;
@@ -25,10 +26,13 @@ public class FieldMetaObjectHandler implements MetaObjectHandler {
      */
     @Override
     public void insertFill(MetaObject metaObject) {
-        LocalDateTime now = LocalDateTime.now();
+        // 填充创建人
+        String operator = this.getLoginUserId();
+        this.strictInsertFill(metaObject, "createdBy", String.class, operator);
+        this.strictInsertFill(metaObject, "updatedBy", String.class, operator);
         // 填充插入时间 ，注意字段名要对不然是无效的
+        LocalDateTime now = LocalDateTime.now();
         this.strictInsertFill(metaObject, "createdTime", LocalDateTime.class, now);
-        // 首次插入时填充更新时间字段值
         this.strictInsertFill(metaObject, "updatedTime", LocalDateTime.class, now);
     }
 
@@ -39,8 +43,24 @@ public class FieldMetaObjectHandler implements MetaObjectHandler {
      */
     @Override
     public void updateFill(MetaObject metaObject) {
-        LocalDateTime now = LocalDateTime.now();
+        // 填充更新人
+        String operator = this.getLoginUserId();
+        this.strictInsertFill(metaObject, "updatedBy", String.class, operator);
         // 填充更新时间
+        LocalDateTime now = LocalDateTime.now();
         this.strictUpdateFill(metaObject, "updatedTime", LocalDateTime.class, now);
+    }
+
+    /**
+     * 获取当前登录人id
+     * @return
+     */
+    private String getLoginUserId(){
+        // 获取操作人
+        Object loginId = StpUtil.getLoginIdDefaultNull();
+        if (null == loginId) {
+            return null;
+        }
+        return String.valueOf(loginId);
     }
 }

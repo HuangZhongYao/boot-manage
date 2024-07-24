@@ -1,5 +1,6 @@
 package org.github.zuuuyao.common.base.entity;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 
 import java.io.Serial;
@@ -19,13 +20,13 @@ public abstract class AbstractBaseEntity  extends AbstractIdAndTimeEntity{
     /**
      * 创建人
      */
-    @TableField("created_by")
+    @TableField(value = "created_by",fill = FieldFill.INSERT)
     private String createdBy;
 
     /**
      * 更新人
      */
-    @TableField("updated_by")
+    @TableField(value = "updated_by",fill = FieldFill.INSERT_UPDATE)
     private String updatedBy;
 
     public String getCreatedBy() {
