@@ -55,7 +55,7 @@ public class AddUserInputDTO extends BaseDTO {
      * 登录密码
      */
     @Schema(description = "密码", example = "123456",requiredMode = Schema.RequiredMode.REQUIRED)
-    @ValidateNotNullAndEmpty(message = "用户名不能为空",groups = {Group.Insert.class,Group.Edit.class})
+    @ValidateNotNullAndEmpty(message = "密码不能为空",groups = {Group.Insert.class,Group.Edit.class})
     private String password;
 
     /**

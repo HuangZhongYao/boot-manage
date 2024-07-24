@@ -9,9 +9,8 @@ import cn.hutool.crypto.digest.DigestUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import jakarta.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.List;
 import lombok.AllArgsConstructor;
+import org.github.zuuuyao.common.constant.RoleConstant;
 import org.github.zuuuyao.common.exception.UserFriendlyException;
 import org.github.zuuuyao.common.util.ModelMapperUtil;
 import org.github.zuuuyao.common.util.RequestUtil;
@@ -19,10 +18,10 @@ import org.github.zuuuyao.common.util.UserAgentInfo;
 import org.github.zuuuyao.common.util.tree.ITreeNode;
 import org.github.zuuuyao.common.util.tree.TreeUtil;
 import org.github.zuuuyao.entity.system.ResourcesEntity;
+import org.github.zuuuyao.entity.system.RoleResourcesEntity;
 import org.github.zuuuyao.entity.system.UserEntity;
-import org.github.zuuuyao.repository.ResourcesRepository;
-import org.github.zuuuyao.repository.RoleRepository;
-import org.github.zuuuyao.repository.UserRepository;
+import org.github.zuuuyao.entity.system.UserRoleEntity;
+import org.github.zuuuyao.repository.*;
 import org.github.zuuuyao.service.auth.IAuthService;
 import org.github.zuuuyao.service.auth.dto.AuthenticationUserDetailOutputDTO;
 import org.github.zuuuyao.service.auth.dto.LoginInputDTO;
@@ -31,6 +30,9 @@ import org.github.zuuuyao.service.resources.model.ResourcesTreeVo;
 import org.github.zuuuyao.service.resources.model.ResourcesVo;
 import org.github.zuuuyao.service.role.dto.output.RoleVo;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @Desc
@@ -44,20 +46,45 @@ public class AuthServiceImpl implements IAuthService {
     ResourcesRepository resourcesRepository;
     UserRepository userRepository;
     RoleRepository roleRepository;
+    UserRoleRepository userRoleRepository;
+    RoleResourcesRepository roleResourcesRepository;
 
 
     @Override
     public List<ResourcesVo> queryPermissionsList() {
         return resourcesRepository.selectList(Wrappers.<ResourcesEntity>lambdaQuery(),
-            ResourcesVo.class);
+                ResourcesVo.class);
     }
 
     @Override
     public List<ResourcesTreeVo> queryPermissionsTree() {
-        // 资源权限列表
-        List<ResourcesTreeVo> resourcesVos =
-            resourcesRepository.selectList(Wrappers.<ResourcesEntity>lambdaQuery(),
-                ResourcesTreeVo.class);
+
+        // 当前用户id
+        long currentUserId = StpUtil.getLoginIdAsLong();
+
+        List<ResourcesTreeVo> resourcesVos = null;
+
+        // 如果有超级管理员角色拥有全部权限
+        if (StpUtil.getRoleList().contains(RoleConstant.SUPER_ADMIN_CODE)) {
+            resourcesVos = resourcesRepository.selectList(null, ResourcesTreeVo.class);
+        } else {
+            // 用户角色id集合
+            List<Long> userRoleIds = userRoleRepository.selectList(Wrappers.<UserRoleEntity>lambdaQuery().eq(UserRoleEntity::getUserId, currentUserId)).stream().map(UserRoleEntity::getRoleId).toList();
+
+            if (userRoleIds.isEmpty()) {
+                return new ArrayList<>();
+            }
+
+            // 角色的权限id集合
+            List<Long> roleResourcesList = roleResourcesRepository.selectList(Wrappers.<RoleResourcesEntity>lambdaQuery().in(RoleResourcesEntity::getRoleId, userRoleIds)).stream().map(RoleResourcesEntity::getResourcesId).toList();
+
+            if (roleResourcesList.isEmpty()) {
+                return new ArrayList<>();
+            }
+
+            // 资源权限列表
+            resourcesVos = resourcesRepository.selectList(Wrappers.<ResourcesEntity>lambdaQuery().in(ResourcesEntity::getId, roleResourcesList), ResourcesTreeVo.class);
+        }
 
         // 转换ITreeNode List
         List<ITreeNode<Long>> treeNodeList = new ArrayList<>(resourcesVos.size());
@@ -77,11 +104,11 @@ public class AuthServiceImpl implements IAuthService {
 
         // 获取用户信息
         UserEntity loginUser = userRepository.selectOne(
-            Wrappers.<UserEntity>lambdaQuery().eq(UserEntity::getAccount, inputDTO.getAccount()));
+                Wrappers.<UserEntity>lambdaQuery().eq(UserEntity::getAccount, inputDTO.getAccount()));
 
         // 输入的密码
         String inputPwd =
-            DigestUtil.sha256Hex(inputDTO.getPassword() + loginUser.getSalt(), CharsetUtil.UTF_8);
+                DigestUtil.sha256Hex(inputDTO.getPassword() + loginUser.getSalt(), CharsetUtil.UTF_8);
 
         // 比对密码
         if (!StrUtil.equals(inputPwd, loginUser.getPassword())) {
@@ -94,24 +121,24 @@ public class AuthServiceImpl implements IAuthService {
 
         // sa-token 登录
         StpUtil.login(loginUser.getId(), SaLoginConfig
-            .setDevice("PC")
-            .setExtra("device", userAgentInfo.getOs() + " " + userAgentInfo.getBrowser())
-            .setExtra("id", loginUser.getId())
-            .setExtra("username", loginUser.getUsername())
-            .setExtra("account", loginUser.getAccount())
-            .setExtra("phone", loginUser.getPhone()));
+                .setDevice("PC")
+                .setExtra("device", userAgentInfo.getOs() + " " + userAgentInfo.getBrowser())
+                .setExtra("id", loginUser.getId())
+                .setExtra("username", loginUser.getUsername())
+                .setExtra("account", loginUser.getAccount())
+                .setExtra("phone", loginUser.getPhone()));
         SaTokenInfo tokenInfo = StpUtil.getTokenInfo();
 
         return LoginOutputDTO
-            .builder()
-            .accessToken(tokenInfo.getTokenValue())
-            .id(loginUser.getId())
-            .account(loginUser.getAccount())
-            .avatarUrl(loginUser.getAvatarUrl())
-            .username(loginUser.getUsername())
-            .gender(loginUser.getGender())
-            .phone(loginUser.getPhone())
-            .build();
+                .builder()
+                .accessToken(tokenInfo.getTokenValue())
+                .id(loginUser.getId())
+                .account(loginUser.getAccount())
+                .avatarUrl(loginUser.getAvatarUrl())
+                .username(loginUser.getUsername())
+                .gender(loginUser.getGender())
+                .phone(loginUser.getPhone())
+                .build();
     }
 
     @Override
@@ -124,8 +151,8 @@ public class AuthServiceImpl implements IAuthService {
 
         // 查询当前用户
         AuthenticationUserDetailOutputDTO
-            output = userRepository.selectOne(new QueryWrapper<UserEntity>().eq("id", 1),
-            AuthenticationUserDetailOutputDTO.class);
+                output = userRepository.selectOne(new QueryWrapper<UserEntity>().eq("id", 1),
+                AuthenticationUserDetailOutputDTO.class);
         // 查询角色
         List<RoleVo> roles = roleRepository.selectList(null, RoleVo.class);
         // 组装角色
