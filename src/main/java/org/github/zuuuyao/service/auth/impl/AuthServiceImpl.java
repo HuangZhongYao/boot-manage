@@ -6,7 +6,6 @@ import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.digest.DigestUtil;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
@@ -153,17 +152,19 @@ public class AuthServiceImpl implements IAuthService {
 
     @Override
     public AuthenticationUserDetailOutputDTO authenticationUserDetail() {
-
+        // 当前用户Id
+        long currentUserId = StpUtil.getLoginIdAsLong();
         // 查询当前用户
         AuthenticationUserDetailOutputDTO
-                output = userRepository.selectOne(new QueryWrapper<UserEntity>().eq("id", 1),
-                AuthenticationUserDetailOutputDTO.class);
-        // 查询角色
-        List<RoleVo> roles = roleRepository.selectList(null, RoleVo.class);
+                output = ModelMapperUtil.map(userRepository.selectById(currentUserId), AuthenticationUserDetailOutputDTO.class);
+        // 用户角色列表
+        List<RoleVo> roles = roleRepository.queryUserRolesByUserId(currentUserId);
+        // 用户权限id集合
+        List<Long> roleResourcesList = roleResourcesRepository.selectList(Wrappers.<RoleResourcesEntity>lambdaQuery().in(RoleResourcesEntity::getRoleId, roles.stream().map(RoleVo::getId).toList())).stream().map(RoleResourcesEntity::getResourcesId).toList();
+        // 资源权限列表
+        List<ResourcesVo> permissions = resourcesRepository.selectList(Wrappers.<ResourcesEntity>lambdaQuery().in(ResourcesEntity::getId, roleResourcesList), ResourcesVo.class);
         // 组装角色
         output.setRoles(roles);
-        // 查询权限
-        List<ResourcesVo> permissions = resourcesRepository.selectList(null, ResourcesVo.class);
         // 组装权限
         output.setPermissions(permissions);
         return output;
