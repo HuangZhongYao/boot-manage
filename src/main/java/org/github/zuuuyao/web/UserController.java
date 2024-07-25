@@ -116,6 +116,7 @@ public class UserController {
 
     @Operation(summary = "修改密码", description = "用户自己操作的")
     @ApiResponse(responseCode = "200", description = "OK")
+    @ApiResponse(responseCode = "420", description = "OK")
     @PatchMapping(value = "/changePassword", produces = MediaType.APPLICATION_JSON_VALUE)
     public Boolean changePassword(@RequestBody @Validated ChangePasswordInputDTO inputDTO) {
         return userService.changePassword(inputDTO);
