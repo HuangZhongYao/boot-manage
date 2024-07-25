@@ -21,7 +21,7 @@
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <!--此日志appender是为开发使用，只配置最底级别，控制台输出的日志级别是大于或等于此级别的日志信息-->
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-            <level>INFO</level>
+            <level>DEBUG</level>
         </filter>
         <encoder>
             <Pattern>${CONSOLE_LOG_PATTERN}</Pattern>
@@ -140,14 +140,14 @@
 
 
     <!--开发环境:打印控制台-->
-    <springProfile name="dev">
+    <springProfile name="dev,local">
         <root level="DEBUG">
             <appender-ref ref="CONSOLE" />
         </root>
     </springProfile>
 
     <!--生产、测试环境:输出到文件-->
-    <springProfile name="prod,test,local">
+    <springProfile name="prod,test">
         <root level="info">
             <appender-ref ref="CONSOLE" />
             <appender-ref ref="DEBUG_FILE" />
