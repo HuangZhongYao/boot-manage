@@ -1,11 +1,11 @@
 package org.github.zuuuyao.service.auth;
 
 import jakarta.servlet.http.HttpServletRequest;
+import org.github.zuuuyao.entity.system.ResourcesEntity;
 import org.github.zuuuyao.service.auth.dto.AuthenticationUserDetailOutputDTO;
 import org.github.zuuuyao.service.auth.dto.LoginInputDTO;
 import org.github.zuuuyao.service.auth.dto.LoginOutputDTO;
 import org.github.zuuuyao.service.resources.model.ResourcesTreeVo;
-import org.github.zuuuyao.service.resources.model.ResourcesVo;
 
 import java.util.List;
 
@@ -16,7 +16,12 @@ import java.util.List;
  */
 public interface IAuthService {
 
-    List<ResourcesVo> queryPermissionsList();
+    /**
+     * 获取用户权限列表
+     * @param userId 用户id
+     * @return 用户权限列表
+     */
+    List<ResourcesEntity> queryPermissionsList(Long userId);
 
     List<ResourcesTreeVo> queryPermissionsTree();
 

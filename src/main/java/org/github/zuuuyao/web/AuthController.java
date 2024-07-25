@@ -8,6 +8,7 @@ import java.util.List;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import org.github.zuuuyao.common.base.web.BaseController;
+import org.github.zuuuyao.entity.system.ResourcesEntity;
 import org.github.zuuuyao.service.auth.IAuthService;
 import org.github.zuuuyao.service.auth.dto.AuthenticationUserDetailOutputDTO;
 import org.github.zuuuyao.service.auth.dto.LoginInputDTO;
@@ -34,13 +35,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController extends BaseController {
 
     IAuthService authService;
-
-    @GetMapping(value = "/queryPermissionsList", produces = MediaType.APPLICATION_JSON_VALUE)
-    @Operation(summary = "查询用户权限列表", description = "查询用户的权限列表")
-    @ApiResponse(responseCode = "200", description = "ok")
-    public List<ResourcesVo> queryPermissionsList() {
-        return authService.queryPermissionsList();
-    }
 
     @GetMapping(value = "/queryPermissionsTree", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "查询用户权限树", description = "查询用户权限,以树形结构返回")

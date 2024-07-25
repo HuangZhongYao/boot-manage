@@ -1,14 +1,12 @@
 package org.github.zuuuyao.config.security;
 
 import cn.dev33.satoken.stp.StpInterface;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import jakarta.annotation.Resource;
 import lombok.AllArgsConstructor;
 import org.github.zuuuyao.entity.system.ResourcesEntity;
-import org.github.zuuuyao.entity.system.RoleEntity;
-import org.github.zuuuyao.entity.system.RoleResourcesEntity;
-import org.github.zuuuyao.entity.system.UserRoleEntity;
 import org.github.zuuuyao.repository.*;
+import org.github.zuuuyao.service.auth.IAuthService;
+import org.github.zuuuyao.service.role.dto.output.RoleVo;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -37,6 +35,8 @@ public class StpInterfaceImpl implements StpInterface {
     RoleRepository roleRepository;
     @Resource
     ResourcesRepository resourcesRepository;
+    @Resource
+    IAuthService authService;
 
     /**
      * 获取用户权限列表
@@ -47,26 +47,10 @@ public class StpInterfaceImpl implements StpInterface {
      */
     @Override
     public List<String> getPermissionList(Object loginId, String loginType) {
-        // 用户角色id集合
-        List<Long> userRoleIds = userRoleRepository.selectList(
-                        Wrappers.<UserRoleEntity>lambdaQuery()
-                                .eq(UserRoleEntity::getUserId, loginId))
-                .stream()
-                .map(UserRoleEntity::getRoleId)
-                .toList();
-        // 角色的权限id集合
-        List<Long> roleResourcesList = roleResourcesRepository.selectList(
-                        Wrappers.<RoleResourcesEntity>lambdaQuery()
-                                .in(RoleResourcesEntity::getRoleId, userRoleIds))
-                .stream().map(RoleResourcesEntity::getResourcesId).toList();
-
+        // 用户权限集合
+        List<ResourcesEntity> permissionsList = this.authService.queryPermissionsList(Long.valueOf(loginId.toString()));
         // 权限编码集合
-        return resourcesRepository.selectList(
-                        Wrappers.<ResourcesEntity>lambdaQuery()
-                                .eq(ResourcesEntity::getId, roleResourcesList))
-                .stream()
-                .map(ResourcesEntity::getCode)
-                .toList();
+        return permissionsList.stream().map(ResourcesEntity::getCode).toList();
     }
 
     /**
@@ -78,15 +62,9 @@ public class StpInterfaceImpl implements StpInterface {
      */
     @Override
     public List<String> getRoleList(Object loginId, String loginType) {
-
-        // 用户角色中间表
-        List<UserRoleEntity> userRoleList = userRoleRepository.selectList(Wrappers.<UserRoleEntity>lambdaQuery().eq(UserRoleEntity::getUserId, loginId));
-        List<Long> userRoleIds = userRoleList.stream().map(UserRoleEntity::getRoleId).toList();
-
         // 角色列表
-        List<RoleEntity> roleList = roleRepository.selectList(Wrappers.<RoleEntity>lambdaQuery().in(RoleEntity::getId, userRoleIds));
-
+        List<RoleVo> roleList = roleRepository.queryUserRolesByUserId(Long.valueOf(loginId.toString()));
         // 转为角色编码集合
-        return roleList.stream().map(RoleEntity::getCode).toList();
+        return roleList.stream().map(RoleVo::getCode).toList();
     }
 }

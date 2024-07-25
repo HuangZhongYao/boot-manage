@@ -50,9 +50,25 @@ public class AuthServiceImpl implements IAuthService {
 
 
     @Override
-    public List<ResourcesVo> queryPermissionsList() {
-        return resourcesRepository.selectList(Wrappers.<ResourcesEntity>lambdaQuery(),
-                ResourcesVo.class);
+    public List<ResourcesEntity> queryPermissionsList(Long userId) {
+        // 如果有超级管理员角色拥有全部权限
+        if (StpUtil.getRoleList().contains(RoleConstant.SUPER_ADMIN_CODE)) {
+            return resourcesRepository.selectList(null);
+        }
+        // 用户角色id集合
+        List<Long> userRoleIds = userRoleRepository.selectList(Wrappers.<UserRoleEntity>lambdaQuery().eq(UserRoleEntity::getUserId, userId)).stream().map(UserRoleEntity::getRoleId).toList();
+
+        if (userRoleIds.isEmpty()) {
+            return new ArrayList<>();
+        }
+
+        // 角色的权限id集合
+        List<Long> roleResourcesList = roleResourcesRepository.selectList(Wrappers.<RoleResourcesEntity>lambdaQuery().in(RoleResourcesEntity::getRoleId, userRoleIds)).stream().map(RoleResourcesEntity::getResourcesId).toList();
+
+        if (roleResourcesList.isEmpty()) {
+            return new ArrayList<>();
+        }
+        return resourcesRepository.selectList(Wrappers.<ResourcesEntity>lambdaQuery().in(ResourcesEntity::getId, roleResourcesList));
     }
 
     @Override
@@ -60,30 +76,8 @@ public class AuthServiceImpl implements IAuthService {
 
         // 当前用户id
         long currentUserId = StpUtil.getLoginIdAsLong();
-
-        List<ResourcesTreeVo> resourcesVos = null;
-
-        // 如果有超级管理员角色拥有全部权限
-        if (StpUtil.getRoleList().contains(RoleConstant.SUPER_ADMIN_CODE)) {
-            resourcesVos = resourcesRepository.selectList(null, ResourcesTreeVo.class);
-        } else {
-            // 用户角色id集合
-            List<Long> userRoleIds = userRoleRepository.selectList(Wrappers.<UserRoleEntity>lambdaQuery().eq(UserRoleEntity::getUserId, currentUserId)).stream().map(UserRoleEntity::getRoleId).toList();
-
-            if (userRoleIds.isEmpty()) {
-                return new ArrayList<>();
-            }
-
-            // 角色的权限id集合
-            List<Long> roleResourcesList = roleResourcesRepository.selectList(Wrappers.<RoleResourcesEntity>lambdaQuery().in(RoleResourcesEntity::getRoleId, userRoleIds)).stream().map(RoleResourcesEntity::getResourcesId).toList();
-
-            if (roleResourcesList.isEmpty()) {
-                return new ArrayList<>();
-            }
-
-            // 资源权限列表
-            resourcesVos = resourcesRepository.selectList(Wrappers.<ResourcesEntity>lambdaQuery().in(ResourcesEntity::getId, roleResourcesList), ResourcesTreeVo.class);
-        }
+        // 获取用户权限列表
+        List<ResourcesTreeVo> resourcesVos = ModelMapperUtil.mapList(this.queryPermissionsList(currentUserId), ResourcesTreeVo.class);
 
         // 转换ITreeNode List
         List<ITreeNode<Long>> treeNodeList = new ArrayList<>(resourcesVos.size());
@@ -159,10 +153,8 @@ public class AuthServiceImpl implements IAuthService {
                 output = ModelMapperUtil.map(userRepository.selectById(currentUserId), AuthenticationUserDetailOutputDTO.class);
         // 用户角色列表
         List<RoleVo> roles = roleRepository.queryUserRolesByUserId(currentUserId);
-        // 用户权限id集合
-        List<Long> roleResourcesList = roleResourcesRepository.selectList(Wrappers.<RoleResourcesEntity>lambdaQuery().in(RoleResourcesEntity::getRoleId, roles.stream().map(RoleVo::getId).toList())).stream().map(RoleResourcesEntity::getResourcesId).toList();
         // 资源权限列表
-        List<ResourcesVo> permissions = resourcesRepository.selectList(Wrappers.<ResourcesEntity>lambdaQuery().in(ResourcesEntity::getId, roleResourcesList), ResourcesVo.class);
+        List<ResourcesVo> permissions = ModelMapperUtil.mapList(this.queryPermissionsList(currentUserId), ResourcesVo.class);
         // 组装角色
         output.setRoles(roles);
         // 组装权限
