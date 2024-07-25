@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.session.SqlSession;
 import org.github.zuuuyao.common.util.ModelMapperUtil;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -19,16 +20,83 @@ import java.util.function.Consumer;
  */
 public interface BaseMapperExtension<TEntity> extends BaseMapper<TEntity> {
 
+    /**
+     * 根据id查询并转换为指定类型
+     *
+     * @param id     id
+     * @param uClass 转换目标类型
+     * @param <U>    目标类型
+     * @return 转换后类型结果
+     */
+    default <U> U selectById(Serializable id, Class<U> uClass) {
+        TEntity entity = this.selectById(id);
+        return ModelMapperUtil.map(entity, uClass);
+    }
+
+    /**
+     * 根据id查询并转换为指定类型,然后进行函数处理
+     *
+     * @param id       id
+     * @param uClass   转换目标类型
+     * @param consumer 处理函数
+     * @param <U>      目标类型
+     * @return 转换后类型结果
+     */
+    default <U> U selectById(Serializable id, Class<U> uClass, Consumer<U> consumer) {
+        TEntity entity = this.selectById(id);
+        return ModelMapperUtil.map(entity, uClass, consumer);
+    }
+
+    /**
+     * 根据id查询并转换为指定类型,然后进行函数处理
+     *
+     * @param id         id
+     * @param uClass     转换目标类型
+     * @param biConsumer 处理函数
+     * @param <U>        目标类型
+     * @return 转换后类型结果
+     */
+    default <U> U selectById(Serializable id, Class<U> uClass, BiConsumer<TEntity, U> biConsumer) {
+        TEntity entity = this.selectById(id);
+        return ModelMapperUtil.map(entity, uClass, biConsumer);
+    }
+
+    /**
+     * 根据wrapper条件查询并转换为指定类型
+     *
+     * @param queryWrapper 查询条件
+     * @param uClass       转换目标类型
+     * @param <U>          目标类型
+     * @return 转换后类型结果
+     */
     default <U> U selectOne(Wrapper<TEntity> queryWrapper, Class<U> uClass) {
         TEntity entity = this.selectOne(queryWrapper);
         return ModelMapperUtil.map(entity, uClass);
     }
 
+    /**
+     * 根据wrapper条件查询并转换为指定类型,然后进行函数处理
+     *
+     * @param queryWrapper 查询条件
+     * @param uClass       转换目标类型
+     * @param consumer     处理函数
+     * @param <U>          目标类型
+     * @return 转换后类型结果
+     */
     default <U> U selectOne(Wrapper<TEntity> queryWrapper, Class<U> uClass, Consumer<U> consumer) {
         TEntity entity = this.selectOne(queryWrapper);
         return ModelMapperUtil.map(entity, uClass, consumer);
     }
 
+    /**
+     * 根据wrapper条件查询并转换为指定类型,然后进行函数处理
+     *
+     * @param queryWrapper 查询条件
+     * @param uClass       转换目标类型
+     * @param biConsumer   处理函数
+     * @param <U>          目标类型
+     * @return 转换后类型结果
+     */
     default <U> U selectOne(Wrapper<TEntity> queryWrapper, Class<U> uClass,
                             BiConsumer<TEntity, U> biConsumer) {
         TEntity entity = this.selectOne(queryWrapper);
@@ -90,7 +158,7 @@ public interface BaseMapperExtension<TEntity> extends BaseMapper<TEntity> {
      * @return Page
      */
     default <U> Page<U> selectPage(long pageIndex, long pageSize, Wrapper<TEntity> queryWrapper,
-                                    Class<U> uClass) {
+                                   Class<U> uClass) {
         // 分页条件
         Page page = new Page(pageIndex, pageSize);
         // 执行分页查询
@@ -110,7 +178,7 @@ public interface BaseMapperExtension<TEntity> extends BaseMapper<TEntity> {
      * @return Page
      */
     default <U> Page<U> selectPage(Page page, Wrapper<TEntity> queryWrapper,
-                                    Class<U> uClass) {
+                                   Class<U> uClass) {
         // 执行分页查询
         Page<U> pageResult = this.selectPage(page, queryWrapper);
         // 设置数据
@@ -130,7 +198,7 @@ public interface BaseMapperExtension<TEntity> extends BaseMapper<TEntity> {
      * @return Page
      */
     default <U> Page<U> selectPage(long pageIndex, long pageSize, Wrapper<TEntity> queryWrapper,
-                                    Class<U> uClass, Consumer<U> consumer) {
+                                   Class<U> uClass, Consumer<U> consumer) {
 
         // 分页条件
         Page page = new Page(pageIndex, pageSize);
@@ -154,7 +222,7 @@ public interface BaseMapperExtension<TEntity> extends BaseMapper<TEntity> {
      * @return Page
      */
     default <U> Page<U> selectPage(Page page, Wrapper<TEntity> queryWrapper,
-                                    Class<U> uClass, Consumer<U> consumer) {
+                                   Class<U> uClass, Consumer<U> consumer) {
 
         // 执行分页查询
         Page<U> pageResult = this.selectPage(page, queryWrapper);
@@ -178,7 +246,7 @@ public interface BaseMapperExtension<TEntity> extends BaseMapper<TEntity> {
      * @return Page
      */
     default <U> Page<U> selectPage(long pageIndex, long pageSize, Wrapper<TEntity> queryWrapper,
-                                    Class<U> uClass, BiConsumer<TEntity, U> biconsumer) {
+                                   Class<U> uClass, BiConsumer<TEntity, U> biconsumer) {
 
         // 分页条件
         Page page = new Page(pageIndex, pageSize);
@@ -202,7 +270,7 @@ public interface BaseMapperExtension<TEntity> extends BaseMapper<TEntity> {
      * @return Page
      */
     default <U> Page<U> selectPage(Page page, Wrapper<TEntity> queryWrapper,
-                                    Class<U> uClass, BiConsumer<TEntity, U> biconsumer) {
+                                   Class<U> uClass, BiConsumer<TEntity, U> biconsumer) {
 
         // 执行分页查询
         Page pageResult = this.selectPage(page, queryWrapper);
