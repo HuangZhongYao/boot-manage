@@ -31,4 +31,7 @@ public interface IUserService {
     List<UserVo> queryAllUserList();
 
     List<RoleVo> queryUserRoleList(Long id);
+
+    Boolean setState(SetUserStateInputDTO inputDTO);
+
 }

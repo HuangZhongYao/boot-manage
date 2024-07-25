@@ -31,6 +31,7 @@ import org.github.zuuuyao.service.user.dto.input.ChangePasswordInputDTO;
 import org.github.zuuuyao.service.user.dto.input.EditUserInputDTO;
 import org.github.zuuuyao.service.user.dto.input.ResetPasswordInputDTO;
 import org.github.zuuuyao.service.user.dto.input.SetRoleInputDTO;
+import org.github.zuuuyao.service.user.dto.input.SetUserStateInputDTO;
 import org.github.zuuuyao.service.user.dto.input.UserQueryPageInputDTO;
 import org.github.zuuuyao.service.user.dto.output.UserVo;
 import org.github.zuuuyao.service.user.model.UserRoleModel;
@@ -249,6 +250,23 @@ public class UserServiceImpl implements IUserService {
         // 执行更新
         userRepository.updateById(updateEntity);
 
+        return true;
+    }
+
+    @Override
+    public Boolean setState(SetUserStateInputDTO inputDTO) {
+        // 判断该用户id是否有效
+        if (!userRepository.exists(
+            Wrappers.<UserEntity>lambdaQuery().eq(UserEntity::getId, inputDTO.getId()))) {
+            throw new UserFriendlyException("该用户不存在");
+        }
+        // 更新对象
+        UserEntity updateEntity = UserEntity.builder()
+            .enable(inputDTO.getState())
+            .build();
+        updateEntity.setId(inputDTO.getId());
+
+        userRepository.updateById(updateEntity);
         return true;
     }
 }

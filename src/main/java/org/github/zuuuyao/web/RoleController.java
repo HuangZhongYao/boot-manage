@@ -15,11 +15,12 @@ import org.github.zuuuyao.service.role.IRoleService;
 import org.github.zuuuyao.service.role.dto.input.AddRoleInputDTO;
 import org.github.zuuuyao.service.role.dto.input.EditRoleInputDTO;
 import org.github.zuuuyao.service.role.dto.input.RolePageQueryInputDTO;
+import org.github.zuuuyao.service.role.dto.input.SetRoleStateInputDTO;
 import org.github.zuuuyao.service.role.dto.input.SetRoleUserInputDTO;
 import org.github.zuuuyao.service.role.dto.model.RoleUserModel;
 import org.github.zuuuyao.service.role.dto.output.RolePageQueryListItemVo;
 import org.github.zuuuyao.service.role.dto.output.RoleVo;
-import org.github.zuuuyao.service.user.dto.output.UserVo;
+import org.github.zuuuyao.service.user.dto.input.SetUserStateInputDTO;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -91,6 +92,13 @@ public class RoleController extends BaseController {
     @PatchMapping(value = "/editRole",produces = MediaType.APPLICATION_JSON_VALUE)
     public Boolean editRole(@RequestBody @Validated EditRoleInputDTO inputDTO) {
         return roleService.editRole(inputDTO);
+    }
+
+    @Operation(summary = "启用|停用角色", description = "启用|停用角色接口")
+    @ApiResponse(responseCode = "200", description = "OK")
+    @PatchMapping(value = "/setState", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Boolean setState(@RequestBody @Validated SetRoleStateInputDTO inputDTO) {
+        return roleService.setState(inputDTO);
     }
 
     @Operation(summary = "删除角色")

@@ -16,6 +16,7 @@ import org.github.zuuuyao.repository.RoleResourcesRepository;
 import org.github.zuuuyao.service.resources.IResourcesService;
 import org.github.zuuuyao.service.resources.dto.input.AddResourcesInputDTO;
 import org.github.zuuuyao.service.resources.dto.input.EditResourcesInputDTO;
+import org.github.zuuuyao.service.resources.dto.input.SetResourcesStateInputDTO;
 import org.github.zuuuyao.service.resources.model.ResourcesTreeVo;
 import org.github.zuuuyao.service.resources.model.ResourcesVo;
 import org.springframework.stereotype.Service;
@@ -42,7 +43,8 @@ public class ResourcesServiceImpl implements IResourcesService {
     public Boolean delResources(BaseManyLongIdInputDTO inputDTO) {
 
         // 删除资源关联角色中间表数据
-        roleResourcesRepository.delete(Wrappers.<RoleResourcesEntity>lambdaQuery().in(RoleResourcesEntity::getResourcesId, inputDTO.getIds()));
+        roleResourcesRepository.delete(Wrappers.<RoleResourcesEntity>lambdaQuery()
+            .in(RoleResourcesEntity::getResourcesId, inputDTO.getIds()));
         // 删除资源
         resourcesRepository.deleteByIds(inputDTO.getIds());
         return true;
@@ -52,15 +54,17 @@ public class ResourcesServiceImpl implements IResourcesService {
     public Boolean addResources(AddResourcesInputDTO inputDTO) {
 
         // 判断资源编码是否重复
-        if (resourcesRepository.exists(Wrappers.<ResourcesEntity>lambdaQuery().eq(ResourcesEntity::getCode, inputDTO.getCode()))) {
+        if (resourcesRepository.exists(Wrappers.<ResourcesEntity>lambdaQuery()
+            .eq(ResourcesEntity::getCode, inputDTO.getCode()))) {
             throw new UserFriendlyException("资源编码已存在,换一个吧");
         }
 
         // DTO转换实体
-        ResourcesEntity resourcesEntity = ModelMapperUtil.map(inputDTO, ResourcesEntity.class, (source, target) -> {
-            target.setSort(source.getOrder());
-            target.setIsShow(source.getShow());
-        });
+        ResourcesEntity resourcesEntity =
+            ModelMapperUtil.map(inputDTO, ResourcesEntity.class, (source, target) -> {
+                target.setSort(source.getOrder());
+                target.setIsShow(source.getShow());
+            });
 
         // 插入数据库
         resourcesRepository.insert(resourcesEntity);
@@ -78,18 +82,19 @@ public class ResourcesServiceImpl implements IResourcesService {
         if (!resourcesEntity.getCode().equals(inputDTO.getCode())) {
             // 判断资源编码是否重复
             if (resourcesRepository.exists(Wrappers.<ResourcesEntity>lambdaQuery()
-                    .ne(ResourcesEntity::getCode, resourcesEntity.getCode())
-                    .eq(ResourcesEntity::getCode, inputDTO.getCode()))) {
+                .ne(ResourcesEntity::getCode, resourcesEntity.getCode())
+                .eq(ResourcesEntity::getCode, inputDTO.getCode()))) {
 
                 throw new UserFriendlyException("资源编码已存在,换一个吧!");
             }
         }
 
         // DTO转换实体
-        ResourcesEntity updateEntity = ModelMapperUtil.map(inputDTO, ResourcesEntity.class, (source, target) -> {
-            target.setSort(source.getOrder());
-            target.setIsShow(source.getShow());
-        });
+        ResourcesEntity updateEntity =
+            ModelMapperUtil.map(inputDTO, ResourcesEntity.class, (source, target) -> {
+                target.setSort(source.getOrder());
+                target.setIsShow(source.getShow());
+            });
 
         // 执行更新
         this.resourcesRepository.updateById(updateEntity);
@@ -98,12 +103,24 @@ public class ResourcesServiceImpl implements IResourcesService {
     }
 
     @Override
+    public Boolean setState(SetResourcesStateInputDTO inputDTO) {
+
+        ResourcesEntity updateEntity =
+            ResourcesEntity.builder().enable(inputDTO.getState()).build();
+        updateEntity.setId(inputDTO.getId());
+
+        resourcesRepository.updateById(updateEntity);
+
+        return true;
+    }
+
+    @Override
     public List<ResourcesVo> button(Long parentId) {
         // 查询条件
         LambdaQueryWrapper<ResourcesEntity> queryWrapper = Wrappers.<ResourcesEntity>lambdaQuery()
-                .eq(ResourcesEntity::getParentId, parentId)
-                .eq(ResourcesEntity::getType, ResourcesTypeEnum.BUTTON)
-                .orderByAsc(ResourcesEntity::getSort);
+            .eq(ResourcesEntity::getParentId, parentId)
+            .eq(ResourcesEntity::getType, ResourcesTypeEnum.BUTTON)
+            .orderByAsc(ResourcesEntity::getSort);
         // 执行查询转换类型
         return this.resourcesRepository.selectList(queryWrapper, ResourcesVo.class);
     }
@@ -111,7 +128,8 @@ public class ResourcesServiceImpl implements IResourcesService {
     @Override
     public List<ResourcesTreeVo> resourcesTree() {
         // 查询全部资源列表
-        List<ResourcesTreeVo> resourcesVos = resourcesRepository.selectList(null, ResourcesTreeVo.class);
+        List<ResourcesTreeVo> resourcesVos =
+            resourcesRepository.selectList(null, ResourcesTreeVo.class);
         // 转换ITreeNode List
         List<ITreeNode<Long>> treeNodeList = new ArrayList<>(resourcesVos.size());
         treeNodeList.addAll(resourcesVos);

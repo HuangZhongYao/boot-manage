@@ -6,6 +6,7 @@ import org.github.zuuuyao.common.base.dto.input.BaseManyLongIdInputDTO;
 import org.github.zuuuyao.service.role.dto.input.AddRoleInputDTO;
 import org.github.zuuuyao.service.role.dto.input.EditRoleInputDTO;
 import org.github.zuuuyao.service.role.dto.input.RolePageQueryInputDTO;
+import org.github.zuuuyao.service.role.dto.input.SetRoleStateInputDTO;
 import org.github.zuuuyao.service.role.dto.input.SetRoleUserInputDTO;
 import org.github.zuuuyao.service.role.dto.model.RoleUserModel;
 import org.github.zuuuyao.service.role.dto.output.RolePageQueryListItemVo;
@@ -35,4 +36,12 @@ public interface IRoleService {
      * @return 成功true
      */
     Boolean setRoleUser(SetRoleUserInputDTO inputDTO);
+
+    /**
+     * 设置角色启用状态
+     * @param inputDTO
+     * @return
+     */
+    Boolean setState(SetRoleStateInputDTO inputDTO);
+
 }

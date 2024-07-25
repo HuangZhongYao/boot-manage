@@ -9,8 +9,10 @@ import org.github.zuuuyao.common.base.dto.input.BaseManyLongIdInputDTO;
 import org.github.zuuuyao.service.resources.IResourcesService;
 import org.github.zuuuyao.service.resources.dto.input.AddResourcesInputDTO;
 import org.github.zuuuyao.service.resources.dto.input.EditResourcesInputDTO;
+import org.github.zuuuyao.service.resources.dto.input.SetResourcesStateInputDTO;
 import org.github.zuuuyao.service.resources.model.ResourcesTreeVo;
 import org.github.zuuuyao.service.resources.model.ResourcesVo;
+import org.github.zuuuyao.service.role.dto.input.SetRoleStateInputDTO;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -58,6 +60,13 @@ public class ResourcesController {
     @PatchMapping(value = "/editResources", produces = MediaType.APPLICATION_JSON_VALUE)
     public Boolean editResources(@RequestBody @Validated EditResourcesInputDTO inputDTO) {
         return resourcesService.editResources(inputDTO);
+    }
+
+    @Operation(summary = "启用|停用资源", description = "启用|停用资源接口")
+    @ApiResponse(responseCode = "200", description = "OK")
+    @PatchMapping(value = "/setState", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Boolean setState(@RequestBody @Validated SetResourcesStateInputDTO inputDTO) {
+        return resourcesService.setState(inputDTO);
     }
 
     @Operation(summary = "删除资源")

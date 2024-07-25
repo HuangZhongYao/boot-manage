@@ -18,6 +18,7 @@ import org.github.zuuuyao.service.user.dto.input.ChangePasswordInputDTO;
 import org.github.zuuuyao.service.user.dto.input.EditUserInputDTO;
 import org.github.zuuuyao.service.user.dto.input.ResetPasswordInputDTO;
 import org.github.zuuuyao.service.user.dto.input.SetRoleInputDTO;
+import org.github.zuuuyao.service.user.dto.input.SetUserStateInputDTO;
 import org.github.zuuuyao.service.user.dto.input.UserQueryPageInputDTO;
 import org.github.zuuuyao.service.user.dto.output.UserVo;
 import org.springframework.http.MediaType;
@@ -90,6 +91,13 @@ public class UserController {
     @PatchMapping(value = "/editUser", produces = MediaType.APPLICATION_JSON_VALUE)
     public Boolean addUser(@RequestBody @Validated EditUserInputDTO inputDTO) {
         return userService.editUser(inputDTO);
+    }
+
+    @Operation(summary = "启用|停用用户", description = "启用|停用用户接口")
+    @ApiResponse(responseCode = "200", description = "OK")
+    @PatchMapping(value = "/setState", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Boolean setState(@RequestBody @Validated SetUserStateInputDTO inputDTO) {
+        return userService.setState(inputDTO);
     }
 
     @Operation(summary = "分配角色", description = "给用户分配角色")

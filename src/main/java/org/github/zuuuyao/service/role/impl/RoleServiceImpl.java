@@ -20,6 +20,7 @@ import org.github.zuuuyao.service.role.IRoleService;
 import org.github.zuuuyao.service.role.dto.input.AddRoleInputDTO;
 import org.github.zuuuyao.service.role.dto.input.EditRoleInputDTO;
 import org.github.zuuuyao.service.role.dto.input.RolePageQueryInputDTO;
+import org.github.zuuuyao.service.role.dto.input.SetRoleStateInputDTO;
 import org.github.zuuuyao.service.role.dto.input.SetRoleUserInputDTO;
 import org.github.zuuuyao.service.role.dto.model.RoleUserModel;
 import org.github.zuuuyao.service.role.dto.output.RolePageQueryListItemVo;
@@ -199,6 +200,23 @@ public class RoleServiceImpl implements IRoleService {
                     .eq(UserRoleEntity::getRoleId, inputDTO.getRoleId())
                     .in(UserRoleEntity::getUserId, removeUser));
         }
+
+        return true;
+    }
+
+    @Override
+    public Boolean setState(SetRoleStateInputDTO inputDTO) {
+
+        // 判断该角色id是否有效
+        if (!roleRepository.exists(
+            Wrappers.<RoleEntity>lambdaQuery().eq(RoleEntity::getId, inputDTO.getId()))) {
+            throw new UserFriendlyException("该角色不存在");
+        }
+
+        RoleEntity updateEntity = RoleEntity.builder().enable(inputDTO.getState()).build();
+        updateEntity.setId(inputDTO.getId());
+
+        roleRepository.updateById(updateEntity);
 
         return true;
     }
