@@ -59,7 +59,7 @@ public class AuthController extends BaseController {
     @Operation(summary = "登录接口", description = "登录接口")
     @ApiResponse(responseCode = "200", description = "ok")
     @ApiResponse(responseCode = "420", description = "账号或密码错误")
-    @ApiResponse(responseCode = "430", description = "验证码错误")
+    @ApiResponse(responseCode = "430", description = "账号不存在")
     @PostMapping(value = "/login", produces = MediaType.APPLICATION_JSON_VALUE)
     public LoginOutputDTO login(@Validated @RequestBody LoginInputDTO inputDTO,
                                 HttpServletRequest request) {

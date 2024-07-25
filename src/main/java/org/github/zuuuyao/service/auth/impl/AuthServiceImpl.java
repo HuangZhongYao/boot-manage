@@ -106,6 +106,11 @@ public class AuthServiceImpl implements IAuthService {
         UserEntity loginUser = userRepository.selectOne(
                 Wrappers.<UserEntity>lambdaQuery().eq(UserEntity::getAccount, inputDTO.getAccount()));
 
+        // 判断账号有效性
+        if (null == loginUser) {
+            throw new UserFriendlyException("账号不存在", 430);
+        }
+
         // 输入的密码
         String inputPwd =
                 DigestUtil.sha256Hex(inputDTO.getPassword() + loginUser.getSalt(), CharsetUtil.UTF_8);

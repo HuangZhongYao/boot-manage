@@ -52,6 +52,13 @@ public class AddUserInputDTO extends BaseDTO {
     private String account;
 
     /**
+     * 启用状态
+     */
+    @Schema(description = "启用状态", example = "true",requiredMode = Schema.RequiredMode.REQUIRED)
+    @ValidateNotNullAndEmpty(message = "启用状态不能为空",groups = Group.Insert.class)
+    private Boolean enable;
+
+    /**
      * 登录密码
      */
     @Schema(description = "密码", example = "123456",requiredMode = Schema.RequiredMode.REQUIRED)
