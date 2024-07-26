@@ -1,0 +1,40 @@
+package ${packageName};
+
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.*;
+import org.github.zuuuyao.common.base.dto.BaseDTO;
+import java.io.Serial;
+#if(${hasBigDecimal})
+import java.math.BigDecimal;
+#end
+#if(${hasLocalDateTime})
+import java.time.LocalDateTime;
+#end
+
+/**
+ * ${comments}
+ * @Desc Created by Velocity Generate.
+ * @Time ${datetime}
+ * @Author ${author}
+ */
+@Getter
+@Setter
+@ToString
+@Builder
+@EqualsAndHashCode(callSuper = false)
+@AllArgsConstructor
+@NoArgsConstructor
+public class ${className} extends BaseDTO {
+
+    @Serial
+    private static final long serialVersionUID = -1;
+
+
+    #foreach ($column in $columns)
+    /**
+     * ${column.columnComment}
+     */
+    private ${column.attrType} ${column.attrName};
+
+    #end
+}

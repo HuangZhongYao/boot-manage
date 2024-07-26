@@ -1,0 +1,75 @@
+package ${packageName};
+
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import jakarta.annotation.Resource;
+import lombok.AllArgsConstructor;
+import org.github.zuuuyao.common.base.dto.input.BaseManyLongIdInputDTO;
+import org.github.zuuuyao.common.util.ModelMapperUtil;
+import org.github.zuuuyao.repository.${irepository};
+import ${servicePackageName}.${iservice};
+import ${addInputDTOPackageName}.${addInputDTO};
+import ${editInputDTOPackageName}.${editInputDTO};
+import ${queryPageInputDTOPackageName}.${queryPageInputDTO};
+import ${entityVOPackageName}.${entityVO};
+import org.springframework.stereotype.Service;
+
+/**
+ * ${comments}
+ * @Desc Created by Velocity Generate.
+ * @Time ${datetime}
+ * @Author ${author}
+ */
+@Service
+@AllArgsConstructor
+public class ${className} implements ${iservice} {
+
+    @Resource
+    ${irepository} ${repository};
+
+    @Override
+    public Page<${entityVO}> pageQueryList(${queryPageInputDTO} inputDTO) {
+
+        // 构建查询条件
+        LambdaQueryWrapper<${entityName}> queryWrapper = Wrappers.<${entityName}>lambdaQuery();
+
+        // 执行查询用户
+        Page<${entityVO}> page = ${repository}.selectPage(inputDTO.toMybatisPageObject(), queryWrapper, ${entityVO}.class);
+
+        return page;
+    }
+
+
+    @Override
+    public Boolean delUser(BaseManyLongIdInputDTO inputDTO) {
+
+        // 删除用户
+        ${repository}.deleteByIds(inputDTO.getIds());
+        return true;
+    }
+
+    @Override
+    public Boolean addUser(${addInputDTO} inputDTO) {
+
+        // 将DTO转换为实体对象
+        ${entityName} addEntity = ModelMapperUtil.map(inputDTO, ${entityName}.class);
+        // 插入数据库
+        ${repository}.insert(addEntity);
+
+        return true;
+    }
+
+    @Override
+    public Boolean editUser(${editInputDTO} inputDTO) {
+
+        // 更新的数据
+        ${entityName} updateEntity = ModelMapperUtil.map(inputDTO, ${entityName}.class);
+
+        // 执行更新
+        ${repository}.updateById(updateEntity);
+
+        return true;
+    }
+
+}

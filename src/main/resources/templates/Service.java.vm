@@ -1,0 +1,25 @@
+package ${packageName};
+
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import org.github.zuuuyao.common.base.dto.input.BaseManyLongIdInputDTO;
+import ${addInputDTOPackageName}.${addInputDTO};
+import ${editInputDTOPackageName}.${editInputDTO};
+import ${queryPageInputDTOPackageName}.${queryPageInputDTO};
+import ${entityVOPackageName}.${entityVO};
+
+/**
+ * ${comments}
+ * @Desc Created by Velocity Generate.
+ * @Time ${datetime}
+ * @Author ${author}
+ */
+public interface ${className} {
+
+    Boolean addUser(${addInputDTO} inputDTO);
+
+    Boolean delUser(BaseManyLongIdInputDTO inputDTO);
+
+    Boolean editUser(${editInputDTO} inputDTO);
+
+    Page<${entityVO}> pageQueryList(${queryPageInputDTO} inputDTO);
+}

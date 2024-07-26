@@ -1,0 +1,40 @@
+package ${packageName};
+
+import lombok.*;
+import org.github.zuuuyao.common.base.dto.output.BaseOutputIdAndTimeAndOperationDTO;
+#if(${hasBigDecimal})
+import java.math.BigDecimal;
+#end
+#if(${hasLocalDateTime})
+import java.time.LocalDateTime;
+#end
+import java.io.Serial;
+
+
+/**
+ * ${comments}
+ * @Desc Created by Velocity Generate.
+ * @Time ${datetime}
+ * @Author ${author}
+ */
+@Getter
+@Setter
+@Builder
+@ToString
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(callSuper = false)
+public class ${className} extends BaseOutputIdAndTimeAndOperationDTO {
+
+    @Serial
+    private static final long serialVersionUID = -1;
+
+    #foreach ($column in $columns)
+    /**
+     * ${column.columnComment}
+     */
+    private ${column.attrType} ${column.attrName};
+
+    #end
+}
+
