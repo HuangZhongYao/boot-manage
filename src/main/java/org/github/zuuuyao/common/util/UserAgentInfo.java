@@ -36,4 +36,8 @@ public class UserAgentInfo {
      * 浏览器版本
      */
     private String browserVersion;
+    /**
+     * 平台
+     */
+    private String platform;
 }

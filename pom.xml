@@ -42,18 +42,9 @@
         <modelmapper.version>3.2.0</modelmapper.version>
         <hutool.version>5.8.16</hutool.version>
         <sa-token.version>1.38.0</sa-token.version>
-        <ua-parser.version>1.6.1</ua-parser.version>
     </properties>
 
     <dependencies>
-
-
-        <!--解析 User-Agent-->
-        <dependency>
-            <groupId>com.github.ua-parser</groupId>
-            <artifactId>uap-java</artifactId>
-            <version>${ua-parser.version}</version>
-        </dependency>
 
         <!-- Sa-Token 权限认证，一款国产开源安全框架。比起SpringSecurity轻量API更简单减少学习成本。在线文档：https://sa-token.cc -->
         <dependency>
