@@ -1,0 +1,16 @@
+package org.github.zuuuyao.repository;
+
+import org.github.zuuuyao.config.mybatis.extension.BaseMapperExtension;
+import org.springframework.stereotype.Repository;
+import ${entityPackageName}.${entityName};
+
+/**
+ * ${comments}
+ * @Desc Created by Velocity Generate.
+ * @Time ${datetime}
+ * @Author ${author}
+ */
+@Repository
+public interface ${className} extends BaseMapperExtension<${entityName}> {
+
+}

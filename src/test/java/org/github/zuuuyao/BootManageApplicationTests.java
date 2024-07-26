@@ -133,13 +133,30 @@ class BootManageApplicationTests {
         context.put("columns", columns);
         context.put("hasLocalDateTime", true);
 
-        // 获取模板
-        Template template = velocityEngine.getTemplate("templates/Entity.java.vm");
+        // 获取生成实体模板
+//        Template template = velocityEngine.getTemplate("templates/Entity.java.vm");
+
+        Template repostioryTemplate = velocityEngine.getTemplate("templates/Repository.java.vm");
+        // 设置模板上下文的变量
+        VelocityContext repositoryTemplateContext = new VelocityContext();
+        repositoryTemplateContext.put("comments", "用户表仓储层 (DAO层或Mapper层)");
+        repositoryTemplateContext.put("author", "zuuuYao");
+        repositoryTemplateContext.put("email", "17685306043@163.com");
+        repositoryTemplateContext.put("datetime", DateUtil.now());
+        repositoryTemplateContext.put("className", "UserRepository");
+        repositoryTemplateContext.put("entityName", "UserEntity");
+        repositoryTemplateContext.put("entityPackageName", "org.github.zuuuyao.entity.system");
+
 
         // 生成代码并输出
-        StringWriter writer = new StringWriter();
-        template.merge(context, writer);
-        System.out.println(writer.toString());
+//        StringWriter writer = new StringWriter();
+//        template.merge(context, writer);
+//        System.out.println(writer.toString());
+
+
+        StringWriter write2 = new StringWriter();
+        repostioryTemplate.merge(repositoryTemplateContext,write2);
+        System.out.println(write2.toString());
     }
 
     @Test
