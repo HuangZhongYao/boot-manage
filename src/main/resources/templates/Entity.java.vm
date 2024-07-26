@@ -1,54 +1,22 @@
-package ${package}.${moduleName}.entity;
-
-
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.extension.activerecord.Model;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import java.io.Serializable;
-import java.util.Date;
-#if(${hasBigDecimal})
-import java.math.BigDecimal;
-#end
-
-
-/**
- * ${comments}
- *
- * @author ${author}
- * @email ${email}
- * @date ${datetime}
- */
-@Data
-@TableName("${tableName}")
-@EqualsAndHashCode(callSuper = true)
-public class ${className} extends Model<${className}> implements Serializable {
-	private static final long serialVersionUID = 1L;
-
-	#foreach ($column in $columns)
-	//$column.columnComment
-	#if($column.columnKey != $null && $column.columnKey == "PRI")
-	@TableId
-	#end
-	private $column.attrType $column.attrNameMin;
-	#end
-
-}
-package org.github.zuuuyao.entity.system;
+package org.github.zuuuyao.entity.${moduleName};
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.*;
 import org.github.zuuuyao.common.base.entity.AbstractBaseEntity;
-import org.github.zuuuyao.entity.enums.GenderEnum;
-
-import java.io.Serial;
+#if(${hasBigDecimal})
+import java.math.BigDecimal;
+#end
+#if(${hasLocalDateTime})
 import java.time.LocalDateTime;
+#end
+import java.io.Serial;
+
 
 /**
- * @Desc 系统用户表
- * @Time 2024-07-11 16:31
- * @Author HuangZhongYao
+ * ${comments}
+ * @Desc Created by Velocity Generate.
+ * @Time ${datetime}
+ * @Author ${author}
  */
 @Getter
 @Setter
@@ -57,61 +25,18 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-@TableName("sys_user")
-public class UserEntity extends AbstractBaseEntity {
+@TableName("${tableName}")
+public class ${className} extends AbstractBaseEntity {
 
     @Serial
-    private static final long serialVersionUID = -4075127738715995785L;
+    private static final long serialVersionUID = -1;
 
+    #foreach ($column in $columns)
     /**
-     * 用户名
+     * ${column.columnComment}
      */
-    private String username;
+    private ${column.attrType} ${column.attrName};
 
-    /**
-     * 账号
-     */
-    private String account;
-
-    /**
-     * 密码
-     */
-    private String password;
-
-    /**
-     * 密码盐
-     */
-    private String salt;
-
-    /**
-     * 性别
-     */
-    private GenderEnum gender = GenderEnum.UNKNOWN;
-
-    /**
-     * 手机号
-     */
-    private String phone;
-
-    /**
-     * 头像url
-     */
-    private String avatarUrl;
-
-    /**
-     * 备注
-     */
-    private String remark;
-
-    /**
-     * 最后登录时间
-     */
-    private LocalDateTime lastLoginTime;
-
-    /**
-     * 启用状态
-     */
-    private Boolean enable;
-
+    #end
 }
 

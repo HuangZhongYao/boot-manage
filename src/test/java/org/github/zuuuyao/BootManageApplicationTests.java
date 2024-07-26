@@ -1,5 +1,6 @@
 package org.github.zuuuyao;
 
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
@@ -16,13 +17,16 @@ import org.github.zuuuyao.common.util.tree.ITreeNode;
 import org.github.zuuuyao.common.util.tree.TreeUtil;
 import org.github.zuuuyao.entity.system.ResourcesEntity;
 import org.github.zuuuyao.repository.ResourcesRepository;
+import org.github.zuuuyao.service.generate.model.ColumnModel;
 import org.github.zuuuyao.service.resources.model.ResourcesTreeVo;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Stream;
 
 @SpringBootTest
 class BootManageApplicationTests {
@@ -36,15 +40,98 @@ class BootManageApplicationTests {
         velocityEngine.setProperty(RuntimeConstants.RESOURCE_LOADER, "classpath");
         velocityEngine.setProperty("classpath.resource.loader.class", ClasspathResourceLoader.class.getName());
 
+        // 创建十个字段
+//        Stream<ColumnModel> columnModels = Stream.generate(() ->
+//                ColumnModel
+//                        .builder()
+//                        .tableName("sys_user")
+//                        .columnName("username")
+//                        .dataType("varchar")
+//                        .columnComment("用户名")
+//                        .attrName("username")
+//                        .attrType("String")
+//                        .build()
+//        ).limit(10);
+
+        // 创建列字段
+        List<ColumnModel> columns = Arrays.asList(
+                ColumnModel
+                        .builder()
+                        .tableName("sys_user")
+                        .columnName("username")
+                        .dataType("varchar")
+                        .columnComment("用户名")
+                        .attrName("username")
+                        .attrType("String")
+                        .build(),
+                ColumnModel
+                        .builder()
+                        .tableName("sys_user")
+                        .columnName("account")
+                        .dataType("varchar")
+                        .columnComment("登录账号")
+                        .attrName("account")
+                        .attrType("String")
+                        .build(),
+                ColumnModel
+                        .builder()
+                        .tableName("sys_user")
+                        .columnName("enable")
+                        .dataType("tinyint")
+                        .columnComment("启用状态")
+                        .attrName("enable")
+                        .attrType("Boolean")
+                        .build(),
+                ColumnModel
+                        .builder()
+                        .tableName("sys_user")
+                        .columnName("created_by")
+                        .dataType("bigint")
+                        .columnComment("创建人id")
+                        .attrName("createdBy")
+                        .attrType("Long")
+                        .build(),
+                ColumnModel
+                        .builder()
+                        .tableName("sys_user")
+                        .columnName("phone")
+                        .dataType("varchar")
+                        .columnComment("手机号码")
+                        .attrName("phone")
+                        .attrType("String")
+                        .build(),
+                ColumnModel
+                        .builder()
+                        .tableName("sys_user")
+                        .columnName("age")
+                        .dataType("int")
+                        .columnComment("年龄")
+                        .attrName("age")
+                        .attrType("Integer")
+                        .build(),
+                ColumnModel
+                        .builder()
+                        .tableName("sys_user")
+                        .columnName("login_time")
+                        .dataType("datetime")
+                        .columnComment("登录时间")
+                        .attrName("loginTime")
+                        .attrType("LocalDateTime")
+                        .build()
+        );
+
         // 设置模板上下文的变量
         VelocityContext context = new VelocityContext();
-        context.put("packageName", "com.zuuuyao.entity");
+        context.put("moduleName", "user");
         context.put("comments", "用户表实体类");
         context.put("author", "zuuuYao");
         context.put("email", "17685306043@163.com");
-        context.put("datetime", "2024-7-26 14:23");
+        context.put("datetime", DateUtil.now());
         context.put("className", "SysUserEntity");
         context.put("tableName", "sys_user");
+        context.put("serialVersionUID", System.currentTimeMillis());
+        context.put("columns", columns);
+        context.put("hasLocalDateTime", true);
 
         // 获取模板
         Template template = velocityEngine.getTemplate("templates/Entity.java.vm");
