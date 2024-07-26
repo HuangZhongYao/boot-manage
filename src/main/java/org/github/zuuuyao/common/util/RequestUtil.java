@@ -1,6 +1,7 @@
 package org.github.zuuuyao.common.util;
 
-import ua_parser.*;
+import cn.hutool.http.useragent.UserAgent;
+import cn.hutool.http.useragent.UserAgentUtil;
 
 /**
  * @Desc
@@ -9,30 +10,23 @@ import ua_parser.*;
  */
 public final class RequestUtil {
 
-    /**
-     * 解析请求中的user-Agent
-     */
-    public final static Parser USER_AGENT_PARSER = new Parser();
-
 
     public static UserAgentInfo parseUserAgent(String userAgentStr) {
-        Client client = USER_AGENT_PARSER.parse(userAgentStr);
+
+        UserAgent client = UserAgentUtil.parse(userAgentStr);
 
         if (null == client) {
             return UserAgentInfo.builder().build();
         }
 
-        UserAgent userAgent = client.userAgent;
-        OS os = client.os;
-        Device device = client.device;
-
         return UserAgentInfo
                 .builder()
-                .browser(userAgent.family)
-                .browserVersion(userAgent.major + "." + client.userAgent.minor)
-                .os(client.os.family)
-                .osVersion(os.major)
-                .device(device.family)
+                .browser(client.getBrowser().getName())
+                .browserVersion(client.getVersion())
+                .os(client.getOs().toString())
+                .osVersion(client.getOsVersion())
+                .device(client.getOsVersion())
+                .platform(client.getPlatform().getName())
                 .build();
     }
 

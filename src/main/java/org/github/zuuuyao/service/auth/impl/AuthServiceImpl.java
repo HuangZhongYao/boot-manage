@@ -1,5 +1,6 @@
 package org.github.zuuuyao.service.auth.impl;
 
+import cn.dev33.satoken.session.SaSession;
 import cn.dev33.satoken.stp.SaLoginConfig;
 import cn.dev33.satoken.stp.SaTokenInfo;
 import cn.dev33.satoken.stp.StpUtil;
@@ -116,15 +117,18 @@ public class AuthServiceImpl implements IAuthService {
         // 解析User-Agent的信息
         String header = request.getHeader("User-Agent");
         UserAgentInfo userAgentInfo = RequestUtil.parseUserAgent(header);
-
-        // sa-token 登录
+        // sa-token 登录 并设置扩展参数, 通过StpUtil.getExtra("user");获取扩展参数
         StpUtil.login(loginUser.getId(), SaLoginConfig
                 .setDevice("PC")
                 .setExtra("device", userAgentInfo.getOs() + " " + userAgentInfo.getBrowser())
                 .setExtra("id", loginUser.getId())
                 .setExtra("username", loginUser.getUsername())
                 .setExtra("account", loginUser.getAccount())
-                .setExtra("phone", loginUser.getPhone()));
+                .setExtra("phone", loginUser.getPhone())
+                .setExtra("user",loginUser)
+        );
+
+        // 获取token信息
         SaTokenInfo tokenInfo = StpUtil.getTokenInfo();
 
         return LoginOutputDTO

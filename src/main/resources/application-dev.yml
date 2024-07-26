@@ -5,6 +5,19 @@ spring:
     password: caiji
     driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.zaxxer.hikari.HikariDataSource
+  data:
+    redis:
+      host: 127.0.0.1
+      port: 6379
+      password: DTT_YFB_2019
+      database: 11
+      connect-timeout: 10s
+      lettuce:
+        pool:
+          max-active: 200
+          max-wait: -1ms
+          max-idle: 10
+          min-idle: 0
 
 # knife4j的增强配置
 knife4j:
