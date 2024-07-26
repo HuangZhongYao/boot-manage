@@ -69,6 +69,14 @@
             <version>${sa-token.version}</version>
         </dependency>
 
+        <!-- Sa-Token 整合 Redis （使用 jackson 序列化方式） -->
+        <dependency>
+            <groupId>cn.dev33</groupId>
+            <artifactId>sa-token-redis-jackson</artifactId>
+            <version>${sa-token.version}</version>
+        </dependency>
+
+
         <!-- hutool 非常优秀的工具类,本人用了很多年。工具类非常丰富极大减少重复造轮子。在线文档：https://hutool.cn/ -->
         <dependency>
             <groupId>cn.hutool</groupId>
@@ -87,6 +95,12 @@
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>
+        </dependency>
+
+        <!-- springboot redis starter-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
         </dependency>
 
         <!--mybatis-plus-->
