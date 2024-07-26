@@ -110,6 +110,13 @@
             <version>${mybatis-plus.version}</version>
         </dependency>
 
+        <!-- 代码生成器-->
+        <dependency>
+            <groupId>org.apache.velocity</groupId>
+            <artifactId>velocity</artifactId>
+            <version>1.7</version>
+        </dependency>
+
         <!--mysql 驱动-->
         <dependency>
             <groupId>com.mysql</groupId>
