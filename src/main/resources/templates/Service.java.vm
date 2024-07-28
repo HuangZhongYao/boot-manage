@@ -15,11 +15,11 @@ import ${entityVOPackageName}.${entityVO};
  */
 public interface ${className} {
 
-    Boolean addUser(${addInputDTO} inputDTO);
+    Boolean add${domainName}(${addInputDTO} inputDTO);
 
-    Boolean delUser(BaseManyLongIdInputDTO inputDTO);
+    Boolean del${domainName}(BaseManyLongIdInputDTO inputDTO);
 
-    Boolean editUser(${editInputDTO} inputDTO);
+    Boolean edit${domainName}(${editInputDTO} inputDTO);
 
     Page<${entityVO}> pageQueryList(${queryPageInputDTO} inputDTO);
 }

@@ -160,9 +160,10 @@ class BootManageApplicationTests {
         ZipOutputStream zip = new ZipOutputStream(outputStream);
 
         // 实体
-        String entityName = StrUtil.upperFirst(StrUtil.toCamelCase(tabName)) + "Entity";
+        String entityClassName = StrUtil.upperFirst(StrUtil.toCamelCase(tabName)) + "Entity";
+        String domainName = StrUtil.upperFirst(StrUtil.toCamelCase(tabName));
         String entityPackageName = basePackage  + ".entity" + "." + moduleName;
-        String entityFullName = entityPackageName + "." + entityName;
+        String entityFullName = entityPackageName + "." + entityClassName;
         String entityComments = tabComments + "实体";
 
 
@@ -171,7 +172,7 @@ class BootManageApplicationTests {
         entityContext.put("comments", entityComments);
         entityContext.put("author", author);
         entityContext.put("datetime", dateTime);
-        entityContext.put("className", entityName);
+        entityContext.put("className", entityClassName);
         entityContext.put("tableName", tabName);
         entityContext.put("columns", columns);
         entityContext.put("hasLocalDateTime", true);
@@ -314,7 +315,7 @@ class BootManageApplicationTests {
         String repositoryComments = tabComments + "仓储层";
         VelocityContext repositoryContext = new VelocityContext();
         repositoryContext.put("entityFullName", entityFullName);
-        repositoryContext.put("entityName", entityName);
+        repositoryContext.put("entityName", entityClassName);
         repositoryContext.put("comments", repositoryComments);
         repositoryContext.put("author", author);
         repositoryContext.put("datetime", dateTime);
@@ -374,6 +375,7 @@ class BootManageApplicationTests {
         serviceContext.put("queryPageInputDTO", queryPageInputDTOName);
         serviceContext.put("entityVOPackageName", outputDTOPackageName);
         serviceContext.put("entityVO", entityVOName);
+        serviceContext.put("domainName", domainName);
 
         writer.getBuffer().setLength(0);
         serviceTemplate.merge(serviceContext, writer);
@@ -415,7 +417,8 @@ class BootManageApplicationTests {
         serviceImplContext.put("servicePackageName", servicePackageName);
         serviceImplContext.put("iservice", serviceName);
         serviceImplContext.put("entityPackageName", "org.github.zuuuyao.entity." + moduleName);
-        serviceImplContext.put("entityName", entityName);
+        serviceImplContext.put("entityName", entityClassName);
+        serviceImplContext.put("domainName", domainName);
 
         writer.getBuffer().setLength(0);
         serviceImplTemplate.merge(serviceImplContext, writer);
@@ -458,7 +461,7 @@ class BootManageApplicationTests {
         controllerContext.put("requestMapping", "/" + moduleName);
         controllerContext.put("tab", tabComments.replaceAll("表", ""));
         controllerContext.put("tagName", tabComments.replaceAll("表", "") + "接口");
-
+        controllerContext.put("domainName", domainName);
 
         writer.getBuffer().setLength(0);
         controllerlTemplate.merge(controllerContext, writer);

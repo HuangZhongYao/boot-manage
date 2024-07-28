@@ -43,7 +43,7 @@ public class ${className} implements ${iservice} {
 
 
     @Override
-    public Boolean delUser(BaseManyLongIdInputDTO inputDTO) {
+    public Boolean del${domainName}(BaseManyLongIdInputDTO inputDTO) {
 
         // 删除用户
         ${repository}.deleteByIds(inputDTO.getIds());
@@ -51,7 +51,7 @@ public class ${className} implements ${iservice} {
     }
 
     @Override
-    public Boolean addUser(${addInputDTO} inputDTO) {
+    public Boolean add${domainName}(${addInputDTO} inputDTO) {
 
         // 将DTO转换为实体对象
         ${entityName} addEntity = ModelMapperUtil.map(inputDTO, ${entityName}.class);
@@ -62,7 +62,7 @@ public class ${className} implements ${iservice} {
     }
 
     @Override
-    public Boolean editUser(${editInputDTO} inputDTO) {
+    public Boolean edit${domainName}(${editInputDTO} inputDTO) {
 
         // 更新的数据
         ${entityName} updateEntity = ModelMapperUtil.map(inputDTO, ${entityName}.class);
