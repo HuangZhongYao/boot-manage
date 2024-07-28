@@ -38,7 +38,7 @@ public class ${className} {
     @Resource
     ${iservice} ${service};
 
-    @Operation(summary = "分页查询", description = "分页查询用户接口")
+    @Operation(summary = "分页查询", description = "分页查询${tab}接口}")
     @GetMapping(value = "/pageQueryList", produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiResponse(responseCode = "200", description = "OK")
     @ApiOperationSupport(authors = "zuuuYao")
@@ -46,21 +46,21 @@ public class ${className} {
         return ${service}.pageQueryList(inputDTO);
     }
 
-    @Operation(summary = "添加用户", description = "添加用户接口")
+    @Operation(summary = "添加${tab}", description = "添加${tab}接口")
     @ApiResponse(responseCode = "200", description = "OK")
     @PostMapping(value = "/addUser", produces = MediaType.APPLICATION_JSON_VALUE)
     public Boolean addUser(@RequestBody @Validated ${addInputDTO} inputDTO) {
         return ${service}.addUser(inputDTO);
     }
 
-    @Operation(summary = "删除用户")
+    @Operation(summary = "删除${tab}", description = "根据id删除接口")
     @ApiResponse(responseCode = "200", description = "OK")
     @DeleteMapping(value = "/delUser", produces = MediaType.APPLICATION_JSON_VALUE)
     public Boolean delUser(@RequestBody @Validated BaseManyLongIdInputDTO inputDTO) {
         return ${service}.delUser(inputDTO);
     }
 
-    @Operation(summary = "编辑用户", description = "编辑用户接口")
+    @Operation(summary = "编辑${tab}", description = "编辑${tab}接口")
     @ApiResponse(responseCode = "200", description = "OK")
     @PatchMapping(value = "/editUser", produces = MediaType.APPLICATION_JSON_VALUE)
     public Boolean addUser(@RequestBody @Validated ${editInputDTO} inputDTO) {

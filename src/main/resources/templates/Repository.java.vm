@@ -2,7 +2,7 @@ package org.github.zuuuyao.repository;
 
 import org.github.zuuuyao.config.mybatis.extension.BaseMapperExtension;
 import org.springframework.stereotype.Repository;
-import ${entityPackageName}.${entityName};
+import ${entityFullName};
 
 /**
  * ${comments}

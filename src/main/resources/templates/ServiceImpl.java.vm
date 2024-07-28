@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import org.github.zuuuyao.common.base.dto.input.BaseManyLongIdInputDTO;
 import org.github.zuuuyao.common.util.ModelMapperUtil;
 import org.github.zuuuyao.repository.${irepository};
+import ${entityPackageName}.${entityName};
 import ${servicePackageName}.${iservice};
 import ${addInputDTOPackageName}.${addInputDTO};
 import ${editInputDTOPackageName}.${editInputDTO};

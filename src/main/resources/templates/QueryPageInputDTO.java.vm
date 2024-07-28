@@ -4,12 +4,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 import org.github.zuuuyao.common.base.dto.input.BaseQueryPageInputDTO;
 import java.io.Serial;
-#if(${hasBigDecimal})
-import java.math.BigDecimal;
-#end
-#if(${hasLocalDateTime})
-import java.time.LocalDateTime;
-#end
 
 /**
  * ${comments}
@@ -29,12 +23,10 @@ public class ${className} extends BaseQueryPageInputDTO {
     @Serial
     private static final long serialVersionUID = -1;
 
-
-    #foreach ($column in $columns)
     /**
-     * ${column.columnComment}
+     * 查询关键词
      */
-    private ${column.attrType} ${column.attrName};
+    @Schema(description = "查询关键词")
+    private String keywords;
 
-    #end
 }

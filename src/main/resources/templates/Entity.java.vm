@@ -1,4 +1,4 @@
-package org.github.zuuuyao.entity.${moduleName};
+package ${packageName};
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.*;

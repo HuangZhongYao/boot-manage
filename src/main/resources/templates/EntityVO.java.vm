@@ -1,6 +1,7 @@
 package ${packageName};
 
 import lombok.*;
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.github.zuuuyao.common.base.dto.output.BaseOutputIdAndTimeAndOperationDTO;
 #if(${hasBigDecimal})
 import java.math.BigDecimal;
@@ -33,6 +34,7 @@ public class ${className} extends BaseOutputIdAndTimeAndOperationDTO {
     /**
      * ${column.columnComment}
      */
+    @Schema(description = "${column.columnComment}")
     private ${column.attrType} ${column.attrName};
 
     #end

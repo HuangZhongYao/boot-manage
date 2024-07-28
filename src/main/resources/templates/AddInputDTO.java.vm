@@ -34,6 +34,7 @@ public class ${className} extends BaseDTO {
     /**
      * ${column.columnComment}
      */
+    @Schema(description = "${column.columnComment}")
     private ${column.attrType} ${column.attrName};
 
     #end
