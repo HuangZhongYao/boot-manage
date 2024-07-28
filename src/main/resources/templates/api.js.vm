@@ -1,0 +1,38 @@
+import { request } from '@/utils'
+
+/**
+ * ${tab}Api接口
+ * Desc   Created by Velocity Generate.
+ * Time   ${datetime}
+ * Author ${author}
+ * Copyright © 2024 ZuuuuYao By GitHub
+ */
+export default {
+  /**
+   * 创建${tab}。
+   * @param {Object} data - 包含新${tab}信息的对象。
+   * @returns {Promise} - 一个Promise对象，用于处理异步请求的结果。
+   */
+  create: data => request.post('/${requestMapping}/add${domainName}', data),
+
+  /**
+   * 读取${tab}列表，支持分页查询。
+   * @param {object} params - 查询参数，包含分页信息等。
+   * @returns {Promise} - 一个Promise对象，用于处理异步请求的结果。
+   */
+  read: (params = {}) => request.get('/${requestMapping}/pageQueryList', { params }),
+
+  /**
+   * 更新${tab}信息。
+   * @param {Object} data - 包含待更新${tab}信息的对象，必须包含${tab}ID。
+   * @returns {Promise} - 一个Promise对象，用于处理异步请求的结果。
+   */
+  update: data => request.patch(`/${requestMapping}/edit${domainName}`, data),
+
+  /**
+   * 删除指定ID的${tab}。
+   * @param {Array} data - 待删除${tab}的ID数组。示列{ids:[1,2,3,4]}
+   * @returns {Promise} - 一个Promise对象，用于处理异步请求的结果。
+   */
+  delete: data => request.delete('/${requestMapping}/del${domainName}', { data }),
+}

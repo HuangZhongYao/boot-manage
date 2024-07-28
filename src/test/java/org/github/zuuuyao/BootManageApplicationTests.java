@@ -65,6 +65,8 @@ class BootManageApplicationTests {
         Template serviceTemplate = velocityEngine.getTemplate("templates/Service.java.vm", CharsetUtil.UTF_8);
         Template serviceImplTemplate = velocityEngine.getTemplate("templates/ServiceImpl.java.vm", CharsetUtil.UTF_8);
         Template controllerlTemplate = velocityEngine.getTemplate("templates/Controller.java.vm", CharsetUtil.UTF_8);
+        Template apiTemplate = velocityEngine.getTemplate("templates/api.js.vm", CharsetUtil.UTF_8);
+        Template indexTemplate = velocityEngine.getTemplate("templates/Index.vue.vm", CharsetUtil.UTF_8);
 
 
         StringWriter writer = new StringWriter();
@@ -73,12 +75,12 @@ class BootManageApplicationTests {
         String tabName = "bus_order";
         String tabComments = "订单表";
         String moduleName = "order";
-        String author = "zuuuYao";
+        String author = "zuuuYao (https://github.com/HuangZhongYao)";
         String dateTime = DateUtil.now();
         String basePackage = "org.github.zuuuyao";
         String javaCodePath = "java" + File.separator + "src" + File.separator + "main" + File.separator + "java" + File.separator;
         String mapperXMLPath = "java" + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "mapper" + File.separator;
-        String vueCodePath = "vue" + File.separator + "views"+ File.separator;
+        String vueCodePath = "vue" + File.separator + "views"+ File.separator + moduleName + File.separator;
 
         boolean hasLocalDateTime = true;
 
@@ -476,10 +478,75 @@ class BootManageApplicationTests {
         IOUtils.closeQuietly(writer);
         zip.closeEntry();
 
+
+        // API JS
+        String apiName = "api";
+        String apiFullName = vueCodePath + File.separator + apiName;
+        VelocityContext apiContext = new VelocityContext();
+        apiContext.put("tab", tabComments.replaceAll("表", ""));
+        apiContext.put("author", author);
+        apiContext.put("datetime", dateTime);
+        apiContext.put("requestMapping",moduleName);
+        apiContext.put("domainName", domainName);
+
+        writer.getBuffer().setLength(0);
+        apiTemplate.merge(apiContext, writer);
+        System.out.println();
+        System.out.println(
+            "API JS==================================================\n\n" + writer);
+        //添加到zip
+        zip.putNextEntry(new ZipEntry(
+            getFileName(apiTemplate.getName(),apiFullName)
+        ));
+        IOUtils.write(writer.toString(), zip, "UTF-8" );
+        IOUtils.closeQuietly(writer);
+        zip.closeEntry();
+
+        // Index.vue
+        String indexVueName = "index";
+        String indexVueFullName = vueCodePath + File.separator + indexVueName;
+        String indexVueComments = moduleName + "管理";
+
+        String permissionCode = domainName + "Mgt";
+        String addPermissionCode = "Add" + domainName;
+        String editPermissionCode = "Edit" + domainName;
+        String delPermissionCode = "Del" + domainName;
+
+        VelocityContext indexVueContext = new VelocityContext();
+        indexVueContext.put("comments", indexVueComments);
+        indexVueContext.put("author", author);
+        indexVueContext.put("datetime", dateTime);
+        indexVueContext.put("tab", tabComments.replaceAll("表", ""));
+        indexVueContext.put("columns", columns);
+        indexVueContext.put("permissionCode", permissionCode);
+        indexVueContext.put("AddPermissionCode", addPermissionCode);
+        indexVueContext.put("EditPermissionCode", editPermissionCode);
+        indexVueContext.put("DelPermissionCode", delPermissionCode);
+        indexVueContext.put("usd", "$");
+
+        writer.getBuffer().setLength(0);
+        indexTemplate.merge(indexVueContext, writer);
+        System.out.println();
+        System.out.println(
+            "Index.vue ==================================================\n\n" + writer);
+        //添加到zip
+        zip.putNextEntry(new ZipEntry(
+            getFileName(indexTemplate.getName(),indexVueFullName)
+        ));
+        IOUtils.write(writer.toString(), zip, "UTF-8" );
+        IOUtils.closeQuietly(writer);
+        zip.closeEntry();
+
+
         IOUtils.closeQuietly(zip);
 
         FileOutputStream fileOutputStream = new FileOutputStream("C:\\Users\\Administrator\\Desktop\\"+moduleName+"_code.zip");
         outputStream.writeTo(fileOutputStream);
+
+        // 关闭流
+        IOUtils.closeQuietly(fileOutputStream);
+        IOUtils.closeQuietly(outputStream);
+        IOUtils.closeQuietly(writer);
 
     }
 
