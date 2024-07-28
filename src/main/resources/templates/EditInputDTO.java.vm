@@ -2,7 +2,7 @@ package ${packageName};
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
-import org.github.zuuuyao.common.base.dto.BaseDTO;
+import org.github.zuuuyao.common.base.dto.input.BaseLongIdInputDTO;
 import java.io.Serial;
 #if(${hasBigDecimal})
 import java.math.BigDecimal;
@@ -24,7 +24,7 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode(callSuper = false)
 @AllArgsConstructor
 @NoArgsConstructor
-public class ${className} extends BaseDTO {
+public class ${className} extends BaseLongIdInputDTO {
 
     @Serial
     private static final long serialVersionUID = -1;

@@ -48,21 +48,21 @@ public class ${className} {
 
     @Operation(summary = "添加${tab}", description = "添加${tab}接口")
     @ApiResponse(responseCode = "200", description = "OK")
-    @PostMapping(value = "/addUser", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/add${domainName}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Boolean add${domainName}(@RequestBody @Validated ${addInputDTO} inputDTO) {
         return ${service}.add${domainName}(inputDTO);
     }
 
     @Operation(summary = "删除${tab}", description = "根据id删除接口")
     @ApiResponse(responseCode = "200", description = "OK")
-    @DeleteMapping(value = "/delUser", produces = MediaType.APPLICATION_JSON_VALUE)
+    @DeleteMapping(value = "/del${domainName}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Boolean del${domainName}(@RequestBody @Validated BaseManyLongIdInputDTO inputDTO) {
         return ${service}.del${domainName}(inputDTO);
     }
 
     @Operation(summary = "编辑${tab}", description = "编辑${tab}接口")
     @ApiResponse(responseCode = "200", description = "OK")
-    @PatchMapping(value = "/editUser", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PatchMapping(value = "/edit${domainName}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Boolean add${domainName}(@RequestBody @Validated ${editInputDTO} inputDTO) {
         return ${service}.edit${domainName}(inputDTO);
     }

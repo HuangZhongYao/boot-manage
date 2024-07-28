@@ -76,17 +76,17 @@ class BootManageApplicationTests {
         String author = "zuuuYao";
         String dateTime = DateUtil.now();
         String basePackage = "org.github.zuuuyao";
-        String javaCodePath = "src" + File.separator + "main" + File.separator + "java" + File.separator;
-        String mapperXMLPath = "src" + File.separator + "main" + File.separator + "resources" + File.separator + "mapper" + File.separator;
-        String vueCodePath = "views"+ File.separator;
+        String javaCodePath = "java" + File.separator + "src" + File.separator + "main" + File.separator + "java" + File.separator;
+        String mapperXMLPath = "java" + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "mapper" + File.separator;
+        String vueCodePath = "vue" + File.separator + "views"+ File.separator;
 
         boolean hasLocalDateTime = true;
 
 
         String servicePackageName = basePackage + ".service." + moduleName;
         String serviceImplPackageName = basePackage + ".service." + moduleName + ".impl";
-        String inputDTOPackageName = servicePackageName + ".input";
-        String outputDTOPackageName = servicePackageName + ".output";
+        String inputDTOPackageName = servicePackageName + ".dto.input";
+        String outputDTOPackageName = servicePackageName + ".dto.output";
 
         // 创建列字段
         List<ColumnModel> columns = Arrays.asList(
