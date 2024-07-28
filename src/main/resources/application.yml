@@ -27,7 +27,13 @@ spring:
       connection-timeout: 30000
       # 连接测试查询
       connection-test-query: SELECT 1
-
+  jackson:
+    # 配置jackson Date日期类型全局格式化
+    date-format: yyyy-MM-dd HH:mm:ss
+    # 配置jackson LocalDate类型全局格式化
+    local-date-format: yyyy-MM-dd
+    # 配置时区
+    time-zone: Asia/Shanghai
 # saToken 相关配置
 sa-token:
   # 生成token 自定义jwt秘钥
