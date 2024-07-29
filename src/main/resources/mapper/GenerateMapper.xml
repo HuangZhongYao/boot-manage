@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.github.zuuuyao.repository.GenerateRepository">
+
+
+    <select id="getTables" resultType="org.github.zuuuyao.entity.generate.TableEntity">
+        SELECT
+            TABLE_SCHEMA    tableSchema,
+            TABLE_NAME      tableName,
+            TABLE_TYPE      tableType,
+            TABLE_COLLATION tableCollation,
+            engine,
+            TABLE_COMMENT   tableComment,
+            CREATE_TIME     createTime,
+            UPDATE_TIME     updateTime
+        FROM information_schema.TABLES
+        WHERE table_schema = (SELECT database())
+    </select>
+
+    <select id="getTableColumns" resultType="org.github.zuuuyao.entity.generate.ColumnEntity">
+        SELECT
+            column_name columnName,
+            data_type dataType,
+            column_comment columnComment,
+            column_key columnKey,
+            extra,
+            table_name tableName,
+            table_schema tableSchema
+        FROM
+            information_schema.COLUMNS
+        WHERE
+            table_schema = (SELECT DATABASE())
+          AND table_name = #{tableName}
+    </select>
+</mapper>
