@@ -1,6 +1,9 @@
 package org.github.zuuuyao.service.generate;
 
-import org.github.zuuuyao.service.generate.dto.TableVO;
+import jakarta.servlet.http.HttpServletResponse;
+import org.github.zuuuyao.service.generate.dto.input.CodeGenerateInputDTO;
+import org.github.zuuuyao.service.generate.dto.output.ColumnVO;
+import org.github.zuuuyao.service.generate.dto.output.TableVO;
 
 import java.util.List;
 
@@ -12,4 +15,7 @@ import java.util.List;
 public interface IGenerateService {
     List<TableVO> getTables();
 
+    List<ColumnVO> getTableColumns(String tableName);
+
+    void codeGeneration(CodeGenerateInputDTO inputDTO, HttpServletResponse response);
 }

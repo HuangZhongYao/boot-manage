@@ -1,4 +1,4 @@
-package org.github.zuuuyao.service.generate.dto;
+package org.github.zuuuyao.service.generate.dto.output;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
@@ -8,7 +8,6 @@ import org.github.zuuuyao.common.base.dto.BaseDTO;
 
 import java.io.Serial;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 /**
  * @Desc
