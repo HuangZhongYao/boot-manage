@@ -12,7 +12,7 @@
 
     <groupId>org.github-zuuu-yao</groupId>
     <artifactId>boot-manage</artifactId>
-    <version>1.0.0-RE</version>
+    <version>1.0.0-RELEASE</version>
     <name>boot-manage</name>
     <packaging>jar</packaging>
 
@@ -20,7 +20,7 @@
     <description>boot-manage后台管理系统模板</description>
 
     <!--项目连接-->
-    <url>https://gitee.com/smog_huang/boot-manage</url>
+    <url>https://github.com/huangZhongYao/boot-manage</url>
 
     <!--项目开发人员-->
     <developers>
@@ -42,6 +42,8 @@
         <modelmapper.version>3.2.0</modelmapper.version>
         <hutool.version>5.8.16</hutool.version>
         <sa-token.version>1.38.0</sa-token.version>
+        <common-io.version>2.4</common-io.version>
+        <velocity.version>1.7</velocity.version>
     </properties>
 
     <dependencies>
@@ -101,21 +103,18 @@
             <version>${mybatis-plus.version}</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-        </dependency>
+        <!-- IO 工具库-->
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
-            <version>2.4</version>
+            <version>${common-io.version}</version>
         </dependency>
 
-        <!-- 代码生成器-->
+        <!-- velocity模板引擎,用于代码生成-->
         <dependency>
             <groupId>org.apache.velocity</groupId>
             <artifactId>velocity</artifactId>
-            <version>1.7</version>
+            <version>${velocity.version}</version>
         </dependency>
 
         <!--mysql 驱动-->
@@ -183,6 +182,7 @@
             <optional>true</optional>
         </dependency>
 
+        <!--单元测试-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
