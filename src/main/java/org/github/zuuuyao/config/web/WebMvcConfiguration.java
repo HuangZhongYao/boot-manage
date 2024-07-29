@@ -1,18 +1,10 @@
 package org.github.zuuuyao.config.web;
 
-import com.fasterxml.jackson.databind.deser.std.DateDeserializers;
-import com.fasterxml.jackson.databind.ser.std.DateSerializer;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -23,6 +15,12 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 /**
  * WebMvc配置类
@@ -83,11 +81,11 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
         WebMvcConfigurer.super.addCorsMappings(registry);
         log.info("配置跨域处理.........");
         registry.addMapping("/**")
-            .allowedOriginPatterns("*")
-            .allowedHeaders("*")
-            .allowedMethods("*")
-            .maxAge(3600)
-            .allowCredentials(true);
+                .allowedOriginPatterns("*")
+                .allowedHeaders("*")
+                .allowedMethods("*")
+                .maxAge(3600)
+                .allowCredentials(true);
 
     }
 
@@ -102,15 +100,15 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
 
         // 静态资源目录
         registry.addResourceHandler("/static/**")
-            .addResourceLocations("classpath:/static/");
+                .addResourceLocations("classpath:/static/");
 
         // webjars
         registry.addResourceHandler("/webjars/**")
-            .addResourceLocations("classpath:/META-INF/resources/webjars/");
+                .addResourceLocations("classpath:/META-INF/resources/webjars/");
 
         // swagger-ui
         registry.addResourceHandler("/swagger-ui*/**")
-            .addResourceLocations("classpath:/META-INF/resources/webjars/swagger-ui/5.10.3/");
+                .addResourceLocations("classpath:/META-INF/resources/webjars/swagger-ui/5.10.3/");
 
     }
 
