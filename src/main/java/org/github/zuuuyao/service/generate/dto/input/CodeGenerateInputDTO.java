@@ -38,6 +38,10 @@ public class CodeGenerateInputDTO extends BaseDTO {
     @Schema(description = "所属菜单Id,如果为 null 则是一级菜单", example = "1")
     private Long parentMenuId;
 
+    @Schema(description = "是否添加到资源管理,自动添加到资源管理", example = "true")
+    @ValidateNotNullAndEmpty(message = "是否添加到资源管理不能为空")
+    private Boolean addResources;
+
     @ValidateNotNullAndEmpty(message = "字段信息不能为空")
     @Schema(description = "字段信息集合", requiredMode = Schema.RequiredMode.REQUIRED)
     private List<ColumnModel> columns;
