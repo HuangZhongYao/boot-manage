@@ -3,7 +3,21 @@ package org.github.zuuuyao.repository;
 import org.github.zuuuyao.config.mybatis.extension.BaseMapperExtension;
 import org.springframework.stereotype.Repository;
 import ${entityFullName};
-
+#if(${hasBigDecimal})
+import java.math.BigDecimal;
+#end
+#if(${hasLocalDateTime})
+import java.time.LocalDateTime;
+#end
+#if(${hasLocalDate})
+import java.time.LocalDate;
+#end
+#if(${hasLocalTime})
+import java.time.LocalTime;
+#end
+#if(${hasDate})
+import java.util.Date;
+#end
 /**
  * ${comments}
  * @Desc Created by Velocity Generate.

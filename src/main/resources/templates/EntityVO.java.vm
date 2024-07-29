@@ -9,6 +9,15 @@ import java.math.BigDecimal;
 #if(${hasLocalDateTime})
 import java.time.LocalDateTime;
 #end
+#if(${hasLocalDate})
+import java.time.LocalDate;
+#end
+#if(${hasLocalTime})
+import java.time.LocalTime;
+#end
+#if(${hasDate})
+import java.util.Date;
+#end
 import java.io.Serial;
 
 

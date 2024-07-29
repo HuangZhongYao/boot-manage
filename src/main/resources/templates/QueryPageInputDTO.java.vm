@@ -4,7 +4,21 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 import org.github.zuuuyao.common.base.dto.input.BaseQueryPageInputDTO;
 import java.io.Serial;
-
+#if(${hasBigDecimal})
+import java.math.BigDecimal;
+#end
+#if(${hasLocalDateTime})
+import java.time.LocalDateTime;
+#end
+#if(${hasLocalDate})
+import java.time.LocalDate;
+#end
+#if(${hasLocalTime})
+import java.time.LocalTime;
+#end
+#if(${hasDate})
+import java.util.Date;
+#end
 /**
  * ${comments}
  * @Desc Created by Velocity Generate.
