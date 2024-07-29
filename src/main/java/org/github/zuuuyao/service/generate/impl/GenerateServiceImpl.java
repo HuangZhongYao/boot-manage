@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import org.github.zuuuyao.common.util.ModelMapperUtil;
 import org.github.zuuuyao.repository.GenerateRepository;
+import org.github.zuuuyao.repository.ResourcesRepository;
 import org.github.zuuuyao.service.generate.IGenerateService;
 import org.github.zuuuyao.service.generate.dto.input.CodeGenerateInputDTO;
 import org.github.zuuuyao.service.generate.dto.output.ColumnVO;
@@ -24,6 +25,7 @@ import java.util.List;
 public class GenerateServiceImpl implements IGenerateService {
 
     GenerateRepository generateRepository;
+    ResourcesRepository resourcesRepository;
 
     @Override
     public List<TableVO> getTables() {
@@ -37,6 +39,7 @@ public class GenerateServiceImpl implements IGenerateService {
 
     @Override
     public void codeGeneration(CodeGenerateInputDTO inputDTO, HttpServletResponse response) {
-
+        List<ColumnVO> tableColumns = getTableColumns(inputDTO.getTableName());
+        tableColumns.hashCode();
     }
 }
