@@ -1,8 +1,12 @@
 package org.github.zuuuyao.common.util;
 
 import cn.hutool.core.util.StrUtil;
+
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -154,6 +158,26 @@ public final class CodeGenerationUtil {
      */
     public static String columnNameConvertToJavaAttrName(String columnName) {
         return StrUtil.lowerFirst(StrUtil.toCamelCase(columnName));
+    }
+
+    public  static String getFileName(String templateName,String path){
+
+        String filePath = path.replaceAll("\\.", Matcher.quoteReplacement(File.separator));
+
+        if (templateName.contains("java")) {
+            return filePath + ".java";
+        }
+        if (templateName.contains("xml")) {
+            return filePath + ".xml";
+        }
+        if (templateName.contains("vue")) {
+            return filePath + ".vue";
+        }
+        if (templateName.contains("js")) {
+            return filePath + ".js";
+        }
+
+        return filePath;
     }
 
 }
