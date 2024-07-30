@@ -674,7 +674,7 @@ public class GenerateServiceImpl implements IGenerateService {
                 resourcesRepository.insert(resourcesEntities, resourcesEntities.size());
             }
 
-            // 关闭流 一定要在return之前
+            // 关闭流 一定要在outputStream.toByteArray()之前
             IOUtils.closeQuietly(zip);
             IOUtils.closeQuietly(outputStream);
             IOUtils.closeQuietly(writer);
