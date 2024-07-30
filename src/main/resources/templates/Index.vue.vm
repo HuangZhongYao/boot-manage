@@ -351,13 +351,13 @@ function handelOnSave() {
       if (res.result) {
         ${usd}message.success(res.message)
       }
-        // 刷新数据
-        await handleQuery()
-        // 关闭抽屉
-        drawerShowFlag.value = false
-        // 清空表单数据
-        formValue.value = {}
-      }
+      // 刷新数据
+      await handleQuery()
+      // 关闭抽屉
+      drawerShowFlag.value = false
+      // 清空表单数据
+      formValue.value = {}
+    }
   })
 }
 

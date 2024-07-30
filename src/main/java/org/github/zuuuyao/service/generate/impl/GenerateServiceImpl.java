@@ -5,6 +5,8 @@ import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import jakarta.servlet.http.HttpServletResponse;
+import java.io.FileOutputStream;
+import java.nio.charset.StandardCharsets;
 import lombok.AllArgsConstructor;
 import org.apache.commons.io.IOUtils;
 import org.apache.velocity.Template;
@@ -90,21 +92,7 @@ public class GenerateServiceImpl implements IGenerateService {
                     continue;
                 }
 
-                if (StrUtil.isBlank(column.getColumnComment())) {
-                    throw new UserFriendlyException(column.getColumnName() + "字段的字段备注不能为空");
-                }
-                if (StrUtil.isBlank(column.getDataType())) {
-                    throw new UserFriendlyException(column.getColumnName() + "字段的数据类型不能为空");
-                }
-
-                // 转换属性名和属性类型为Java属性和类型
-                String attrName = CodeGenerationUtil.columnNameConvertToJavaAttrName(column.getColumnName());
-                String attrType = CodeGenerationUtil.columnFieldConvertToJavaType(DB.MySQL, column.getColumnName(), column.getDataType());
-                column.setAttrName(attrName);
-                column.setAttrType(attrType);
-            }
-            // 检查字段信息
-            for (ColumnModel column : inputDTO.getColumns()) {
+                // 检查字段信息
                 if (StrUtil.isBlank(column.getColumnComment())) {
                     throw new UserFriendlyException(column.getColumnName() + "字段的字段备注不能为空");
                 }
@@ -129,9 +117,10 @@ public class GenerateServiceImpl implements IGenerateService {
             Template mapperTemplate = CodeGenerationUtil.getTemplate(CodeTemplateEnum.Mapper);
             Template serviceTemplate = CodeGenerationUtil.getTemplate(CodeTemplateEnum.Service);
             Template serviceImplTemplate = CodeGenerationUtil.getTemplate(CodeTemplateEnum.ServiceImpl);
-            Template controllerlTemplate = CodeGenerationUtil.getTemplate(CodeTemplateEnum.Controller);
+            Template controllerTemplate = CodeGenerationUtil.getTemplate(CodeTemplateEnum.Controller);
             Template apiTemplate = CodeGenerationUtil.getTemplate(CodeTemplateEnum.Api);
             Template indexTemplate = CodeGenerationUtil.getTemplate(CodeTemplateEnum.Index);
+
 
             StringWriter writer = new StringWriter();
 
@@ -187,8 +176,6 @@ public class GenerateServiceImpl implements IGenerateService {
             String entityFullName = entityPackageName + "." + entityClassName;
             // 实体类注释
             String entityComments = tabComments + "实体";
-
-
             // 生成实体传入模板变量
             VelocityContext entityContext = new VelocityContext();
             entityContext.put("packageName", entityPackageName);
@@ -213,7 +200,6 @@ public class GenerateServiceImpl implements IGenerateService {
                     CodeGenerationUtil.getFileName(entityTemplate.getName(), javaCodePath + entityFullName)
             ));
             IOUtils.write(writer.toString(), zip, CharsetUtil.UTF_8);
-            IOUtils.closeQuietly(writer);
             zip.closeEntry();
 
             // 实体vo名
@@ -222,7 +208,6 @@ public class GenerateServiceImpl implements IGenerateService {
             String entityVOComments = tabComments + "VO对象";
             // 实体vo全路径
             String entityVOFullName = outputDTOPackageName + "." + entityVOName;
-
             // 生成实体VO传入变量
             VelocityContext entityVOContext = new VelocityContext();
             entityVOContext.put("packageName", outputDTOPackageName);
@@ -248,9 +233,7 @@ public class GenerateServiceImpl implements IGenerateService {
                     CodeGenerationUtil.getFileName(entityVOTemplate.getName(), javaCodePath + entityVOFullName)
             ));
             IOUtils.write(writer.toString(), zip, CharsetUtil.UTF_8);
-            IOUtils.closeQuietly(writer);
             zip.closeEntry();
-
 
             // 添加数据DTO名
             String addInputDTOName = "Add" + StrUtil.upperFirst(StrUtil.toCamelCase(tabName)) + "InputDTO";
@@ -528,13 +511,13 @@ public class GenerateServiceImpl implements IGenerateService {
             controllerContext.put("hasDate", hasDate);
 
             writer.getBuffer().setLength(0);
-            controllerlTemplate.merge(controllerContext, writer);
+            controllerTemplate.merge(controllerContext, writer);
             System.out.println();
             log.info(
                     "Controller==================================================\n\n" + writer);
             //添加到zip
             zip.putNextEntry(new ZipEntry(
-                    CodeGenerationUtil.getFileName(controllerlTemplate.getName(), javaCodePath + controllerFullName)
+                    CodeGenerationUtil.getFileName(controllerTemplate.getName(), javaCodePath + controllerFullName)
             ));
             IOUtils.write(writer.toString(), zip, CharsetUtil.UTF_8);
             IOUtils.closeQuietly(writer);
@@ -691,6 +674,11 @@ public class GenerateServiceImpl implements IGenerateService {
                 resourcesRepository.insert(resourcesEntities, resourcesEntities.size());
             }
 
+            // 关闭流 一定要在return之前
+            IOUtils.closeQuietly(zip);
+            IOUtils.closeQuietly(outputStream);
+            IOUtils.closeQuietly(writer);
+
             // 设置响应头
             HttpHeaders headers = new HttpHeaders();
             headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + moduleName + ".zip");
@@ -700,10 +688,7 @@ public class GenerateServiceImpl implements IGenerateService {
                     .headers(headers)
                     .contentType(MediaType.APPLICATION_OCTET_STREAM)
                     .body(outputStream.toByteArray());
-            // 关闭流
-            IOUtils.closeQuietly(zip);
-            IOUtils.closeQuietly(outputStream);
-            IOUtils.closeQuietly(writer);
+
             // 返回响应体
             return body;
         } catch (Exception e) {
