@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.github.zuuuyao.common.base.dto.BaseDTO;
 import org.github.zuuuyao.common.validate.ValidateNotNullAndEmpty;
+import org.github.zuuuyao.common.validate.ValidateWord;
 import org.github.zuuuyao.service.generate.model.ColumnModel;
 
 import java.io.Serial;
@@ -27,8 +28,13 @@ public class CodeGenerateInputDTO extends BaseDTO {
     @ValidateNotNullAndEmpty(message = "表名不能为空")
     private String tableName;
 
+    @Schema(description = "表注释", requiredMode = Schema.RequiredMode.REQUIRED, example = "用户表")
+    @ValidateNotNullAndEmpty(message = "表注释不能为空")
+    private String tableComment;
+
     @Schema(description = "模块名", requiredMode = Schema.RequiredMode.REQUIRED, example = "user")
     @ValidateNotNullAndEmpty(message = "模块名不能为空")
+    @ValidateWord(message = "模块名只允许为小写字母")
     private String moduleName;
 
     @Schema(description = "源码包名", requiredMode = Schema.RequiredMode.REQUIRED, example = "org.github.zuuuyao")

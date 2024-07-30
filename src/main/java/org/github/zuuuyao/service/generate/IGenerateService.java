@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.github.zuuuyao.service.generate.dto.input.CodeGenerateInputDTO;
 import org.github.zuuuyao.service.generate.dto.output.ColumnVO;
 import org.github.zuuuyao.service.generate.dto.output.TableVO;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
@@ -17,5 +18,5 @@ public interface IGenerateService {
 
     List<ColumnVO> getTableColumns(String tableName);
 
-    void codeGeneration(CodeGenerateInputDTO inputDTO, HttpServletResponse response);
+    ResponseEntity<byte[]> codeGeneration(CodeGenerateInputDTO inputDTO, HttpServletResponse response);
 }

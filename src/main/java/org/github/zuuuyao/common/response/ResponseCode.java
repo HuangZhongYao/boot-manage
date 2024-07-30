@@ -18,6 +18,7 @@ public enum ResponseCode {
     NOT_LOGIN(401, "未登录"),
     LOGIN_EXPIRED(401, "登录过期"),
     NO_PERMISSION(403, "没有操作权限"),
+    NOT_FOUND(404, "没有该api或资源"),
     ;
 
     /**

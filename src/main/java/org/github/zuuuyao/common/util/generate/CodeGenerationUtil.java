@@ -1,18 +1,19 @@
-package org.github.zuuuyao.common.util;
+package org.github.zuuuyao.common.util.generate;
 
+import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.core.util.StrUtil;
+import lombok.*;
+import org.apache.velocity.Template;
+import org.apache.velocity.app.VelocityEngine;
+import org.apache.velocity.runtime.RuntimeConstants;
+import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
+import org.github.zuuuyao.common.exception.UserFriendlyException;
+import org.github.zuuuyao.common.util.DB;
 
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
-
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-import org.github.zuuuyao.common.exception.UserFriendlyException;
 
 /**
  * 代码生成器工具类
@@ -31,6 +32,12 @@ public final class CodeGenerationUtil {
     private CodeGenerationUtil() {
     }
 
+    // 创建 Velocity 引擎
+    public static final VelocityEngine velocityEngine;
+    // 模板map
+    private static final Map<CodeTemplateEnum, Template> templateMap;
+
+
     // mysql字段类型映射
     private static final Map<String, String> mysqlTypeMap = new HashMap<>();
     // sqlServer字段类型映射
@@ -41,6 +48,27 @@ public final class CodeGenerationUtil {
     private static final Map<String, String> oracleTypeMap = new HashMap<>();
 
     static {
+
+        // 初始化模板引擎
+        velocityEngine = new VelocityEngine();
+        velocityEngine.setProperty(RuntimeConstants.RESOURCE_LOADER, "classpath");
+        velocityEngine.setProperty("classpath.resource.loader.class", ClasspathResourceLoader.class.getName());
+
+        // 初始化模板
+        templateMap = new HashMap<>();
+        templateMap.put(CodeTemplateEnum.Entity, velocityEngine.getTemplate("templates/Entity.java.vm", CharsetUtil.UTF_8));
+        templateMap.put(CodeTemplateEnum.EntityVO, velocityEngine.getTemplate("templates/EntityVO.java.vm", CharsetUtil.UTF_8));
+        templateMap.put(CodeTemplateEnum.AddInputDTO, velocityEngine.getTemplate("templates/AddInputDTO.java.vm", CharsetUtil.UTF_8));
+        templateMap.put(CodeTemplateEnum.EditInputDTO, velocityEngine.getTemplate("templates/EditInputDTO.java.vm", CharsetUtil.UTF_8));
+        templateMap.put(CodeTemplateEnum.QueryPageInputDTO, velocityEngine.getTemplate("templates/QueryPageInputDTO.java.vm", CharsetUtil.UTF_8));
+        templateMap.put(CodeTemplateEnum.Repository, velocityEngine.getTemplate("templates/Repository.java.vm", CharsetUtil.UTF_8));
+        templateMap.put(CodeTemplateEnum.Mapper, velocityEngine.getTemplate("templates/Mapper.xml.vm", CharsetUtil.UTF_8));
+        templateMap.put(CodeTemplateEnum.Service, velocityEngine.getTemplate("templates/Service.java.vm", CharsetUtil.UTF_8));
+        templateMap.put(CodeTemplateEnum.ServiceImpl, velocityEngine.getTemplate("templates/ServiceImpl.java.vm", CharsetUtil.UTF_8));
+        templateMap.put(CodeTemplateEnum.Controller, velocityEngine.getTemplate("templates/Controller.java.vm", CharsetUtil.UTF_8));
+        templateMap.put(CodeTemplateEnum.Api, velocityEngine.getTemplate("templates/api.js.vm", CharsetUtil.UTF_8));
+        templateMap.put(CodeTemplateEnum.Index, velocityEngine.getTemplate("templates/Index.vue.vm", CharsetUtil.UTF_8));
+
         // MySQL types
         mysqlTypeMap.put("CHAR", "String");
         mysqlTypeMap.put("VARCHAR", "String");
@@ -133,12 +161,12 @@ public final class CodeGenerationUtil {
                                                       String columnType) {
         // java17 switch新语法
         Map<String, String> typeMap =
-            switch (dbType) {
-                case MySQL -> mysqlTypeMap;
-                case SQLServer -> sqlServerTypeMap;
-                case PostgreSQL -> postgreSQLTypeMap;
-                case Oracle -> oracleTypeMap;
-            };
+                switch (dbType) {
+                    case MySQL -> mysqlTypeMap;
+                    case SQLServer -> sqlServerTypeMap;
+                    case PostgreSQL -> postgreSQLTypeMap;
+                    case Oracle -> oracleTypeMap;
+                };
 
         String javaType = typeMap.get(columnType.toUpperCase());
 
@@ -160,7 +188,23 @@ public final class CodeGenerationUtil {
         return StrUtil.lowerFirst(StrUtil.toCamelCase(columnName));
     }
 
-    public  static String getFileName(String templateName,String path){
+    /**
+     * 获取代码模板
+     * @param templateEnum 模板枚举
+     * @return 模板
+     */
+    public static Template getTemplate(CodeTemplateEnum templateEnum){
+        return templateMap.get(templateEnum);
+    }
+
+    /**
+     * 获取文件名
+     *
+     * @param templateName 模板名
+     * @param path         路径
+     * @return 文件名
+     */
+    public static String getFileName(String templateName, String path) {
 
         String filePath = path.replaceAll("\\.", Matcher.quoteReplacement(File.separator));
 
