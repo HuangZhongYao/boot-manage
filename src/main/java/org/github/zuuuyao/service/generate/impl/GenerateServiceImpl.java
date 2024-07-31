@@ -616,7 +616,7 @@ public class GenerateServiceImpl implements IGenerateService {
                         .type(ResourcesTypeEnum.MENU)
                         .path(routingPath)
                         .component("/src/views/" + moduleName + "/index.vue")
-                        .keepAlive(false)
+                        .keepAlive(true)
                         .enable(true)
                         .isShow(true)
                         .description("创建" + tabDesc + "按钮")
