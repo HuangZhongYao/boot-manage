@@ -550,7 +550,7 @@ public class GenerateServiceImpl implements IGenerateService {
             // Index.vue
             String indexVueName = "index";
             String indexVueFullName = vueCodePath + File.separator + indexVueName;
-            String indexVueComments = moduleName + "管理";
+            String indexVueComments = tabComments + "管理";
 
             // 权限编码
             String permissionCode = domainName + "Mgt";
