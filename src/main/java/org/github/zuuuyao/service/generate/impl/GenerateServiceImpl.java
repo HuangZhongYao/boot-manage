@@ -619,7 +619,7 @@ public class GenerateServiceImpl implements IGenerateService {
                         .keepAlive(true)
                         .enable(true)
                         .isShow(true)
-                        .description("创建" + tabDesc + "按钮")
+                        .description(tabDesc + "管理")
                         .icon("i-fe:menu")
                         .sort("0")
                         .parentId(parentMenu == null ? null : parentMenu.getId())
