@@ -60,6 +60,11 @@ Boot Admin 前端项目使用Vue3 + JavaScript 构建
 - 源码 GitHub: [boot-manage-ui | github](https://github.com/HuangZhongYao/boot-manage-ui)
 - 源码 Gitee: [boot-manage-ui | gitee](https://gitee.com/smog_huang/boot-manage-ui)
 
+前端页面预览：
+- 登录页面 ![](./docs/images/login-page.png)
+- 代码生成页面 ![](./docs/images/code.png)
+- 系统管理页面 ![](./docs/images/sys.png)
+
 ## 文档
 
 - 项目文档:
