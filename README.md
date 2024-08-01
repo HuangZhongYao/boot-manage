@@ -48,15 +48,13 @@ Boot Admin 是一款极简风格的后台管理模板。
 
 ## 前端
 
-Boot Admin 提供一套Java最新技术开发的后端代码，简易上手、效率高SpringBoot单体架构版，提供RABC、代码生成、系统基础等接口所需的一些基础接口  。  
+Boot Admin 前端项目使用Vue3 + JavaScript 构建  
 技术栈:
-- Java 17
-- SpringBoot 3.2.x
-- Mybatis-Plus
-- Sa-Token
-- JWT
-- Redis
-- MySQL 8
+- <img width="16" src="./docs/images/vue.svg" > Vue 3
+- <img width="20" src="./docs/images/pinia.svg" > Pinia
+- <img width="16" src="./docs/images/naiveui.svg" > Naive ui
+- <img width="20" src="./docs/images/nginx.svg" > Nginx
+- <img width="20" src="./docs/images/unocss.svg" > Unocss
 
 源码
 - 源码 GitHub: [boot-manage-ui | github](https://github.com/HuangZhongYao/boot-manage-ui)
