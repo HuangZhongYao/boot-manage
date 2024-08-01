@@ -64,6 +64,41 @@ Boot Admin 前端项目使用Vue3 + JavaScript 构建
 
 - 项目文档:
 
+## 工程结构
+
+- docs
+  - images `项目描述用到静态资源目录`
+  - boot_manage.sql `数据库初始化SQL文件`
+- src
+  - main
+    - java 
+      - org.github.zuuuyao
+        - common `公用类、工具类目录`
+          - base `实体、枚举、DTO、controller等基类文件目录`
+          - util `工具类文件目录` 
+          - validate `参数验证注解目录`
+        - config `配置类存方目录`
+          - mybatis `mybatis配置相关`
+            - handel `mybatis自动填充字段处理包`
+            - extension `扩展mybatis包`
+          - security `安全框架配置包`
+          - swagger `swagger信息配置包`
+          - web `消息转换器、全局统一返回值包装、全局异常处理等web相关配置包`
+        - entity `实体类文件目录`
+        - repository `仓储层文件目录`
+        - service `Service文件目录`
+        - web  `Controller文件目录`
+        - BootManageApplication `项目启动类入口文件` 
+    - resources 
+      - mapper `mybatis Mapper.xml文件目录`
+      - markdown `knife4j自定义swagger文档目录`
+      - templates `代码生成模板文件目录`
+    - logback-spring.xml `日志框架配置文件`
+  - test `单元测试包`
+- LICENSE `开源许可协议文件`
+- README.md `项目描述文件`
+- pom.xml `maven配置文件`
+
 ## 代码预览
 - Controller层  
   Controller层结构清晰不做任何业务逻辑。因为做了统一响应值包装也无需返回手动返回 `R.ok(data)`
