@@ -29,7 +29,7 @@ Boot Admin 是一款极简风格的后台管理模板。
 - <img width="20" src="./docs/images/springboot.svg" > SpringBoot 3.2.x
 - <img width="20" src="./docs/images/mybatis.svg" > Mybatis-Plus
 - <img width="20" src="./docs/images/sa-token.png" > Sa-Token (相比SpringSecurity轻量、功能强大、API使用简单)
-- JWT
+- <img width="16" src="./docs/images/jwt.svg" > JWT
 - <img width="20" src="./docs/images/swagger.svg" > knife4j-ui + Swagger 3
 - <img width="20" src="./docs/images/redis.svg" > Redis
 - <img width="20" src="./docs/images/mysql.svg" > MySQL 8
