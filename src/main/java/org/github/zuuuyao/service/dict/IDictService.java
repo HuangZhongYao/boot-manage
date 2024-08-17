@@ -21,7 +21,7 @@ public interface IDictService {
 
     Boolean delDict(BaseManyLongIdInputDTO inputDTO);
 
-    Boolean setStateDict(SetStateDictInputDTO inputDTO);
+    Boolean setStateDictData(SetStateDictInputDTO inputDTO);
 
     Boolean editDict(EditDictInputDTO inputDTO);
 
@@ -35,4 +35,5 @@ public interface IDictService {
 
     List<DictTypeVO> dictTypeQueryList();
 
+    Boolean setStateDictType(SetStateDictInputDTO inputDTO);
 }

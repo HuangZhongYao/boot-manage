@@ -53,7 +53,7 @@ public class DictServiceImpl implements IDictService {
     }
 
     @Override
-    public Boolean setStateDict(SetStateDictInputDTO inputDTO) {
+    public Boolean setStateDictData(SetStateDictInputDTO inputDTO) {
 
         // 更新的数据
         DictDataEntity dictionaryDataEntity = new DictDataEntity();
@@ -152,6 +152,18 @@ public class DictServiceImpl implements IDictService {
         return this.dictTypeRepository.selectList(
             Wrappers.<DictTypeEntity>lambdaQuery().orderByAsc(DictTypeEntity::getSort),
             DictTypeVO.class);
+    }
+
+    @Override
+    public Boolean setStateDictType(SetStateDictInputDTO inputDTO) {
+        // 更新的数据
+        DictTypeEntity dictTypeEntity = new DictTypeEntity();
+        dictTypeEntity.setId(inputDTO.getId());
+        dictTypeEntity.setEnable(inputDTO.getState());
+
+        // 执行更新
+        this.dictTypeRepository.updateById(dictTypeEntity);
+        return true;
     }
 
     /**
