@@ -1,7 +1,7 @@
 package org.github.zuuuyao.repository;
 
 import org.github.zuuuyao.config.mybatis.extension.BaseMapperExtension;
-import org.github.zuuuyao.entity.dict.DictionaryDataEntity;
+import org.github.zuuuyao.entity.dict.DictDataEntity;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -11,5 +11,5 @@ import org.springframework.stereotype.Repository;
  * @Time 2024-08-18 3:59
  */
 @Repository
-public interface DictionaryDataRepository extends BaseMapperExtension<DictionaryDataEntity> {
+public interface DictDataRepository extends BaseMapperExtension<DictDataEntity> {
 }

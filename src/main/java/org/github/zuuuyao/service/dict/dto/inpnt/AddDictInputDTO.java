@@ -33,7 +33,7 @@ public class AddDictInputDTO extends BaseDTO {
     /**
      * 字典数据类型id
      */
-    @Schema(description = "字典数据类型id")
+    @Schema(description = "字典数据类型id",requiredMode = Schema.RequiredMode.REQUIRED)
     @ValidateNotNullAndEmpty(message = "字典数据类型id不能为空")
     private Long dictTypeId;
 
@@ -41,14 +41,14 @@ public class AddDictInputDTO extends BaseDTO {
      * 名称
      */
     @ValidateNotNullAndEmpty(message = "字典名称不能为空")
-    @Schema(description = "名称")
+    @Schema(description = "名称",requiredMode = Schema.RequiredMode.REQUIRED)
     private String name;
 
     /**
      * 编码
      */
     @ValidateNotNullAndEmpty(message = "字典编码不能为空")
-    @Schema(description = "编码")
+    @Schema(description = "编码",requiredMode = Schema.RequiredMode.REQUIRED)
     private String code;
 
     /**

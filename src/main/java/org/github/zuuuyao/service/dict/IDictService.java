@@ -3,9 +3,12 @@ package org.github.zuuuyao.service.dict;
 import java.util.List;
 import org.github.zuuuyao.common.base.dto.input.BaseManyLongIdInputDTO;
 import org.github.zuuuyao.service.dict.dto.inpnt.AddDictInputDTO;
+import org.github.zuuuyao.service.dict.dto.inpnt.AddDictTypeInputDTO;
 import org.github.zuuuyao.service.dict.dto.inpnt.EditDictInputDTO;
+import org.github.zuuuyao.service.dict.dto.inpnt.EditDictTypeInputDTO;
 import org.github.zuuuyao.service.dict.dto.inpnt.SetStateDictInputDTO;
 import org.github.zuuuyao.service.dict.output.DictDataVO;
+import org.github.zuuuyao.service.dict.output.DictTypeVO;
 
 /**
  * @Desc Created by IntelliJ IDEA.
@@ -22,5 +25,14 @@ public interface IDictService {
 
     Boolean editDict(EditDictInputDTO inputDTO);
 
-    List<DictDataVO> queryList(Long dictTypeId);
+    List<DictDataVO> dictDataQueryList(Long dictTypeId);
+
+    Boolean addDictType(AddDictTypeInputDTO inputDTO);
+
+    Boolean delDictType(BaseManyLongIdInputDTO inputDTO);
+
+    Boolean editDictType(EditDictTypeInputDTO inputDTO);
+
+    List<DictTypeVO> dictTypeQueryList();
+
 }

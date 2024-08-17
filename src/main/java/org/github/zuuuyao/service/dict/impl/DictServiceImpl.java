@@ -1,17 +1,24 @@
 package org.github.zuuuyao.service.dict.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import org.github.zuuuyao.common.base.dto.input.BaseManyLongIdInputDTO;
+import org.github.zuuuyao.common.exception.UserFriendlyException;
 import org.github.zuuuyao.common.util.ModelMapperUtil;
-import org.github.zuuuyao.entity.dict.DictionaryDataEntity;
-import org.github.zuuuyao.repository.DictionaryDataRepository;
+import org.github.zuuuyao.entity.dict.DictDataEntity;
+import org.github.zuuuyao.entity.dict.DictTypeEntity;
+import org.github.zuuuyao.repository.DictDataRepository;
+import org.github.zuuuyao.repository.DictTypeRepository;
 import org.github.zuuuyao.service.dict.IDictService;
 import org.github.zuuuyao.service.dict.dto.inpnt.AddDictInputDTO;
+import org.github.zuuuyao.service.dict.dto.inpnt.AddDictTypeInputDTO;
 import org.github.zuuuyao.service.dict.dto.inpnt.EditDictInputDTO;
+import org.github.zuuuyao.service.dict.dto.inpnt.EditDictTypeInputDTO;
 import org.github.zuuuyao.service.dict.dto.inpnt.SetStateDictInputDTO;
 import org.github.zuuuyao.service.dict.output.DictDataVO;
+import org.github.zuuuyao.service.dict.output.DictTypeVO;
 import org.springframework.stereotype.Service;
 
 /**
@@ -24,20 +31,24 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class DictServiceImpl implements IDictService {
 
-    DictionaryDataRepository dictionaryDataRepository;
+    DictDataRepository dictDataRepository;
+    DictTypeRepository dictTypeRepository;
 
     @Override
     public Boolean addDict(AddDictInputDTO inputDTO) {
-        DictionaryDataEntity dictionaryDataEntity =
-            ModelMapperUtil.map(inputDTO, DictionaryDataEntity.class);
-        this.dictionaryDataRepository.insert(dictionaryDataEntity);
+        DictDataEntity dictionaryDataEntity = ModelMapperUtil.map(inputDTO, DictDataEntity.class);
+
+        // 检查字典数据是否重复
+        checkDictDataExistence(dictionaryDataEntity);
+
+        this.dictDataRepository.insert(dictionaryDataEntity);
         return true;
     }
 
     @Override
     public Boolean delDict(BaseManyLongIdInputDTO inputDTO) {
         // 根据id删除字典
-        this.dictionaryDataRepository.deleteByIds(inputDTO.getIds());
+        this.dictDataRepository.deleteByIds(inputDTO.getIds());
         return true;
     }
 
@@ -45,12 +56,12 @@ public class DictServiceImpl implements IDictService {
     public Boolean setStateDict(SetStateDictInputDTO inputDTO) {
 
         // 更新的数据
-        DictionaryDataEntity dictionaryDataEntity = new DictionaryDataEntity();
+        DictDataEntity dictionaryDataEntity = new DictDataEntity();
         dictionaryDataEntity.setId(inputDTO.getId());
         dictionaryDataEntity.setEnable(inputDTO.getState());
 
         // 执行更新
-        this.dictionaryDataRepository.updateById(dictionaryDataEntity);
+        this.dictDataRepository.updateById(dictionaryDataEntity);
         return true;
     }
 
@@ -58,20 +69,107 @@ public class DictServiceImpl implements IDictService {
     public Boolean editDict(EditDictInputDTO inputDTO) {
 
         // 更新的数据
-        DictionaryDataEntity updateEntity =
-            ModelMapperUtil.map(inputDTO, DictionaryDataEntity.class);
+        DictDataEntity updateEntity =
+            ModelMapperUtil.map(inputDTO, DictDataEntity.class);
+
+        // 检查字典数据是否重复
+        checkDictDataExistence(updateEntity);
 
         // 执行更新
-        this.dictionaryDataRepository.updateById(updateEntity);
+        this.dictDataRepository.updateById(updateEntity);
 
         return true;
     }
 
     @Override
-    public List<DictDataVO> queryList(Long dictTypeId) {
-        return this.dictionaryDataRepository.selectList(
-            Wrappers.<DictionaryDataEntity>lambdaQuery()
-                .eq(DictionaryDataEntity::getDictTypeId, dictTypeId)
-                .orderByAsc(DictionaryDataEntity::getSort), DictDataVO.class);
+    public List<DictDataVO> dictDataQueryList(Long dictTypeId) {
+        return this.dictDataRepository.selectList(
+            Wrappers.<DictDataEntity>lambdaQuery()
+                .eq(DictDataEntity::getDictTypeId, dictTypeId)
+                .orderByAsc(DictDataEntity::getSort), DictDataVO.class);
+    }
+
+    /**
+     * 检查字典数据是否已存在
+     *
+     * @param dictData 字典数据
+     */
+    private void checkDictDataExistence(DictDataEntity dictData) {
+
+        // 查询条件
+        LambdaQueryWrapper<DictDataEntity> queryWrapper = Wrappers.<DictDataEntity>lambdaQuery()
+            .eq(DictDataEntity::getDictTypeId, dictData.getDictTypeId());
+
+        // 检查code是否重复
+        queryWrapper.eq(DictDataEntity::getCode, dictData.getCode());
+        if (this.dictDataRepository.selectCount(queryWrapper) > 0) {
+            throw new UserFriendlyException("该字典编码已存在", 450);
+        }
+
+        // 检查名称是否重复
+        queryWrapper.eq(DictDataEntity::getName, dictData.getName());
+        if (this.dictDataRepository.selectCount(queryWrapper) > 0) {
+            throw new UserFriendlyException("该字典名称已存在", 451);
+        }
+    }
+
+    @Override
+    public Boolean addDictType(AddDictTypeInputDTO inputDTO) {
+
+        DictTypeEntity dictTypeEntity = ModelMapperUtil.map(inputDTO, DictTypeEntity.class);
+
+        // 检查字典类型是否重复
+        checkDictTypeExistence(dictTypeEntity);
+
+        // 执行插入字典类型
+        this.dictTypeRepository.insert(dictTypeEntity);
+        return true;
+    }
+
+    @Override
+    public Boolean delDictType(BaseManyLongIdInputDTO inputDTO) {
+        // 根据id删除字典类型
+        this.dictTypeRepository.deleteByIds(inputDTO.getIds());
+        return true;
+    }
+
+    @Override
+    public Boolean editDictType(EditDictTypeInputDTO inputDTO) {
+        // 更新的数据
+        DictTypeEntity updateEntity =
+            ModelMapperUtil.map(inputDTO, DictTypeEntity.class);
+
+        // 检查字典类型是否重复
+        this.checkDictTypeExistence(updateEntity);
+
+        // 执行更新
+        this.dictTypeRepository.updateById(updateEntity);
+        return true;
+    }
+
+    @Override
+    public List<DictTypeVO> dictTypeQueryList() {
+        return this.dictTypeRepository.selectList(
+            Wrappers.<DictTypeEntity>lambdaQuery().orderByAsc(DictTypeEntity::getSort),
+            DictTypeVO.class);
+    }
+
+    /**
+     * 检查字典类型是否已存在
+     *
+     * @param dictType 字典类型
+     * @return true存在
+     */
+    private void checkDictTypeExistence(DictTypeEntity dictType) {
+        // 查询条件
+        LambdaQueryWrapper<DictTypeEntity> queryWrapper = Wrappers.<DictTypeEntity>lambdaQuery()
+            .eq(dictType.getParentId() != null, DictTypeEntity::getParentId, dictType.getParentId())
+            .isNull(dictType.getParentId() == null, DictTypeEntity::getParentId);
+
+        // 检查名称是否重复
+        queryWrapper.eq(DictTypeEntity::getName, dictType.getName());
+        if (this.dictTypeRepository.selectCount(queryWrapper) > 0) {
+            throw new UserFriendlyException("该字典类型已存在", 450);
+        }
     }
 }

@@ -13,6 +13,7 @@ import org.github.zuuuyao.common.base.entity.AbstractBaseEntity;
 
 /**
  * 字典类型实体
+ *
  * @Desc Created by IntelliJ IDEA.
  * @Author ZhongYao.Huang (https://github.com/HuangZhongYao)
  * @Copyright ZuuuuYao By Github
@@ -26,7 +27,7 @@ import org.github.zuuuyao.common.base.entity.AbstractBaseEntity;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 @TableName("sys_dict_type")
-public class DictionaryTypeEntity extends AbstractBaseEntity {
+public class DictTypeEntity extends AbstractBaseEntity {
 
     @Serial
     private static final long serialVersionUID = -4909560354235113011L;

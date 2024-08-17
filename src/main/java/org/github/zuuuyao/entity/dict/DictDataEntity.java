@@ -26,7 +26,7 @@ import org.github.zuuuyao.common.base.entity.AbstractBaseEntity;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 @TableName("sys_dict_data")
-public class DictionaryDataEntity extends AbstractBaseEntity {
+public class DictDataEntity extends AbstractBaseEntity {
 
     @Serial
     private static final long serialVersionUID = -4909560354235113011L;

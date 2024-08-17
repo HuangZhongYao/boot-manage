@@ -2,21 +2,21 @@ package org.github.zuuuyao.service.dict.dto.inpnt;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.io.Serial;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.github.zuuuyao.common.base.dto.input.BaseLongIdInputDTO;
-import org.github.zuuuyao.common.validate.ValidateNotNullAndEmpty;
 
 /**
- * @Desc Created by IntelliJ IDEA.
- * @Author ZhongYao.Huang (https://github.com/HuangZhongYao)
- * @Copyright ZuuuuYao By Github
- * @Time 2024-08-18 4:18
+ * 系统字典类型表编辑数据DTO对象
+ *
+ * @Desc Created by Velocity Generate.
+ * @Time 2024-08-18 05:13:04
+ * @Author zuuuYao (https://github.com/HuangZhongYao)
  */
 @Getter
 @Setter
@@ -25,30 +25,23 @@ import org.github.zuuuyao.common.validate.ValidateNotNullAndEmpty;
 @EqualsAndHashCode(callSuper = false)
 @AllArgsConstructor
 @NoArgsConstructor
-public class EditDictInputDTO extends BaseLongIdInputDTO {
+public class EditDictTypeInputDTO extends BaseLongIdInputDTO {
+
     @Serial
-    private static final long serialVersionUID = -6126750557276017351L;
+    private static final long serialVersionUID = -1;
+
 
     /**
-     * 字典数据类型id
+     * 上级
      */
-    @Schema(description = "字典数据类型id",requiredMode = Schema.RequiredMode.REQUIRED)
-    @ValidateNotNullAndEmpty(message = "字典数据类型id不能为空")
-    private Long dictTypeId;
+    @Schema(description = "上级")
+    private Long parentId;
 
     /**
      * 名称
      */
-    @ValidateNotNullAndEmpty(message = "字典名称不能为空")
     @Schema(description = "名称",requiredMode = Schema.RequiredMode.REQUIRED)
     private String name;
-
-    /**
-     * 编码
-     */
-    @ValidateNotNullAndEmpty(message = "字典编码不能为空")
-    @Schema(description = "编码",requiredMode = Schema.RequiredMode.REQUIRED)
-    private String code;
 
     /**
      * 排序值
@@ -67,4 +60,5 @@ public class EditDictInputDTO extends BaseLongIdInputDTO {
      */
     @Schema(description = "备注")
     private String remark;
+
 }
