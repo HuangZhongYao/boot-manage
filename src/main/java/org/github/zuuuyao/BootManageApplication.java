@@ -30,6 +30,7 @@ public class BootManageApplication implements ApplicationRunner {
         String hostAddress = InetAddress.getLocalHost().getHostAddress();
         log.info(
                 """
+                        \n
                         ----------------------------------------------------------
                             Application '{}' is running! Access URLs:
                             Local: http://localhost:{}
