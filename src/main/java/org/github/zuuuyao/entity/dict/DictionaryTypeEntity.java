@@ -2,17 +2,17 @@ package org.github.zuuuyao.entity.dict;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serial;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.github.zuuuyao.common.base.entity.AbstractBaseEntity;
 
 /**
- * 字典数据实体
+ * 字典类型实体
  * @Desc Created by IntelliJ IDEA.
  * @Author ZhongYao.Huang (https://github.com/HuangZhongYao)
  * @Copyright ZuuuuYao By Github
@@ -25,26 +25,21 @@ import org.github.zuuuyao.common.base.entity.AbstractBaseEntity;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-@TableName("sys_dict_data")
-public class DictionaryDataEntity extends AbstractBaseEntity {
+@TableName("sys_dict_type")
+public class DictionaryTypeEntity extends AbstractBaseEntity {
 
     @Serial
     private static final long serialVersionUID = -4909560354235113011L;
 
     /**
-     * 字典数据类型id
+     * 上级
      */
-    private Long dictTypeId;
+    private Long parentId;
 
     /**
      * 名称
      */
     private String name;
-
-    /**
-     * 编码
-     */
-    private String code;
 
     /**
      * 排序值
