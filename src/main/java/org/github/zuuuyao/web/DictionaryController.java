@@ -49,6 +49,7 @@ public class DictionaryController extends BaseController {
     public List<DictTypeVO> dictTypeQueryList() {
         return dictService.dictTypeQueryList();
     }
+
     @Operation(summary = "添加字典类型", description = "添加字典类型接口")
     @ApiResponse(responseCode = "200", description = "OK")
     @ApiResponse(responseCode = "450", description = "该字典类型已存在")
