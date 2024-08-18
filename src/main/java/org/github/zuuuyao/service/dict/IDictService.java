@@ -8,7 +8,7 @@ import org.github.zuuuyao.service.dict.dto.inpnt.EditDictInputDTO;
 import org.github.zuuuyao.service.dict.dto.inpnt.EditDictTypeInputDTO;
 import org.github.zuuuyao.service.dict.dto.inpnt.SetStateDictInputDTO;
 import org.github.zuuuyao.service.dict.output.DictDataVO;
-import org.github.zuuuyao.service.dict.output.DictTypeVO;
+import org.github.zuuuyao.service.dict.output.DictTypeTreeVO;
 
 /**
  * @Desc Created by IntelliJ IDEA.
@@ -33,7 +33,7 @@ public interface IDictService {
 
     Boolean editDictType(EditDictTypeInputDTO inputDTO);
 
-    List<DictTypeVO> dictTypeQueryList();
+    List<DictTypeTreeVO> dictTypeTree();
 
     Boolean setStateDictType(SetStateDictInputDTO inputDTO);
 }

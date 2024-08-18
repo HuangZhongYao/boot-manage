@@ -1,14 +1,11 @@
 package org.github.zuuuyao.service.dict.output;
 
+import java.util.List;
 import lombok.*;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.github.zuuuyao.common.base.dto.output.BaseOutputIdAndTimeAndOperationDTO;
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.Date;
 import java.io.Serial;
+import org.github.zuuuyao.common.util.tree.ITreeNode;
 
 
 /**
@@ -25,7 +22,7 @@ import java.io.Serial;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-public class DictTypeVO extends BaseOutputIdAndTimeAndOperationDTO {
+public class DictTypeTreeVO extends BaseOutputIdAndTimeAndOperationDTO implements ITreeNode<Long> {
 
     @Serial
     private static final long serialVersionUID = -1;
@@ -60,5 +57,10 @@ public class DictTypeVO extends BaseOutputIdAndTimeAndOperationDTO {
     @Schema(description = "备注")
     private String remark;
 
+    /**
+     * 下级数据
+     */
+    @Schema(description = "下级数据")
+    List<ITreeNode<Long>> children;
 }
 

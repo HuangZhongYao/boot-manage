@@ -2,11 +2,14 @@ package org.github.zuuuyao.service.dict.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import org.github.zuuuyao.common.base.dto.input.BaseManyLongIdInputDTO;
 import org.github.zuuuyao.common.exception.UserFriendlyException;
 import org.github.zuuuyao.common.util.ModelMapperUtil;
+import org.github.zuuuyao.common.util.tree.ITreeNode;
+import org.github.zuuuyao.common.util.tree.TreeUtil;
 import org.github.zuuuyao.entity.dict.DictDataEntity;
 import org.github.zuuuyao.entity.dict.DictTypeEntity;
 import org.github.zuuuyao.repository.DictDataRepository;
@@ -18,7 +21,7 @@ import org.github.zuuuyao.service.dict.dto.inpnt.EditDictInputDTO;
 import org.github.zuuuyao.service.dict.dto.inpnt.EditDictTypeInputDTO;
 import org.github.zuuuyao.service.dict.dto.inpnt.SetStateDictInputDTO;
 import org.github.zuuuyao.service.dict.output.DictDataVO;
-import org.github.zuuuyao.service.dict.output.DictTypeVO;
+import org.github.zuuuyao.service.dict.output.DictTypeTreeVO;
 import org.springframework.stereotype.Service;
 
 /**
@@ -148,10 +151,19 @@ public class DictServiceImpl implements IDictService {
     }
 
     @Override
-    public List<DictTypeVO> dictTypeQueryList() {
-        return this.dictTypeRepository.selectList(
-            Wrappers.<DictTypeEntity>lambdaQuery().orderByAsc(DictTypeEntity::getSort),
-            DictTypeVO.class);
+    public List<DictTypeTreeVO> dictTypeTree() {
+        // 字典类型集合
+        List<DictTypeTreeVO> dictTypeTreeVOS = this.dictTypeRepository.selectList(
+            Wrappers.<DictTypeEntity>lambdaQuery()
+                .orderByAsc(DictTypeEntity::getParentId, DictTypeEntity::getSort),
+            DictTypeTreeVO.class);
+        // 转换ITreeNode List
+        List<ITreeNode<Long>> treeNodeList = new ArrayList<>(dictTypeTreeVOS.size());
+        treeNodeList.addAll(dictTypeTreeVOS);
+        // 转换树结构
+        List<ITreeNode<Long>> tree = TreeUtil.listToTree(treeNodeList);
+        // 转换DictTypeTreeVO List
+        return ModelMapperUtil.mapList(tree, DictTypeTreeVO.class);
     }
 
     @Override

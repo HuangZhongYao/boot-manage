@@ -12,6 +12,12 @@ import java.util.List;
 public final class TreeUtil {
 
 
+    /**
+     * 扁平数据转数结构,parentId为null则是树根节点
+     * @param nodeList list数据
+     * @return 树结构
+     * @param <Id> 主键id和parentId的类型
+     */
     public static <Id> List<ITreeNode<Id>> listToTree(List<ITreeNode<Id>> nodeList) {
 
         // 根节点集合
