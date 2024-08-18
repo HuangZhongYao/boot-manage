@@ -38,7 +38,7 @@ public class DictServiceImpl implements IDictService {
     DictTypeRepository dictTypeRepository;
 
     @Override
-    public Boolean addDict(AddDictInputDTO inputDTO) {
+    public Boolean addDictData(AddDictInputDTO inputDTO) {
         DictDataEntity dictionaryDataEntity = ModelMapperUtil.map(inputDTO, DictDataEntity.class);
 
         // 检查字典数据是否重复
@@ -49,7 +49,7 @@ public class DictServiceImpl implements IDictService {
     }
 
     @Override
-    public Boolean delDict(BaseManyLongIdInputDTO inputDTO) {
+    public Boolean delDictData(BaseManyLongIdInputDTO inputDTO) {
         // 根据id删除字典
         this.dictDataRepository.deleteByIds(inputDTO.getIds());
         return true;
@@ -69,7 +69,7 @@ public class DictServiceImpl implements IDictService {
     }
 
     @Override
-    public Boolean editDict(EditDictInputDTO inputDTO) {
+    public Boolean editDictData(EditDictInputDTO inputDTO) {
 
         // 更新的数据
         DictDataEntity updateEntity =

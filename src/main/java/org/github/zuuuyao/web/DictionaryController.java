@@ -90,25 +90,25 @@ public class DictionaryController extends BaseController {
     @ApiResponse(responseCode = "200", description = "OK")
     @ApiResponse(responseCode = "450", description = "该字典编码已存在")
     @ApiResponse(responseCode = "451", description = "该字典名称已存在")
-    @PostMapping(value = "/addDict", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Boolean addDict(@RequestBody @Validated AddDictInputDTO inputDTO) {
-        return dictService.addDict(inputDTO);
+    @PostMapping(value = "/addDictData", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Boolean addDictData(@RequestBody @Validated AddDictInputDTO inputDTO) {
+        return dictService.addDictData(inputDTO);
     }
 
     @Operation(summary = "删除字典数据", description = "删除字典数据接口")
     @ApiResponse(responseCode = "200", description = "OK")
-    @DeleteMapping(value = "/delDict", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Boolean delDict(@RequestBody @Validated BaseManyLongIdInputDTO inputDTO) {
-        return dictService.delDict(inputDTO);
+    @DeleteMapping(value = "/delDictData", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Boolean delDictData(@RequestBody @Validated BaseManyLongIdInputDTO inputDTO) {
+        return dictService.delDictData(inputDTO);
     }
 
     @Operation(summary = "编辑字典数据", description = "编辑字典接口")
     @ApiResponse(responseCode = "200", description = "OK")
     @ApiResponse(responseCode = "450", description = "该字典编码已存在")
     @ApiResponse(responseCode = "451", description = "该字典名称已存在")
-    @PatchMapping(value = "/editDict", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Boolean editDict(@RequestBody @Validated EditDictInputDTO inputDTO) {
-        return dictService.editDict(inputDTO);
+    @PatchMapping(value = "/editDictData", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Boolean editDictData(@RequestBody @Validated EditDictInputDTO inputDTO) {
+        return dictService.editDictData(inputDTO);
     }
 
     @Operation(summary = "启用|禁用字典数据", description = "启用|禁用字典数据接口")

@@ -17,13 +17,13 @@ import org.github.zuuuyao.service.dict.output.DictTypeTreeVO;
  * @Time 2024-08-18 4:07
  */
 public interface IDictService {
-    Boolean addDict(AddDictInputDTO inputDTO);
+    Boolean addDictData(AddDictInputDTO inputDTO);
 
-    Boolean delDict(BaseManyLongIdInputDTO inputDTO);
+    Boolean delDictData(BaseManyLongIdInputDTO inputDTO);
 
     Boolean setStateDictData(SetStateDictInputDTO inputDTO);
 
-    Boolean editDict(EditDictInputDTO inputDTO);
+    Boolean editDictData(EditDictInputDTO inputDTO);
 
     List<DictDataVO> dictDataQueryList(Long dictTypeId);
 
