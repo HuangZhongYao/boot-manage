@@ -95,8 +95,9 @@ knife4j:
   # 自定义文档 group要和group-configs:group 保持一致
   documents:
     - group: 全部接口
-      name: 其它文档
-      locations: classpath:markdown/*
+      name: 全局返回值说明
+      locations: classpath:markdown/*.md
+
   basic:
     # 开启访问权限控制
     enable: true
