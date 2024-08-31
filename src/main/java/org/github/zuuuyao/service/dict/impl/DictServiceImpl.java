@@ -1,5 +1,6 @@
 package org.github.zuuuyao.service.dict.impl;
 
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import java.util.ArrayList;
@@ -138,12 +139,17 @@ public class DictServiceImpl implements IDictService {
 
     @Override
     public Boolean editDictType(EditDictTypeInputDTO inputDTO) {
+        // 数据库中的数据
+        DictTypeEntity dictTypeEntityDB = dictTypeRepository.selectById(inputDTO.getId());
         // 更新的数据
         DictTypeEntity updateEntity =
             ModelMapperUtil.map(inputDTO, DictTypeEntity.class);
 
-        // 检查字典类型是否重复
-        this.checkDictTypeExistence(updateEntity);
+        // 如果修改了类型名称
+        if (!StrUtil.equals(dictTypeEntityDB.getName(), inputDTO.getName())) {
+            // 检查字典类型是否重复
+            this.checkDictTypeExistence(updateEntity);
+        }
 
         // 执行更新
         this.dictTypeRepository.updateById(updateEntity);
@@ -192,6 +198,7 @@ public class DictServiceImpl implements IDictService {
 
         // 检查名称是否重复
         queryWrapper.eq(DictTypeEntity::getName, dictType.getName());
+        queryWrapper.eq(DictTypeEntity::getParentId, dictType.getParentId());
         if (this.dictTypeRepository.selectCount(queryWrapper) > 0) {
             throw new UserFriendlyException("该字典类型已存在", 450);
         }

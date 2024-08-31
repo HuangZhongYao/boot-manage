@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.github.zuuuyao.common.base.dto.input.BaseLongIdInputDTO;
+import org.github.zuuuyao.common.validate.ValidateNotNullAndEmpty;
 
 /**
  * 系统字典类型表编辑数据DTO对象
@@ -53,6 +54,7 @@ public class EditDictTypeInputDTO extends BaseLongIdInputDTO {
      * 启用状态
      */
     @Schema(description = "启用状态")
+    @ValidateNotNullAndEmpty(message = "启用状态不能为空")
     private Boolean enable;
 
     /**

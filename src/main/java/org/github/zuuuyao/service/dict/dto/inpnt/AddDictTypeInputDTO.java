@@ -49,6 +49,7 @@ public class AddDictTypeInputDTO extends BaseDTO {
      * 启用状态
      */
     @Schema(description = "启用状态")
+    @ValidateNotNullAndEmpty(message = "启用状态不能为空")
     private Boolean enable;
 
     /**
