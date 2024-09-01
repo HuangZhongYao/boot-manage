@@ -42,8 +42,10 @@ public class DictServiceImpl implements IDictService {
     public Boolean addDictData(AddDictInputDTO inputDTO) {
         DictDataEntity dictionaryDataEntity = ModelMapperUtil.map(inputDTO, DictDataEntity.class);
 
-        // 检查字典数据是否重复
-        checkDictDataExistence(dictionaryDataEntity);
+        // 检查字典数据名称是否重复
+        checkDictDataNameExistence(dictionaryDataEntity);
+        // 检查字典数据编码是否重复
+        checkDictDataCodeExistence(dictionaryDataEntity);
 
         this.dictDataRepository.insert(dictionaryDataEntity);
         return true;
@@ -72,12 +74,21 @@ public class DictServiceImpl implements IDictService {
     @Override
     public Boolean editDictData(EditDictInputDTO inputDTO) {
 
+        DictDataEntity dictDataEntityDB = this.dictDataRepository.selectById(inputDTO.getId());
+
         // 更新的数据
         DictDataEntity updateEntity =
             ModelMapperUtil.map(inputDTO, DictDataEntity.class);
 
-        // 检查字典数据是否重复
-        checkDictDataExistence(updateEntity);
+        // 如果修改了字典数据名称，检查字典数据是否重复
+        if (!StrUtil.equals(dictDataEntityDB.getName(), inputDTO.getName())) {
+            checkDictDataNameExistence(updateEntity);
+        }
+
+        // 如果修改了字典数据编码，检查字典数据编码是否重复
+        if (!StrUtil.equals(dictDataEntityDB.getCode(), inputDTO.getCode())) {
+            checkDictDataCodeExistence(updateEntity);
+        }
 
         // 执行更新
         this.dictDataRepository.updateById(updateEntity);
@@ -98,7 +109,20 @@ public class DictServiceImpl implements IDictService {
      *
      * @param dictData 字典数据
      */
-    private void checkDictDataExistence(DictDataEntity dictData) {
+    private void checkDictDataNameExistence(DictDataEntity dictData) {
+
+        // 查询条件
+        LambdaQueryWrapper<DictDataEntity> queryWrapper = Wrappers.<DictDataEntity>lambdaQuery()
+            .eq(DictDataEntity::getDictTypeId, dictData.getDictTypeId());
+
+        // 检查名称是否重复
+        queryWrapper.eq(DictDataEntity::getName, dictData.getName());
+        if (this.dictDataRepository.selectCount(queryWrapper) > 0) {
+            throw new UserFriendlyException("该字典名称已存在", 451);
+        }
+    }
+
+    private void checkDictDataCodeExistence(DictDataEntity dictData) {
 
         // 查询条件
         LambdaQueryWrapper<DictDataEntity> queryWrapper = Wrappers.<DictDataEntity>lambdaQuery()
@@ -108,12 +132,6 @@ public class DictServiceImpl implements IDictService {
         queryWrapper.eq(DictDataEntity::getCode, dictData.getCode());
         if (this.dictDataRepository.selectCount(queryWrapper) > 0) {
             throw new UserFriendlyException("该字典编码已存在", 450);
-        }
-
-        // 检查名称是否重复
-        queryWrapper.eq(DictDataEntity::getName, dictData.getName());
-        if (this.dictDataRepository.selectCount(queryWrapper) > 0) {
-            throw new UserFriendlyException("该字典名称已存在", 451);
         }
     }
 
@@ -193,12 +211,15 @@ public class DictServiceImpl implements IDictService {
     private void checkDictTypeExistence(DictTypeEntity dictType) {
         // 查询条件
         LambdaQueryWrapper<DictTypeEntity> queryWrapper = Wrappers.<DictTypeEntity>lambdaQuery()
-            .eq(dictType.getParentId() != null, DictTypeEntity::getParentId, dictType.getParentId())
-            .isNull(dictType.getParentId() == null, DictTypeEntity::getParentId);
+            .and(
+                wrapper ->
+                    wrapper.eq(dictType.getParentId() != null, DictTypeEntity::getParentId,
+                            dictType.getParentId())
+                        .or()
+                        .isNull(dictType.getParentId() == null, DictTypeEntity::getParentId)
+            )
+            .and(wrapper -> wrapper.eq(DictTypeEntity::getName, dictType.getName()));
 
-        // 检查名称是否重复
-        queryWrapper.eq(DictTypeEntity::getName, dictType.getName());
-        queryWrapper.eq(DictTypeEntity::getParentId, dictType.getParentId());
         if (this.dictTypeRepository.selectCount(queryWrapper) > 0) {
             throw new UserFriendlyException("该字典类型已存在", 450);
         }
