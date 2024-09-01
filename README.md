@@ -150,7 +150,7 @@ pom.xml                         maven配置文件
     }
 ```
 - Service 层  
-  所有的业务逻辑放到Service,不要controller在写service也在写
+  所有的业务逻辑放到Service,不要在controller中做任何逻辑
 ```java
     @Transactional(rollbackFor = Exception.class)
     @Override
