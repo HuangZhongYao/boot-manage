@@ -3,7 +3,7 @@ server:
 
 spring:
   profiles:
-    active: local
+    active: prod
   servlet:
     multipart:
       # 限制最大上传文件大小
