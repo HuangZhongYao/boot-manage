@@ -129,7 +129,7 @@ public class ResourcesServiceImpl implements IResourcesService {
     public List<ResourcesTreeVo> resourcesTree() {
         // 查询全部资源列表
         List<ResourcesTreeVo> resourcesVos =
-            resourcesRepository.selectList(null, ResourcesTreeVo.class);
+            resourcesRepository.selectList(Wrappers.<ResourcesEntity>lambdaQuery().orderByAsc(ResourcesEntity::getSort), ResourcesTreeVo.class);
         // 转换ITreeNode List
         List<ITreeNode<Long>> treeNodeList = new ArrayList<>(resourcesVos.size());
         treeNodeList.addAll(resourcesVos);
