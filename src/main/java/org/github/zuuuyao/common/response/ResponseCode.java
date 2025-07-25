@@ -16,7 +16,7 @@ public enum ResponseCode {
     FAILED(500, "操作失败"),
     VALIDATION_FAILED(410, "参数验证失败"),
     NOT_LOGIN(401, "未登录"),
-    LOGIN_EXPIRED(401, "登录过期"),
+    LOGIN_EXPIRED(402, "登录过期"),
     NO_PERMISSION(403, "没有操作权限"),
     NOT_FOUND(404, "没有该api或资源"),
     ;
