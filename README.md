@@ -46,6 +46,10 @@ Boot Admin 是一款极简风格的后台管理模板。
 
 ## 安装
 
+- 创建数据库 `boot_manage`
+- 导入 [docs/boot_manage.sql](docs/boot_manage.sql)
+- 修改 `application` 和 `application-xx.yml` 文件配置信息
+- 运行启动类 [BootManageApplication.java](src/main/java/org/github/zuuuyao/BootManageApplication.java)
 ## 前端
 
 Boot Admin 前端项目使用Vue3 + JavaScript 构建  
